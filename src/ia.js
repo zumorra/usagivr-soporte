@@ -11,7 +11,8 @@
 const cp = require("node:child_process");
 const os = require("node:os");
 
-const TIMEOUT_MS = 90000;
+const TIMEOUT_MS = 25000; // por peticion HTTP
+const PRESUPUESTO_MS = 75000; // tope total por respuesta: el cliente no se queda esperando
 const USER_AGENT = "Mozilla/5.0 (X11; Linux x86_64; rv:128.0) Gecko/20100101 Firefox/128.0";
 
 async function pedir(url, opciones) {
@@ -38,12 +39,15 @@ function textoDe(datos) {
 }
 
 async function pollinations(cfg, mensajes) {
-  return textoDe(
-    await pedir("https://text.pollinations.ai/openai", {
-      method: "POST",
-      body: JSON.stringify({ model: cfg.pollinations_modelo, messages: mensajes, max_tokens: cfg.max_tokens }),
-    })
-  );
+  const cuerpo = JSON.stringify({ model: cfg.pollinations_modelo, messages: mensajes, max_tokens: cfg.max_tokens });
+  try {
+    return textoDe(await pedir("https://text.pollinations.ai/openai", { method: "POST", body: cuerpo }));
+  } catch (e) {
+    // Sin clave solo deja una peticion cada pocos segundos por IP: un reintento corto suele bastar.
+    if (!/HTTP 429|HTTP 5\d\d/.test(e.message)) throw e;
+    await new Promise((r) => setTimeout(r, 4000));
+    return textoDe(await pedir("https://text.pollinations.ai/openai", { method: "POST", body: cuerpo }));
+  }
 }
 
 async function groq(cfg, mensajes) {
@@ -65,7 +69,7 @@ async function opencode(cfg, mensajes) {
   let ultimo = "";
   for (const modelo of String(cfg.opencode_modelo).split(",").map((s) => s.trim()).filter(Boolean)) {
     const r = await new Promise((resolve) => {
-      cp.execFile("opencode", ["run", "--model", modelo, prompt], { cwd: os.tmpdir(), timeout: 150000, maxBuffer: 4 << 20 },
+      cp.execFile("opencode", ["run", "--model", modelo, prompt], { cwd: os.tmpdir(), timeout: 45000, maxBuffer: 4 << 20 },
         (error, stdout, stderr) => resolve({ error, stdout, stderr }));
     });
     if (r.error && r.error.code === "ENOENT") throw new Error("opencode no instalado");
@@ -80,7 +84,12 @@ const BACKENDS = { pollinations, opencode, groq };
 
 async function responder(cfg, mensajes) {
   const fallos = [];
+  const inicio = Date.now();
   for (const nombre of cfg.orden) {
+    if (Date.now() - inicio > PRESUPUESTO_MS) {
+      fallos.push("sin tiempo");
+      break;
+    }
     try {
       return { texto: await BACKENDS[nombre](cfg, mensajes), backend: nombre };
     } catch (e) {

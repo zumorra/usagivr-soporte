@@ -37,18 +37,28 @@ const client = new Client({
 const rolPorNombre = (guild, nombre) =>
   guild.roles.cache.find((r) => r.name.toLowerCase() === String(nombre).toLowerCase());
 
-function idiomaDe(member, texto = "") {
+const idiomaTicket = new Map(); // canal -> idioma que el cliente esta usando en esta sesion
+
+function idiomaDe(member, texto = "", previo = null) {
   const tiene = (n) => member && member.roles && member.roles.cache.some((r) => r.name.toLowerCase() === n.toLowerCase());
+  const t = ` ${texto.toLowerCase().replace(/[?!.,¿¡]/g, (c) => ` ${c} `)} `;
+  // Lo que pide el cliente manda sobre todo.
+  if (/(en|in) (espanol|español|espaniol|spanish)|habla(me)? (en )?espa/.test(t)) return "es";
+  if (/(en|in) (ingles|inglés|english)|speak english/.test(t)) return "en";
   const en = tiene(CFG.roles.ingles);
   const es = tiene(CFG.roles.espanol);
   if (es && !en) return "es";
   if (en && !es) return "en";
-  // Sin rol (o con los dos): se adivina por el texto.
-  const t = ` ${texto.toLowerCase()} `;
-  const pistasEs = [" el ", " la ", " no ", " mi ", " mis ", " los ", " las ", " que ", " se ", " como ", " cómo ", " por ", " para ", " con ", " es ", " una ", " tengo ", " quiero ", " gustaria", " gustaría", " ayuda", " correa", " funciona", " conecta", " enciende", "ñ", "¿", "á", "é", "ó"];
-  const fuertes = [" hola", "gracias", "ñ", "¿", "¡", " ayuda"]; // una sola ya basta
+  // Sin rol (o con los dos): se adivina por el texto comparando pistas de cada idioma.
+  const fuertes = [" hola ", "gracias", "ñ", "¿", "¡", " ayuda", " oye ", " porfa"];
   if (fuertes.some((p) => t.includes(p))) return "es";
-  return pistasEs.filter((p) => t.includes(p)).length >= 2 ? "es" : "en";
+  const pistasEs = [" el ", " la ", " no ", " mi ", " mis ", " los ", " las ", " que ", " qué ", " se ", " me ", " y ", " de ", " como ", " cómo ", " cuanto ", " cuánto ", " por ", " para ", " con ", " es ", " una ", " un ", " tengo ", " quiero ", " pero ", " ya ", " deberia", " debería", " gustaria", " gustaría", " correa", " funciona", " conecta", " enciende", " prende", "á", "é", "ó"];
+  const pistasEn = [" the ", " my ", " is ", " it ", " i ", " i'm ", " how ", " what ", " not ", " don't ", " doesn't ", " won't ", " can ", " please ", " with ", " and ", " to ", " on ", " of ", " help ", " why ", " does ", " should "];
+  const nEs = pistasEs.filter((p) => t.includes(p)).length;
+  const nEn = pistasEn.filter((p) => t.includes(p)).length;
+  if (nEs > nEn) return "es";
+  if (nEn > nEs) return "en";
+  return previo || (nEs ? "es" : "en");
 }
 
 function esEquipo(member) {
@@ -226,6 +236,7 @@ function promptSistema(lang) {
 }
 
 const ocupados = new Set();
+const pendientes = new Map(); // mensajes que llegaron mientras la IA contestaba otro: se contestan al terminar
 async function respuestaIA(canal, d, extraUsuario) {
   if (ocupados.has(canal.id)) return;
   ocupados.add(canal.id);
@@ -243,6 +254,7 @@ async function respuestaIA(canal, d, extraUsuario) {
         if (!m.content || m.content.length < 2) continue;
         if (m.author.id === client.user.id) mensajes.push({ role: "assistant", content: m.content.slice(0, 800) });
         else if (m.author.id === d.uid) mensajes.push({ role: "user", content: m.content.slice(0, 800) });
+        else mensajes.push({ role: "user", content: `[Support staff ${m.author.username}]: ${m.content.slice(0, 600)}` });
       }
     }
     if (extraUsuario && mensajes[mensajes.length - 1].content !== extraUsuario) mensajes.push({ role: "user", content: extraUsuario });
@@ -258,6 +270,11 @@ async function respuestaIA(canal, d, extraUsuario) {
     await canal.send(T[d.lang].errorIA).catch(() => {});
   } finally {
     ocupados.delete(canal.id);
+    const otra = pendientes.get(canal.id);
+    if (otra) {
+      pendientes.delete(canal.id);
+      respuestaIA(canal, otra); // el historial ya trae los mensajes nuevos
+    }
   }
 }
 
@@ -419,27 +436,34 @@ client.on("interactionCreate", async (inter) => {
   }
 });
 
+// Atiende un mensaje del cliente en su ticket: siempre hay respuesta.
+async function atender(canal, d, member, texto) {
+  const lang = idiomaDe(member, texto, idiomaTicket.get(canal.id) || d.lang);
+  idiomaTicket.set(canal.id, lang);
+  console.log(`msg en ${canal.name} (${d.estado}, ${lang}): ${texto.slice(0, 80)}`);
+  const dm = { ...d, lang };
+  if (pideHumano(texto)) {
+    if (d.estado === "escalado") return void (await canal.send(T[lang].yaViene));
+    return escalarTicket(canal, dm, "El cliente pidió hablar con el equipo técnico");
+  }
+  const temas = buscarTemas(texto);
+  if (temas.length) {
+    await canal.send(muletilla(lang));
+    for (const tema of temas) await canal.send(embedsTema(tema, lang));
+    // Escalado: un humano ya viene; las guias se mandan igual mientras tanto, sin volver a preguntar.
+    if (d.estado === "abierto") await canal.send({ content: T[lang].pregunta, components: [botonesTicket(lang)] });
+    return;
+  }
+  // Sin guia que encaje: la IA contesta, tambien con el ticket escalado mientras llega el companero.
+  await respuestaIA(canal, dm, texto);
+}
+
 client.on("messageCreate", async (msg) => {
   if (msg.author.bot || !msg.guild) return;
   const d = leerTicket(msg.channel);
   // Solo atiende al dueno del ticket; cerrado = nada.
   if (!d || msg.author.id !== d.uid || (d.estado !== "abierto" && d.estado !== "escalado")) return;
-  // El idioma se recalcula con cada mensaje (los roles mandan; sin rol, el propio texto).
-  const lang = idiomaDe(msg.member, msg.content);
-  const dm = { ...d, lang };
-  if (pideHumano(msg.content)) {
-    if (d.estado === "escalado") return void msg.channel.send(T[lang].yaViene);
-    return escalarTicket(msg.channel, dm, "El cliente pidió hablar con el equipo técnico");
-  }
-  const temas = buscarTemas(msg.content);
-  if (temas.length) {
-    await msg.channel.send(muletilla(lang));
-    for (const tema of temas) await msg.channel.send(embedsTema(tema, lang));
-    // Escalado: un humano ya viene; las guias se mandan igual mientras tanto, sin volver a preguntar.
-    if (d.estado === "abierto") await msg.channel.send({ content: T[lang].pregunta, components: [botonesTicket(lang)] });
-    return;
-  }
-  if (d.estado === "abierto") await respuestaIA(msg.channel, dm, msg.content);
+  await atender(msg.channel, d, msg.member, msg.content).catch((e) => console.error("atender:", e));
 });
 
 client.once("clientReady", async () => {
@@ -463,12 +487,15 @@ client.once("clientReady", async () => {
         const m = ult && ult.first();
         if (m && m.author.id === d.uid) {
           const member = await guild.members.fetch(d.uid).catch(() => null);
-          await respuestaIA(c, { ...d, lang: idiomaDe(member, m.content) }, m.content);
+          console.log(`pendiente en ${c.name}`);
+          atender(c, d, member, m.content).catch((e) => console.error("atender:", e)); // sin await: no frena el arranque
         }
       }
     }
   }
 });
+
+process.on("unhandledRejection", (e) => console.error("sin capturar:", e));
 
 const minutos = Number(process.env.MINUTOS || 0);
 if (minutos > 0) {
