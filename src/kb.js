@@ -119,7 +119,7 @@ const TEMAS = [
   },
   {
     id: "antena",
-    claves: ["antena", "antenna", "dongle", "receptor", "receiver", "pentagono", "pentágono", "pentagon", "se cortan", "se corta", "cutting out", "señal", "senal", "signal", "alcance", "range"],
+    claves: ["la antena", "the antenna", "the dongle", "el dongle", "antena", "antenna", "dongle", "receptor", "receiver", "pentagono", "pentágono", "pentagon", "se cortan", "se corta", "cutting out", "señal", "senal", "signal", "alcance", "range"],
     titulo: { es: "La antena receptora", en: "The receiver antenna" },
     pasos: {
       es: [
