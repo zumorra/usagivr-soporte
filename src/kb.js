@@ -156,7 +156,7 @@ const TEMAS = [
         "El ping debe ser **menor de 20 ms**: router en la misma habitación.",
         "Si cambiaste de router, vuelve a meter el WiFi por USB.",
         "PC: perfil de red de Windows en **Privada**, ejecuta `firewall.bat` de SlimeVR como administrador, sin VPN ni red de invitados.",
-        "Los routers de la compañía de internet (y los de residencias) suelen dar problemas: lo que mejor funciona es un **router barato extra solo para los trackers**.",
+        "Si ya hiciste todos los pasos y no conectan: muchas veces **el proveedor de internet bloquea algunas conexiones** en su router y eso afecta la comunicación de los trackers (solo pasa con los **WiFi**). Lo que mejor funciona es un **router barato extra solo para los trackers**.",
       ],
       en: [
         "Restart the router and the trackers.",
@@ -165,7 +165,7 @@ const TEMAS = [
         "Ping must be **under 20 ms**: router in the same room.",
         "If you changed routers, enter the WiFi again over USB.",
         "PC: Windows network profile set to **Private**, run SlimeVR's `firewall.bat` as administrator, no VPN or guest network.",
-        "ISP routers (and dorm networks) often cause trouble: what works best is a **cheap extra router just for the trackers**.",
+        "If you did every step and they still won't connect: **internet providers often block some connections** on their routers, which breaks tracker communication (only for **WiFi** trackers). What works best is a **cheap extra router just for the trackers**.",
       ],
     },
     videos: [
@@ -288,11 +288,11 @@ const TEMAS = [
   },
   {
     id: "configurar_slimevr",
-    claves: ["instalar slimevr", "instalo slimevr", "instale slimevr", "install slimevr", "installing slimevr", "configurar slimevr", "setup slimevr", "set up slimevr", "slimevr server", "empezar", "primera vez", "first time", "getting started", "asistente", "wizard", "steamvr addon", "add-on", "addon", "no sale en steamvr", "not in steamvr"],
+    claves: ["instalar slimevr", "instalo slimevr", "instale slimevr", "install slimevr", "installing slimevr", "configurar slimevr", "setup slimevr", "set up slimevr", "slimevr server", "formatee", "formateado", "formatear", "reinstalar", "reinstall", "orden", "empezar", "primera vez", "first time", "getting started", "asistente", "wizard", "steamvr addon", "add-on", "addon", "no sale en steamvr", "not in steamvr"],
     titulo: { es: "Configurar SlimeVR desde cero", en: "Setting up SlimeVR from scratch" },
     pasos: {
       es: [
-        "Abre SteamVR una vez y luego instala **SlimeVR** con su instalador.",
+        "Orden (también si formateaste): primero **SteamVR** (de Steam) y **ábrelo una vez**; después instala **SlimeVR**, así se aplican bien sus plugins y el driver.",
         "Conecta la antena por USB, abre SlimeVR y sigue el asistente (**Let's get set up!**); los trackers ya vienen emparejados, así que deben aparecer solos al encenderlos.",
         "Deja los trackers quietos en la mesa cuando te lo pida y luego **asigna cada uno a su parte del cuerpo** (agítalo para saber cuál es).",
         "Mounting: si eres nuevo, el **manual** es el más seguro; elige la orientación de cada tracker.",
@@ -300,7 +300,7 @@ const TEMAS = [
         "Si no salen en SteamVR: SteamVR → Startup/Shutdown → **Manage Add-ons** → activa SlimeVR.",
       ],
       en: [
-        "Open SteamVR once, then install **SlimeVR** with its installer.",
+        "Order (also after a format): first **SteamVR** (from Steam) and **open it once**; then install **SlimeVR**, so its plugins and driver get applied.",
         "Plug the antenna into USB, open SlimeVR and follow the wizard (**Let's get set up!**); trackers come pre-paired, so they should show up when you turn them on.",
         "Leave the trackers still on the table when asked, then **assign each one to its body part** (shake it to see which one it is).",
         "Mounting: if you're new, **manual** is the safest; pick each tracker's orientation.",
@@ -337,6 +337,38 @@ const TEMAS = [
     },
     videos: [{ t: "SlimeVR docs: putting on trackers", u: "https://docs.slimevr.dev/server/putting-on-trackers.html" }],
     imagenes: ["colocacion-5.png", "colocacion-5mas1.png", "colocacion-5mas3.png", "colocacion-7mas3.png"],
+  },
+  {
+    id: "dispositivos",
+    claves: ["iphone", "ios", "ipad", "mac", "macbook", "macos", "android", "telefono", "celular", "phone", "pc encendida", "pc prendida", "sin pc", "pc vieja", "telefono viejo", "old phone", "old pc", "need my pc", "necesito pc", "necesito la pc", "compatible"],
+    titulo: { es: "¿Con qué dispositivos funciona?", en: "Which devices does it work with?" },
+    pasos: {
+      es: [
+        "**iPhone y Mac: todavía no** está disponible.",
+        "**Android**: sí, recomendamos un teléfono Android con la app de SlimeVR, que se descarga desde la web oficial.",
+        "**PC (Windows)**: SlimeVR se descarga desde **Steam**.",
+        "Para jugar con PC (SteamVR) la PC tiene que estar prendida con SlimeVR abierto; con el Android y un Quest standalone no hace falta PC.",
+      ],
+      en: [
+        "**iPhone and Mac: not available yet**.",
+        "**Android**: yes, we recommend an Android phone with the SlimeVR app, downloaded from the official website.",
+        "**PC (Windows)**: get SlimeVR from **Steam**.",
+        "To play on PC (SteamVR) the PC must be on with SlimeVR open; with the Android app and a standalone Quest you don't need a PC.",
+      ],
+    },
+    videos: [{ t: "SlimeVR (download)", u: "https://slimevr.dev/download" }],
+    imagenes: [],
+  },
+  {
+    id: "boton_suelto",
+    claves: ["se salio el boton", "se me salio el boton", "boton se salio", "se cayo el boton", "boton suelto", "perdi el boton", "button fell", "button came off", "lost the button", "button popped"],
+    titulo: { es: "Se salió el botoncito", en: "The button came off" },
+    pasos: {
+      es: ["Tranqui, normalmente **no es necesario**: el tracker sigue funcionando igual. Solo si te da problemas (no enciende o no responde), me dices y lo vemos."],
+      en: ["No worries, it's usually **not needed**: the tracker keeps working the same. Only if it causes trouble (won't turn on or respond), tell me and we'll check it."],
+    },
+    videos: [],
+    imagenes: [],
   },
   {
     id: "quest",

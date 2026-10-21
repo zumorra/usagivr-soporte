@@ -23,6 +23,10 @@ const casos = [
   ["como configuro los botones de reset y y b para cuando me quiero calibrar en vr?", "botones_reset"],
   ["how do I bind quick reset to a controller button", "botones_reset"],
   ["tengo 8 trackers donde van", "kits"],
+  ["sirve para iphone o mac?", "dispositivos"],
+  ["tengo que tener mi pc encendida?", "dispositivos"],
+  ["se me salio el boton que hago", "boton_suelto"],
+  ["formatee la pc, en que orden instalo todo", "configurar_slimevr"],
   ["como uso el smol configurator", "smol_configurator"],
   ["como instalo slimevr por primera vez", "configurar_slimevr"],
 ];
