@@ -219,7 +219,9 @@ async function respuestaIA(canal, d, extraUsuario) {
   try {
     await canal.sendTyping().catch(() => {});
     const hist = await canal.messages.fetch({ limit: 12 }).catch(() => null);
-    const mensajes = [{ role: "system", content: promptSistema(d.lang) }];
+    let sistema = promptSistema(d.lang);
+    if (d.estado === "escalado") sistema += "\n\nA human teammate has already been notified and will join soon. Keep helping meanwhile and tell the customer they are on the way; do not use [ESCALATE].";
+    const mensajes = [{ role: "system", content: sistema }];
     mensajes.push({ role: "user", content: `Order: ${d.pedido}\nName: ${d.nombre}\nProblem: ${d.problema}` });
     if (hist) {
       for (const m of [...hist.values()].reverse()) {
