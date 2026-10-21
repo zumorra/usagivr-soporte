@@ -81,6 +81,17 @@ function botonesTicket(lang) {
   );
 }
 
+const muletilla = (lang) => { const l = T[lang].muletillas; return l[Math.floor(Math.random() * l.length)]; };
+
+// El cliente pide al equipo tecnico con sus palabras.
+function pideHumano(texto) {
+  const t = ` ${String(texto).toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "")} `;
+  return [
+    "un tecnico", "el tecnico", "al tecnico", "equipo tecnico", "servicio tecnico", "humano", "persona real", "una persona", "hablar con alguien", "con alguien del equipo", "equipo de soporte", "soporte tecnico", "agente", "encargado", "pasame con", "me pasas con",
+    "human", "technician", "real person", "talk to someone", "speak to someone", "a person", "an agent", "staff", "tech team", "support team",
+  ].some((p) => t.includes(p));
+}
+
 // --------------------------------------------------------------- panel
 function mensajePanel() {
   const e = new EmbedBuilder()
@@ -203,9 +214,11 @@ function promptSistema(lang) {
   const idioma = lang === "es" ? "Spanish" : "English";
   return [
     `You are the support assistant of ${CFG.nombreTienda}, a shop that sells SlimeVR-compatible full-body trackers (IceCube, LSM6DSV/LSM6DSR and ICM-45686 models; WiFi and Smol/dongle versions).`,
-    `Always answer in ${idioma}, short and friendly: at most 6 numbered steps, no headings. Use only the knowledge below; it comes from the official manual and overrides anything else you know.`,
-    "Never invent prices, shipping dates, refunds or warranty terms. If the issue looks like a hardware defect, a refund/shipping/order question, or you are not sure, reply with your best short advice and end with the exact tag [ESCALATE].",
-    "If the customer says it is solved, thank them.",
+    `Always answer in ${idioma}. Talk like a chill, friendly person from the team, not a robot: relaxed casual slang (in Spanish, Mexican-style and tuteo: "va", "sale", "ok ok", "tranqui", "no te preocupes"), short messages, no headings, no corporate phrases.`,
+    "Be very understanding: first show you get the problem and how annoying it is, ask one short question if something is unclear, then suggest what to try (max 5 short numbered steps). Use only the knowledge below; it comes from the official manual and overrides anything else you know.",
+    "Never invent prices, shipping dates, refunds or warranty terms; for those, or if it really looks like a broken tracker, say a teammate from the tech team can look at it whenever they want and that they just have to ask for it or press the button.",
+    "You never hand the ticket to a human yourself. Only if the customer clearly asks to talk to a human / the technical team, end with the exact tag [HUMANO].",
+    "If the customer says it is solved, be happy for them and thank them.",
     "",
     "KNOWLEDGE:",
     resumenParaIA(lang),
@@ -217,10 +230,12 @@ async function respuestaIA(canal, d, extraUsuario) {
   if (ocupados.has(canal.id)) return;
   ocupados.add(canal.id);
   try {
+    // Una muletilla al momento para que no suene a robot mientras piensa la IA en la nube.
+    await canal.send(muletilla(d.lang)).catch(() => {});
     await canal.sendTyping().catch(() => {});
     const hist = await canal.messages.fetch({ limit: 12 }).catch(() => null);
     let sistema = promptSistema(d.lang);
-    if (d.estado === "escalado") sistema += "\n\nA human teammate has already been notified and will join soon. Keep helping meanwhile and tell the customer they are on the way; do not use [ESCALATE].";
+    if (d.estado === "escalado") sistema += "\n\nA human from the tech team has already been called and will join soon. Keep helping meanwhile, tell the customer they are on the way, and do not use [HUMANO].";
     const mensajes = [{ role: "system", content: sistema }];
     mensajes.push({ role: "user", content: `Order: ${d.pedido}\nName: ${d.nombre}\nProblem: ${d.problema}` });
     if (hist) {
@@ -233,14 +248,14 @@ async function respuestaIA(canal, d, extraUsuario) {
     if (extraUsuario && mensajes[mensajes.length - 1].content !== extraUsuario) mensajes.push({ role: "user", content: extraUsuario });
     const { texto, backend } = await responder(CFG.ia, mensajes);
     console.log(`IA (${backend}) en ${canal.name}`);
-    const escalar = /\[ESCALATE\]/i.test(texto);
-    const limpio = texto.replace(/\[ESCALATE\]/gi, "").trim().slice(0, 1900);
+    const escalar = /\[HUMANO\]/i.test(texto);
+    const limpio = texto.replace(/\[(HUMANO|ESCALATE)\]/gi, "").trim().slice(0, 1900);
     await canal.send({ content: `${limpio}\n\n${T[d.lang].sigue}`, components: [botonesTicket(d.lang)] });
-    if (escalar) await escalarTicket(canal, d, "La IA lo marcó para un humano");
+    if (escalar) await escalarTicket(canal, d, "El cliente pidió hablar con el equipo técnico");
   } catch (e) {
     console.warn("IA:", e.message);
+    // Sin escalar: solo el cliente decide cuando llamar al equipo.
     await canal.send(T[d.lang].errorIA).catch(() => {});
-    await escalarTicket(canal, d, `La IA no respondió: ${e.message.slice(0, 200)}`);
   } finally {
     ocupados.delete(canal.id);
   }
@@ -336,11 +351,10 @@ async function abrirTicket(inter) {
     await canal.send(T[lang].bienvenida(inter.user.username));
     for (const tema of temas) {
       await canal.send(embedsTema(tema, lang));
-      if (tema.escalar) return escalarTicket(canal, d, `Tema "${tema.id}" siempre necesita a un humano`);
+      if (tema.escalar) await canal.send(T[lang].ofrecerEquipo);
     }
     await canal.send({ content: T[lang].pregunta, components: [botonesTicket(lang)] });
   } else {
-    await canal.send(T[lang].sinTema);
     await respuestaIA(canal, d);
   }
 }
@@ -413,8 +427,13 @@ client.on("messageCreate", async (msg) => {
   // El idioma se recalcula con cada mensaje (los roles mandan; sin rol, el propio texto).
   const lang = idiomaDe(msg.member, msg.content);
   const dm = { ...d, lang };
+  if (pideHumano(msg.content)) {
+    if (d.estado === "escalado") return void msg.channel.send(T[lang].yaViene);
+    return escalarTicket(msg.channel, dm, "El cliente pidió hablar con el equipo técnico");
+  }
   const temas = buscarTemas(msg.content);
   if (temas.length) {
+    await msg.channel.send(muletilla(lang));
     for (const tema of temas) await msg.channel.send(embedsTema(tema, lang));
     // Escalado: un humano ya viene; las guias se mandan igual mientras tanto, sin volver a preguntar.
     if (d.estado === "abierto") await msg.channel.send({ content: T[lang].pregunta, components: [botonesTicket(lang)] });
@@ -459,4 +478,4 @@ if (require.main === module) {
   client.login(token);
 }
 
-module.exports = { idiomaDe, leerTicket };
+module.exports = { pideHumano, idiomaDe, leerTicket };

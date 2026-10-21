@@ -2,7 +2,7 @@
 // Pruebas sin Discord ni internet: deteccion de tema e idioma.
 const assert = require("node:assert");
 const { buscarTemas } = require("./src/kb");
-const { idiomaDe } = require("./src/index");
+const { idiomaDe, pideHumano } = require("./src/index");
 
 const casos = [
   ["mi tracker no enciende", "no_enciende"],
@@ -29,4 +29,7 @@ assert.strictEqual(idiomaDe(m("English")), "en");
 assert.strictEqual(idiomaDe(m("Spanish")), "es");
 assert.strictEqual(idiomaDe(m(), "mis trackers no se conectan"), "es");
 assert.strictEqual(idiomaDe(m(), "my trackers won't connect"), "en");
-console.log(`OK: ${ok} temas + 4 idiomas`);
+const humano = [["quiero hablar con un técnico", true], ["pásame con alguien del equipo", true], ["I want to talk to a human", true],
+  ["creo que es un problema técnico", false], ["necesito ayuda con wifi", false], ["my tracker wont turn on", false]];
+for (const [txt, esp] of humano) assert.strictEqual(pideHumano(txt), esp, `pideHumano("${txt}")`);
+console.log(`OK: ${ok} temas + 4 idiomas + ${humano.length} pedir-humano`);
