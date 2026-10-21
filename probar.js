@@ -9,6 +9,8 @@ const casos = [
   ["My tracker won't turn on after charging", "no_enciende"],
   ["mis trackers nuevos no se conectan", "no_conecta"],
   ["my new trackers won't connect", "no_conecta"],
+  ["donde pongo la antena", "antena"],
+  ["my trackers keep cutting out, where should the dongle go", "antena"],
   ["como me pongo las correas?", "correas"],
   ["how do I put on the straps", "correas"],
   ["donde coloco los trackers en el cuerpo", "colocacion"],
