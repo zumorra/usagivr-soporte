@@ -21,18 +21,20 @@ const TEMAS = [
     titulo: { es: "Cómo ponerse las correas", en: "How to put on the straps" },
     pasos: {
       es: [
-        "Mete el tracker en el soporte de la correa con el **botón y el puerto USB-C hacia arriba**.",
+        "En el kit vienen: **2 correas gruesas con antideslizante** (muslos), **2 o 3 correas largas** (cintura, pecho y cadera, según el kit) y correas normales para el resto.",
+        "Mete el tracker en la correa con el **botón y el puerto USB-C hacia arriba** y **la carita de nuestro personaje siempre mirando al frente**.",
         "Pecho: el arnés va centrado sobre el esternón, ajustado pero sin apretar la respiración.",
-        "Muslos: la correa va **justo encima de la rodilla**, al frente del muslo. Si se enrolla, bájala un poco más.",
+        "Muslos (correas gruesas antideslizantes): **justo encima de la rodilla**, al frente del muslo. Si se enrolla, bájala un poco más.",
         "Tobillos: la correa va **justo encima del hueso del tobillo, por el costado de la pierna** (no delante ni en el pie).",
-        "Aprieta hasta que al mover la pierna el tracker no gire sobre la piel. Si una correa se queda corta, usa una correa elástica más larga o encadena dos.",
+        "Aprieta hasta que al mover la pierna el tracker no gire sobre la piel. Si una correa se queda corta, usa una de las largas.",
       ],
       en: [
-        "Put the tracker in the strap holder with the **button and USB-C port facing up**.",
+        "The kit includes: **2 thick anti-slip straps** (thighs), **2 or 3 long straps** (waist, chest and hip, depending on the kit) and regular straps for the rest.",
+        "Put the tracker in the strap with the **button and USB-C port facing up** and **our character's face always facing forward**.",
         "Chest: centre the harness on your sternum, snug but not tight enough to restrict breathing.",
-        "Thighs: the strap goes **just above the knee**, on the front of the thigh. If it rolls, move it a little lower.",
+        "Thighs (thick anti-slip straps): **just above the knee**, on the front of the thigh. If it rolls, move it a little lower.",
         "Ankles: the strap goes **just above the ankle bone, on the side of the leg** (not in front and not on the foot).",
-        "Tighten until the tracker does not rotate on your skin when you move. If a strap is too short, use a longer elastic strap or chain two together.",
+        "Tighten until the tracker does not rotate on your skin when you move. If a strap is too short, use one of the long ones.",
       ],
     },
     videos: [
@@ -49,7 +51,7 @@ const TEMAS = [
     pasos: {
       es: [
         "Mínimo 5 trackers: **pecho, 2 muslos y 2 tobillos** (mira el dibujo).",
-        "Botón y USB-C **hacia arriba** en todos.",
+        "Botón y USB-C **hacia arriba** en todos, y **la carita del personaje siempre mirando al frente**.",
         "Pecho y muslos **mirando al frente**. Tobillos **en el costado exterior** de la pierna.",
         "En SlimeVR asigna cada tracker a su parte del cuerpo (en SlimeVR, nunca en SteamVR).",
         "Como los tobillos van de lado, en SlimeVR ajusta su orientación (Mounting) para que la pierna no salga girada: está en la página 12 del manual (segunda imagen).",
@@ -57,7 +59,7 @@ const TEMAS = [
       ],
       en: [
         "Minimum 5 trackers: **chest, 2 thighs and 2 ankles** (see the drawing).",
-        "Button and USB-C **facing up** on all of them.",
+        "Button and USB-C **facing up** on all of them, and **the character's face always facing forward**.",
         "Chest and thighs **facing forward**. Ankles **on the outer side** of the leg.",
         "Assign each tracker to its body part in SlimeVR (in SlimeVR, never in SteamVR).",
         "Because the ankles sit on the side, fix their orientation in SlimeVR (Mounting) so the leg is not twisted: it is on page 12 of the manual (second image).",
@@ -208,6 +210,7 @@ const TEMAS = [
     titulo: { es: "Calibración en cada sesión", en: "Calibrating every session" },
     pasos: {
       es: [
+        "Sigue siempre las **guías de calibración que te muestra SlimeVR** dentro del programa, paso por paso.",
         "Trackers quietos en el suelo 2 minutos al encenderlos.",
         "Póntelos, de pie y recto, pies separados ~10 cm.",
         "SlimeVR: **Automatic Mounting** (pose de esquí) → VRChat: **Calibrate FBT** → SlimeVR: **Full Reset**.",
@@ -216,6 +219,7 @@ const TEMAS = [
         "Si las piernas se cruzan: tobillos al costado, muslos justo encima de la rodilla, y revisa Manual Mounting.",
       ],
       en: [
+        "Always follow the **calibration guides SlimeVR shows you** inside the program, step by step.",
         "Trackers still on the floor for 2 minutes after turning them on.",
         "Put them on, stand straight, feet ~10 cm apart.",
         "SlimeVR: **Automatic Mounting** (ski pose) → VRChat: **Calibrate FBT** → SlimeVR: **Full Reset**.",
