@@ -45,7 +45,9 @@ function idiomaDe(member, texto = "") {
   if (en && !es) return "en";
   // Sin rol (o con los dos): se adivina por el texto.
   const t = ` ${texto.toLowerCase()} `;
-  const pistasEs = [" el ", " la ", " no ", " mis ", " los ", " que ", " se ", " funciona", " conecta", " enciende", "ñ", "¿"];
+  const pistasEs = [" el ", " la ", " no ", " mi ", " mis ", " los ", " las ", " que ", " se ", " como ", " cómo ", " por ", " para ", " con ", " es ", " una ", " tengo ", " quiero ", " gustaria", " gustaría", " ayuda", " correa", " funciona", " conecta", " enciende", "ñ", "¿", "á", "é", "ó"];
+  const fuertes = [" hola", "gracias", "ñ", "¿", "¡", " ayuda"]; // una sola ya basta
+  if (fuertes.some((p) => t.includes(p))) return "es";
   return pistasEs.filter((p) => t.includes(p)).length >= 2 ? "es" : "en";
 }
 
@@ -404,9 +406,19 @@ client.on("interactionCreate", async (inter) => {
 client.on("messageCreate", async (msg) => {
   if (msg.author.bot || !msg.guild) return;
   const d = leerTicket(msg.channel);
-  // Solo responde al dueno del ticket mientras no lo haya tomado un humano.
-  if (!d || d.estado !== "abierto" || msg.author.id !== d.uid) return;
-  await respuestaIA(msg.channel, d, msg.content);
+  // Solo atiende al dueno del ticket; cerrado = nada.
+  if (!d || msg.author.id !== d.uid || (d.estado !== "abierto" && d.estado !== "escalado")) return;
+  // El idioma se recalcula con cada mensaje (los roles mandan; sin rol, el propio texto).
+  const lang = idiomaDe(msg.member, msg.content);
+  const dm = { ...d, lang };
+  const temas = buscarTemas(msg.content);
+  if (temas.length) {
+    for (const tema of temas) await msg.channel.send(embedsTema(tema, lang));
+    // Escalado: un humano ya viene; las guias se mandan igual mientras tanto, sin volver a preguntar.
+    if (d.estado === "abierto") await msg.channel.send({ content: T[lang].pregunta, components: [botonesTicket(lang)] });
+    return;
+  }
+  if (d.estado === "abierto") await respuestaIA(msg.channel, dm, msg.content);
 });
 
 client.once("clientReady", async () => {
