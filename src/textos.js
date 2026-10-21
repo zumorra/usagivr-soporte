@@ -16,7 +16,8 @@ const T = {
     yaTienes: (c) => `Ya tienes un ticket abierto: ${c}`,
     creado: (c) => `Tu ticket está abierto: ${c}`,
     bienvenida: (u) => `¡Qué onda ${u}! Tranqui, esto pasa seguido y casi siempre se arregla rápido. Mira, prueba esto:`,
-    muletillas: ["Deja que cheko…", "Mhhh…", "A ver, dame un segundito…", "Ok ok, déjame ver…", "Sale, ya lo reviso…", "Va, déjame pensarle tantito…", "Uy, a ver, lo checo…", "Mmm, ahorita te digo…"],
+    muletillas: ["Deja que cheko…", "Mhhh…", "A ver, dame un segundito…", "Ok ok, déjame ver…", "Sale, ya lo reviso…", "Va, déjame pensarle tantito…", "Uy, a ver, lo checo…", "Mmm, ahorita te digo…",
+      "Ah ok, ya entendí, dame chance…", "Mmm va, déjame leerte bien…", "Órale, a ver qué onda…", "Tranqui, ya lo estoy viendo…", "Ahí voy, un segundito…", "Sale sale, déjame revisar…", "A ver a ver…", "Ya te leí, dame un momentito…"],
     ofrecerEquipo: "Esto a veces necesita que lo vea alguien del equipo técnico. Si quieres que te pase con ellos, nomás dime o pícale a **No, necesito ayuda**.",
     yaViene: "Ya avisé al equipo técnico, en cuanto se conecten te escriben aquí. Mientras, cuéntame lo que quieras y te echo la mano.",
     pregunta: "¿Se solucionó?",
@@ -32,7 +33,12 @@ const T = {
     campoSolucion: "¿Cómo se resolvió?",
     cerrado: (m) => `Ticket cerrado. Este canal se borrará en ${m} minutos.`,
     errorIA: "Uy, se me trabó algo aquí. ¿Me lo vuelves a escribir porfa? Si prefieres que te vea alguien del equipo técnico, nomás dime.",
-    sigue: "Si sigue sin jalar o prefieres que lo vea alguien del equipo técnico, pícale a **No, necesito ayuda** o dímelo.",
+    sigue: [
+      "Si sigue sin jalar o prefieres que lo vea alguien del equipo técnico, pícale a **No, necesito ayuda** o dímelo.",
+      "Cualquier cosa me dices, y si quieres que te atienda alguien del equipo técnico, pícale a **No, necesito ayuda**.",
+      "Me cuentas cómo te fue. Si prefieres que lo vea una persona del equipo, nomás dime o pícale a **No, necesito ayuda**.",
+      "Ahí me dices si jaló. Y si quieres pasar con el equipo técnico, con **No, necesito ayuda** te paso.",
+    ],
   },
   en: {
     panelTitulo: "USAGIVR Support",
@@ -48,7 +54,8 @@ const T = {
     yaTienes: (c) => `You already have an open ticket: ${c}`,
     creado: (c) => `Your ticket is open: ${c}`,
     bienvenida: (u) => `Hey ${u}! No worries, this happens a lot and it's usually a quick fix. Try this:`,
-    muletillas: ["Let me check…", "Hmm…", "Gimme a sec…", "Ok ok, let me see…", "On it, one sec…", "Hmm, let me think about this…", "Alright, checking…", "Mmm, hang on…"],
+    muletillas: ["Let me check…", "Hmm…", "Gimme a sec…", "Ok ok, let me see…", "On it, one sec…", "Hmm, let me think about this…", "Alright, checking…", "Mmm, hang on…",
+      "Ah ok, got it, give me a moment…", "Let me read that properly…", "Okay, let's see what's going on…", "No worries, looking into it…", "One sec, almost there…"],
     ofrecerEquipo: "This one sometimes needs someone from the tech team to take a look. If you want me to pass you to them, just say so or hit **No, I need help**.",
     yaViene: "I already pinged the tech team, they'll write here as soon as they're on. Meanwhile, tell me anything and I'll help you out.",
     pregunta: "Did that fix it?",
@@ -64,7 +71,11 @@ const T = {
     campoSolucion: "How was it solved?",
     cerrado: (m) => `Ticket closed. This channel will be deleted in ${m} minutes.`,
     errorIA: "Oops, something glitched on my side. Could you send that again? If you'd rather have someone from the tech team look at it, just tell me.",
-    sigue: "If it's still not working or you'd rather have the tech team look at it, hit **No, I need help** or just tell me.",
+    sigue: [
+      "If it's still not working or you'd rather have the tech team look at it, hit **No, I need help** or just tell me.",
+      "Let me know how it goes, and if you want someone from the tech team, just hit **No, I need help**.",
+      "Tell me if that worked. If you'd prefer a person from the team, just say so or hit **No, I need help**.",
+    ],
   },
 };
 

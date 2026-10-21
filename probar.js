@@ -19,6 +19,12 @@ const casos = [
   ["my legs cross when I sit in vrchat", "calibracion"],
   ["quest standalone osc", "quest"],
   ["la bateria dura poco", "bateria"],
+  ["se me descarga rapido", "bateria"],
+  ["como configuro los botones de reset y y b para cuando me quiero calibrar en vr?", "botones_reset"],
+  ["how do I bind quick reset to a controller button", "botones_reset"],
+  ["tengo 8 trackers donde van", "kits"],
+  ["como uso el smol configurator", "smol_configurator"],
+  ["como instalo slimevr por primera vez", "configurar_slimevr"],
 ];
 let ok = 0;
 for (const [txt, esperado] of casos) {

@@ -54,6 +54,7 @@ async function pollinations(cfg, mensajes) {
       return textoDe(await pedir("https://text.pollinations.ai/openai", { method: "POST", body: cuerpo }));
     } catch (e) {
       const m = /Retry after (\d+)s/i.exec(e.message);
+      if (/aborted/i.test(e.message)) return textoDe(await pedir("https://text.pollinations.ai/openai", { method: "POST", body: cuerpo }));
       if (!/HTTP (402|429|5\d\d)/.test(e.message)) throw e;
       await dormir(Math.min(((m && Number(m[1])) || 5) + 1, 31) * 1000);
       return textoDe(await pedir("https://text.pollinations.ai/openai", { method: "POST", body: cuerpo }));
@@ -83,14 +84,22 @@ async function opencode(cfg, mensajes) {
     .join("\n\n");
   let ultimo = "";
   for (const modelo of String(cfg.opencode_modelo).split(",").map((s) => s.trim()).filter(Boolean)) {
+    // stdin cerrado: con una tuberia abierta "opencode run" se queda esperando entrada y nunca contesta.
     const r = await new Promise((resolve) => {
-      cp.execFile("opencode", ["run", "--model", modelo, prompt], { cwd: os.tmpdir(), timeout: 45000, maxBuffer: 4 << 20 },
-        (error, stdout, stderr) => resolve({ error, stdout, stderr }));
+      const h = cp.spawn("opencode", ["run", "--model", modelo, prompt], { cwd: os.tmpdir(), stdio: ["ignore", "pipe", "pipe"] });
+      let stdout = "", stderr = "";
+      h.stdout.on("data", (b) => { stdout += b; });
+      h.stderr.on("data", (b) => { stderr += b; });
+      const t = setTimeout(() => h.kill("SIGKILL"), 40000);
+      h.on("error", (error) => { clearTimeout(t); resolve({ error, stdout, stderr }); });
+      h.on("close", () => { clearTimeout(t); resolve({ stdout, stderr }); });
     });
     if (r.error && r.error.code === "ENOENT") throw new Error("opencode no instalado");
-    const salida = String(r.stdout || "").trim();
-    if (salida) return salida;
-    ultimo = String(r.stderr || "").trim().split("\n").pop() || "sin salida";
+    const ansi = /\x1b\[[0-9;]*m/g;
+    const salida = String(r.stdout || "").replace(ansi, "").trim();
+    const err = String(r.stderr || "").replace(ansi, "").trim();
+    if (salida && !/^Error:/m.test(salida)) return salida;
+    ultimo = (err || salida).split("\n").filter(Boolean).pop() || "sin salida";
   }
   throw new Error(`opencode: ${ultimo.slice(0, 120)}`);
 }

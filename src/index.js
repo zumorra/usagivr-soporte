@@ -91,7 +91,8 @@ function botonesTicket(lang) {
   );
 }
 
-const muletilla = (lang) => { const l = T[lang].muletillas; return l[Math.floor(Math.random() * l.length)]; };
+const azar = (x) => (Array.isArray(x) ? x[Math.floor(Math.random() * x.length)] : x);
+const muletilla = (lang) => azar(T[lang].muletillas);
 
 // El cliente pide al equipo tecnico con sus palabras.
 function pideHumano(texto) {
@@ -232,7 +233,12 @@ function promptSistema(lang) {
     "Never invent prices, shipping dates, refunds or warranty terms; for those, or if it really looks like a broken tracker, say a teammate from the tech team can look at it whenever they want and that they just have to ask for it or press the button.",
     "You never hand the ticket to a human yourself. Only if the customer clearly asks to talk to a human / the technical team, end with the exact tag [HUMANO].",
     "If the customer says it is solved, be happy for them and thank them.",
+    "Tracker won't turn on: first ask if they tried the small reset button on the back of the tracker; then ask if, with the USB cable plugged in, it turns on and shows up in SlimeVR (if yes, it's the battery).",
+    "Battery drains fast / doesn't last: explain kindly that it's hard to judge from a description because we need to see how fast it drains, and ask for a video or some proof (e.g. battery % in SlimeVR at the start and after a while).",
+    "Returns, refunds, exchanges or warranty: stay calm and reassuring. Explain that for anything like that we first go through the support process and its steps to confirm how the tracker is working, and that it is almost always a fixable issue, nothing serious. Never promise or refuse a return yourself.",
+    "Sound natural and vary your wording: don't start every reply the same way, don't repeat the same phrases you already used in this chat. No weird jokes, no made-up expressions or acronyms; plain everyday words.",
     "Read the whole conversation: figure out which step the customer is on and answer what they need NEXT; never repeat instructions for something they say they already did.",
+    "The customer often sends several messages in a row. Answer EVERY question or problem they wrote since your last reply (briefly, one after another), not only the last message.",
     `Each knowledge section has an id in brackets and a picture/video guide. If one guide is exactly what the customer needs next, end with the tag [GUIA:id] (at most one, e.g. [GUIA:no_conecta]); never attach a guide that was already sent or covers a step they already did.`,
     "",
     "KNOWLEDGE:",
@@ -270,14 +276,21 @@ async function respuestaIA(canal, d, extraUsuario) {
       }
     }
     // El historial ya trae los mensajes del cliente; solo se anade si aun no aparece (p. ej. al arrancar).
-    if (extraUsuario && !mensajes.some((x) => x.role === "user" && extraUsuario.endsWith(x.content))) mensajes.push({ role: "user", content: extraUsuario });
+    // Mensajes seguidos del mismo lado en uno solo: asi la IA ve la rafaga completa y contesta todo.
+    for (let i = mensajes.length - 1; i > 1; i--) {
+      if (mensajes[i].role === mensajes[i - 1].role && i - 1 > 0) {
+        mensajes[i - 1].content += "\n" + mensajes[i].content;
+        mensajes.splice(i, 1);
+      }
+    }
+    if (extraUsuario && !mensajes.some((x) => x.role === "user" && x.content.includes(extraUsuario.split("\n").pop()))) mensajes.push({ role: "user", content: extraUsuario });
     const { texto, backend } = await responder(CFG.ia, mensajes).finally(() => limpiar());
     console.log(`IA (${backend}) en ${canal.name}`);
     const escalar = /\[HUMANO\]/i.test(texto);
     const guias = [...texto.matchAll(/\[GUIA:\s*([a-z_]+)\]/gi)].map((m) => TEMAS.find((t) => t.id === m[1].toLowerCase())).filter(Boolean).slice(0, 1);
     const limpio = texto.replace(/\[(HUMANO|ESCALATE|GUIA:[^\]]*)\]/gi, "").trim().slice(0, 1900);
     for (const g of guias) await canal.send(embedsTema(g, d.lang)).catch((e) => console.warn("guia:", e.message));
-    await canal.send({ content: `${limpio}\n\n${T[d.lang].sigue}`, components: [botonesTicket(d.lang)] });
+    await canal.send({ content: `${limpio}\n\n${azar(T[d.lang].sigue)}`, components: [botonesTicket(d.lang)] });
     if (escalar) await escalarTicket(canal, d, "El cliente pidió hablar con el equipo técnico");
   } catch (e) {
     console.warn("IA:", e.message);
