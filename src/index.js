@@ -99,6 +99,18 @@ async function asegurarPanel(guild) {
   if (!yaEsta) await canal.send(mensajePanel()).catch((e) => console.warn("panel:", e.message));
 }
 
+// Solo en los servidores de prueba listados: crea roles y canal del panel si faltan.
+async function montarServidor(guild) {
+  if (!(CFG.montarEnServidores || []).includes(guild.id)) return;
+  await guild.roles.fetch().catch(() => {});
+  for (const nombre of Object.values(CFG.roles)) {
+    if (!rolPorNombre(guild, nombre)) await guild.roles.create({ name: nombre, reason: "soporte USAGIVR" }).catch((e) => console.warn("rol:", e.message));
+  }
+  if (!guild.channels.cache.find((c) => c.type === ChannelType.GuildText && c.name === CFG.canales.panel)) {
+    await guild.channels.create({ name: CFG.canales.panel, type: ChannelType.GuildText }).catch((e) => console.warn("canal:", e.message));
+  }
+}
+
 // ------------------------------------------------------------ historial
 async function canalHistorial(guild) {
   let canal = guild.channels.cache.find((c) => c.type === ChannelType.GuildText && c.name === CFG.canales.historial);
@@ -406,6 +418,7 @@ client.once("clientReady", async () => {
     .toJSON();
   for (const guild of client.guilds.cache.values()) {
     await guild.commands.set([cmd]).catch((e) => console.warn("comandos:", e.message));
+    await montarServidor(guild);
     await asegurarPanel(guild);
     // Tickets cerrados en una sesion anterior que no llegaron a borrarse.
     for (const c of guild.channels.cache.values()) {

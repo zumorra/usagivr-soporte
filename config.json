@@ -11,11 +11,18 @@
     "historial": "historial-soporte"
   },
   "ia": {
-    "orden": ["pollinations", "opencode", "groq"],
+    "orden": [
+      "pollinations",
+      "opencode",
+      "groq"
+    ],
     "pollinations_modelo": "openai-fast",
     "opencode_modelo": "opencode/deepseek-v4.1-flash-free,opencode/minimax-m3.1-flash-free,opencode/nemotron-3.5-lightning-free",
     "groq_modelo": "qwen/qwen3.8-27b",
     "max_tokens": 600
   },
-  "borrarTicketCerradoTrasMin": 10
+  "borrarTicketCerradoTrasMin": 10,
+  "montarEnServidores": [
+    "1540174644311756832"
+  ]
 }
