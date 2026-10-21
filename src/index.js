@@ -19,7 +19,7 @@ const {
   ActionRowBuilder, ButtonBuilder, ButtonStyle, ModalBuilder, TextInputBuilder, TextInputStyle,
   AttachmentBuilder, SlashCommandBuilder,
 } = require("discord.js");
-const { buscarTemas, resumenParaIA } = require("./kb");
+const { TEMAS, buscarTemas, resumenParaIA } = require("./kb");
 const { responder } = require("./ia");
 const { T } = require("./textos");
 
@@ -229,6 +229,8 @@ function promptSistema(lang) {
     "Never invent prices, shipping dates, refunds or warranty terms; for those, or if it really looks like a broken tracker, say a teammate from the tech team can look at it whenever they want and that they just have to ask for it or press the button.",
     "You never hand the ticket to a human yourself. Only if the customer clearly asks to talk to a human / the technical team, end with the exact tag [HUMANO].",
     "If the customer says it is solved, be happy for them and thank them.",
+    "Read the whole conversation: figure out which step the customer is on and answer what they need NEXT; never repeat instructions for something they say they already did.",
+    `Each knowledge section has an id in brackets and a picture/video guide. If one guide is exactly what the customer needs next, end with the tag [GUIA:id] (at most one, e.g. [GUIA:no_conecta]); never attach a guide that was already sent or covers a step they already did.`,
     "",
     "KNOWLEDGE:",
     resumenParaIA(lang),
@@ -240,10 +242,13 @@ const pendientes = new Map(); // mensajes que llegaron mientras la IA contestaba
 async function respuestaIA(canal, d, extraUsuario) {
   if (ocupados.has(canal.id)) return;
   ocupados.add(canal.id);
+  let limpiar = () => {};
   try {
-    // Una muletilla al momento para que no suene a robot mientras piensa la IA en la nube.
-    await canal.send(muletilla(d.lang)).catch(() => {});
+    // "Escribiendo..." todo el rato; si la IA de la nube tarda, una muletilla para que no suene a robot.
     await canal.sendTyping().catch(() => {});
+    const escribiendo = setInterval(() => canal.sendTyping().catch(() => {}), 8000);
+    const lenta = setTimeout(() => canal.send(muletilla(d.lang)).catch(() => {}), (CFG.muletillaTrasSeg || 6) * 1000);
+    limpiar = () => { clearInterval(escribiendo); clearTimeout(lenta); };
     const hist = await canal.messages.fetch({ limit: 12 }).catch(() => null);
     let sistema = promptSistema(d.lang);
     if (d.estado === "escalado") sistema += "\n\nA human from the tech team has already been called and will join soon. Keep helping meanwhile, tell the customer they are on the way, and do not use [HUMANO].";
@@ -252,23 +257,33 @@ async function respuestaIA(canal, d, extraUsuario) {
     if (hist) {
       for (const m of [...hist.values()].reverse()) {
         if (!m.content || m.content.length < 2) continue;
-        if (m.author.id === client.user.id) mensajes.push({ role: "assistant", content: m.content.slice(0, 800) });
+        if (m.author.id === client.user.id) {
+          const guia = m.embeds.map((e) => e.title).filter(Boolean).join(", ");
+          const txt = [m.content, guia && `(guide sent: ${guia})`].filter(Boolean).join("\n");
+          if (txt) mensajes.push({ role: "assistant", content: txt.slice(0, 800) });
+        }
         else if (m.author.id === d.uid) mensajes.push({ role: "user", content: m.content.slice(0, 800) });
         else mensajes.push({ role: "user", content: `[Support staff ${m.author.username}]: ${m.content.slice(0, 600)}` });
       }
     }
-    if (extraUsuario && mensajes[mensajes.length - 1].content !== extraUsuario) mensajes.push({ role: "user", content: extraUsuario });
-    const { texto, backend } = await responder(CFG.ia, mensajes);
+    // El historial ya trae los mensajes del cliente; solo se anade si aun no aparece (p. ej. al arrancar).
+    if (extraUsuario && !mensajes.some((x) => x.role === "user" && extraUsuario.endsWith(x.content))) mensajes.push({ role: "user", content: extraUsuario });
+    const { texto, backend } = await responder(CFG.ia, mensajes).finally(() => limpiar());
     console.log(`IA (${backend}) en ${canal.name}`);
     const escalar = /\[HUMANO\]/i.test(texto);
-    const limpio = texto.replace(/\[(HUMANO|ESCALATE)\]/gi, "").trim().slice(0, 1900);
+    const guias = [...texto.matchAll(/\[GUIA:\s*([a-z_]+)\]/gi)].map((m) => TEMAS.find((t) => t.id === m[1].toLowerCase())).filter(Boolean).slice(0, 1);
+    const limpio = texto.replace(/\[(HUMANO|ESCALATE|GUIA:[^\]]*)\]/gi, "").trim().slice(0, 1900);
+    for (const g of guias) await canal.send(embedsTema(g, d.lang)).catch((e) => console.warn("guia:", e.message));
     await canal.send({ content: `${limpio}\n\n${T[d.lang].sigue}`, components: [botonesTicket(d.lang)] });
     if (escalar) await escalarTicket(canal, d, "El cliente pidió hablar con el equipo técnico");
   } catch (e) {
     console.warn("IA:", e.message);
-    // Sin escalar: solo el cliente decide cuando llamar al equipo.
-    await canal.send(T[d.lang].errorIA).catch(() => {});
+    // Sin escalar: solo el cliente decide cuando llamar al equipo. Si la IA cae, al menos la guia que encaje.
+    const temas = extraUsuario ? buscarTemas(extraUsuario) : [];
+    if (temas.length) for (const t of temas) await canal.send(embedsTema(t, d.lang)).catch(() => {});
+    else await canal.send(T[d.lang].errorIA).catch(() => {});
   } finally {
+    limpiar();
     ocupados.delete(canal.id);
     const otra = pendientes.get(canal.id);
     if (otra) {
@@ -446,24 +461,28 @@ async function atender(canal, d, member, texto) {
     if (d.estado === "escalado") return void (await canal.send(T[lang].yaViene));
     return escalarTicket(canal, dm, "El cliente pidió hablar con el equipo técnico");
   }
-  const temas = buscarTemas(texto);
-  if (temas.length) {
-    await canal.send(muletilla(lang));
-    for (const tema of temas) await canal.send(embedsTema(tema, lang));
-    // Escalado: un humano ya viene; las guias se mandan igual mientras tanto, sin volver a preguntar.
-    if (d.estado === "abierto") await canal.send({ content: T[lang].pregunta, components: [botonesTicket(lang)] });
-    return;
-  }
-  // Sin guia que encaje: la IA contesta, tambien con el ticket escalado mientras llega el companero.
+  // La IA lee toda la conversacion (sabe en que paso va el cliente) y elige ella la guia con video/dibujo.
+  // Contesta tambien con el ticket escalado, mientras llega el companero.
   await respuestaIA(canal, dm, texto);
 }
 
+const esperas = new Map(); // canal -> temporizador de la rafaga de mensajes
 client.on("messageCreate", async (msg) => {
   if (msg.author.bot || !msg.guild) return;
   const d = leerTicket(msg.channel);
   // Solo atiende al dueno del ticket; cerrado = nada.
   if (!d || msg.author.id !== d.uid || (d.estado !== "abierto" && d.estado !== "escalado")) return;
-  await atender(msg.channel, d, msg.member, msg.content).catch((e) => console.error("atender:", e));
+  // Espera unos segundos tras el ultimo mensaje: la gente escribe en rafagas y asi se lee todo junto.
+  msg.channel.sendTyping().catch(() => {});
+  const previa = esperas.get(msg.channel.id);
+  if (previa) clearTimeout(previa.timer);
+  const textos = [...((previa && previa.textos) || []), msg.content];
+  const timer = setTimeout(() => {
+    esperas.delete(msg.channel.id);
+    const dd = leerTicket(msg.channel) || d;
+    atender(msg.channel, dd, msg.member, textos.join("\n")).catch((e) => console.error("atender:", e));
+  }, (CFG.esperarRafagaSeg || 7) * 1000);
+  esperas.set(msg.channel.id, { timer, textos });
 });
 
 client.once("clientReady", async () => {
@@ -514,4 +533,4 @@ if (require.main === module) {
   client.login(token);
 }
 
-module.exports = { pideHumano, idiomaDe, leerTicket };
+module.exports = { promptSistema, pideHumano, idiomaDe, leerTicket };

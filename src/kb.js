@@ -295,7 +295,7 @@ function buscarTemas(texto, max = 2) {
 
 /** Texto compacto de toda la base, para el prompt de la IA. */
 function resumenParaIA(idioma) {
-  return TEMAS.map((t) => `## ${t.titulo[idioma]}\n- ${t.pasos[idioma].join("\n- ")}`).join("\n\n");
+  return TEMAS.map((t) => `## [${t.id}] ${t.titulo[idioma]}\n- ${t.pasos[idioma].join("\n- ")}`).join("\n\n");
 }
 
 module.exports = { TEMAS, buscarTemas, normalizar, resumenParaIA };

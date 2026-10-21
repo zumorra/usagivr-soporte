@@ -24,5 +24,7 @@
   "borrarTicketCerradoTrasMin": 10,
   "montarEnServidores": [
     "1540174644311756832"
-  ]
+  ],
+  "esperarRafagaSeg": 7,
+  "muletillaTrasSeg": 6
 }

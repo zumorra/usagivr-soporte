@@ -12,7 +12,7 @@ const cp = require("node:child_process");
 const os = require("node:os");
 
 const TIMEOUT_MS = 25000; // por peticion HTTP
-const PRESUPUESTO_MS = 75000; // tope total por respuesta: el cliente no se queda esperando
+const PRESUPUESTO_MS = 100000; // tope total por respuesta: el cliente no se queda esperando
 const USER_AGENT = "Mozilla/5.0 (X11; Linux x86_64; rv:128.0) Gecko/20100101 Firefox/128.0";
 
 async function pedir(url, opciones) {
@@ -24,7 +24,7 @@ async function pedir(url, opciones) {
       headers: { "User-Agent": USER_AGENT, "Content-Type": "application/json", ...(opciones.headers || {}) },
       signal: ctrl.signal,
     });
-    if (!r.ok) throw new Error(`HTTP ${r.status}: ${(await r.text().catch(() => "")).slice(0, 160)}`);
+    if (!r.ok) throw new Error(`HTTP ${r.status}: ${(await r.text().catch(() => "")).slice(0, 300)}`);
     return r.json();
   } finally {
     clearTimeout(t);
@@ -38,16 +38,31 @@ function textoDe(datos) {
   return texto;
 }
 
+// Sin clave: 1 respuesta cada 30 s por IP (si no, HTTP 402 FREE_LIMIT "Retry after Ns").
+// Las llamadas se ponen en fila y se espacian solas.
+const ESPACIO_POLLI_MS = 31000;
+let ultimaPolli = 0;
+let filaPolli = Promise.resolve();
+const dormir = (ms) => new Promise((r) => setTimeout(r, ms));
+
 async function pollinations(cfg, mensajes) {
   const cuerpo = JSON.stringify({ model: cfg.pollinations_modelo, messages: mensajes, max_tokens: cfg.max_tokens });
-  try {
-    return textoDe(await pedir("https://text.pollinations.ai/openai", { method: "POST", body: cuerpo }));
-  } catch (e) {
-    // Sin clave solo deja una peticion cada pocos segundos por IP: un reintento corto suele bastar.
-    if (!/HTTP 429|HTTP 5\d\d/.test(e.message)) throw e;
-    await new Promise((r) => setTimeout(r, 4000));
-    return textoDe(await pedir("https://text.pollinations.ai/openai", { method: "POST", body: cuerpo }));
-  }
+  const turno = filaPolli.then(async () => {
+    const falta = ultimaPolli + ESPACIO_POLLI_MS - Date.now();
+    if (falta > 0) await dormir(falta);
+    try {
+      return textoDe(await pedir("https://text.pollinations.ai/openai", { method: "POST", body: cuerpo }));
+    } catch (e) {
+      const m = /Retry after (\d+)s/i.exec(e.message);
+      if (!/HTTP (402|429|5\d\d)/.test(e.message)) throw e;
+      await dormir(Math.min(((m && Number(m[1])) || 5) + 1, 31) * 1000);
+      return textoDe(await pedir("https://text.pollinations.ai/openai", { method: "POST", body: cuerpo }));
+    } finally {
+      ultimaPolli = Date.now();
+    }
+  });
+  filaPolli = turno.catch(() => {});
+  return turno;
 }
 
 async function groq(cfg, mensajes) {
