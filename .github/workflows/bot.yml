@@ -1,0 +1,42 @@
+name: Soporte USAGIVR (bot online)
+
+# Corre dentro de GitHub Actions: gratis e ilimitado en repos publicos.
+# Cada sesion dura 5 h y la siguiente espera en cola (concurrency) a que
+# termine la anterior, asi nunca hay dos bots contestando a la vez.
+
+on:
+  schedule:
+    - cron: "0 */5 * * *"
+  push:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      minutos:
+        description: "Minutos que debe correr esta sesion"
+        default: "300"
+
+concurrency:
+  group: usagivr-bot
+  cancel-in-progress: true
+
+jobs:
+  bot:
+    runs-on: ubuntu-latest
+    timeout-minutes: 330
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci --omit=dev
+      - name: Probar el codigo
+        run: node probar.js
+      - name: Cliente de OpenCode (IA gratis de respaldo)
+        run: npm install -g opencode-ai@1 --no-fund --no-audit || true
+      - name: Arrancar el bot
+        env:
+          DISCORD_TOKEN: ${{ secrets.DISCORD_TOKEN }}
+          GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+          MINUTOS: ${{ github.event.inputs.minutos || '300' }}
+        run: node src/index.js

@@ -1,0 +1,12 @@
+{
+  "name": "usagivr-soporte",
+  "version": "1.0.0",
+  "description": "Bot de soporte de USAGIVR (trackers SlimeVR): tickets con formulario, respuestas guiadas, IA gratis y escalado a Hellper.",
+  "main": "src/index.js",
+  "type": "commonjs",
+  "engines": { "node": ">=20" },
+  "scripts": { "start": "node src/index.js", "test": "node probar.js" },
+  "dependencies": { "discord.js": "^14.16.3" },
+  "license": "MIT",
+  "private": true
+}

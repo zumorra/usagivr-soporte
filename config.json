@@ -1,0 +1,21 @@
+{
+  "nombreTienda": "USAGIVR",
+  "roles": {
+    "ingles": "English",
+    "espanol": "Spanish",
+    "soporte": "Hellper"
+  },
+  "canales": {
+    "panel": "test-suport",
+    "categoriaTickets": "Tickets USAGIVR",
+    "historial": "historial-soporte"
+  },
+  "ia": {
+    "orden": ["pollinations", "opencode", "groq"],
+    "pollinations_modelo": "openai-fast",
+    "opencode_modelo": "opencode/deepseek-v4.1-flash-free,opencode/minimax-m3.1-flash-free,opencode/nemotron-3.5-lightning-free",
+    "groq_modelo": "qwen/qwen3.8-27b",
+    "max_tokens": 600
+  },
+  "borrarTicketCerradoTrasMin": 10
+}
