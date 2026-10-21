@@ -457,6 +457,15 @@ client.once("clientReady", async () => {
     for (const c of guild.channels.cache.values()) {
       const d = leerTicket(c);
       if (d && d.estado === "cerrado") await c.delete("ticket cerrado").catch(() => {});
+      // Mensajes del cliente que llegaron mientras el bot estaba apagado (reinicios): se contestan ahora.
+      else if (d && c.isTextBased()) {
+        const ult = await c.messages.fetch({ limit: 1 }).catch(() => null);
+        const m = ult && ult.first();
+        if (m && m.author.id === d.uid) {
+          const member = await guild.members.fetch(d.uid).catch(() => null);
+          await respuestaIA(c, { ...d, lang: idiomaDe(member, m.content) }, m.content);
+        }
+      }
     }
   }
 });
