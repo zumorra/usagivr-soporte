@@ -23,6 +23,7 @@ const { TEMAS, buscarTemas, resumenParaIA } = require("./kb");
 const { responder } = require("./ia");
 const { T } = require("./textos");
 const { notasFaq } = require("./faq");
+const { textoReglas, casoEspecial, PROHIBIDO } = require("./reglas");
 
 const CFG = JSON.parse(fs.readFileSync(path.join(__dirname, "..", "config.json"), "utf8"));
 const ASSETS = path.join(__dirname, "..", "assets");
@@ -326,7 +327,7 @@ function promptSistema(lang) {
   const idioma = lang === "es" ? "Spanish" : "English";
   return [
     `You are the support assistant of ${CFG.nombreTienda}, a shop that sells SlimeVR-compatible full-body trackers (IceCube, LSM6DSV/LSM6DSR and ICM-45686 models).`,
-    "Product facts: kits have 5 to 11 trackers. Every kit includes a receiver antenna (a small one or a bigger pentagon-shaped one) that plugs into a USB port on the PC. Trackers normally come already paired to their antenna; if one isn't, give the Smol pairing guide (no_conecta); for WiFi trackers give the WiFi setup steps even though SlimeVR also guides it. Always remind them the antenna must be uncovered and facing the area where they play. " +
+    "Product facts: kits have 5 to 11 trackers. Receiver kits include a receiver antenna/dongle (a small one or a bigger pentagon-shaped one) that plugs into a USB port on the PC; WiFi kits have no antenna. Trackers normally come already paired to their antenna; if one isn't, give the Smol pairing guide (no_conecta); for WiFi trackers give the WiFi setup steps even though SlimeVR also guides it. If they use the antenna, remind them it must be uncovered and facing the area where they play. " +
     "Kit contents: instruction manual, a bundle of USB to USB-C cables, and straps: 2 thick anti-slip straps for the thighs, 2 or 3 long straps (depending on the kit) for waist, chest and hip, and regular straps for the rest. " +
     "Every tracker has our character's face printed on it: that face must always face forward. For calibration, always tell them to follow the calibration guides SlimeVR shows inside the program. " +
     "Devices: not available for iPhone or Mac yet; we recommend an Android phone with the SlimeVR app from the official website; on PC, SlimeVR is downloaded from Steam. Install order (also after formatting the PC): SteamVR first and open it once, then SlimeVR so its plugins/driver apply. " +
@@ -340,13 +341,14 @@ function promptSistema(lang) {
     "If the customer says it is solved, be happy for them and thank them.",
     "Tracker won't turn on: first ask if they tried the small reset button on the back of the tracker; then ask if, with the USB cable plugged in, it turns on and shows up in SlimeVR (if yes, it's the battery).",
     "Battery drains fast / doesn't last: explain kindly that it's hard to judge from a description because we need to see how fast it drains, and ask for a video or some proof (e.g. battery % in SlimeVR at the start and after a while).",
-    "Returns, refunds, exchanges, replacements or warranty: stay calm and reassuring. NEVER say the words return, refund, replacement, exchange, new unit or warranty yourself (not even to deny them) and never promise or refuse anything; stay vague, like \"vamos a ver qué hacemos\", \"lo revisamos y lo platicamos con mi compañero\", \"let's see what we can do\". Say a teammate will look at it with them, then end with [HUMANO].",
+    "Returns, refunds, exchanges, replacements, money or warranty: NEVER talk about them, never say those words (not even to deny them), never promise or refuse anything. If the customer seems to want any of that, just say kindly that a teammate will attend them, then end with [HUMANO].",
     "Sound natural and vary your wording: don't start every reply the same way, don't repeat the same phrases you already used in this chat. No weird jokes, no made-up expressions or acronyms; plain everyday words.",
     "Do not invent hardware details that are not in the knowledge (LED colors or meanings, how many seconds to hold a button, what comes in the kit). Start replies naturally, not always with \"Hola, entiendo\".",
     "The order number and name are already in the ticket form: never ask for them again.",
     "Read the whole conversation: figure out which step the customer is on and answer what they need NEXT; never repeat instructions for something they say they already did.",
     "The customer often sends several messages in a row. Answer EVERY question or problem they wrote since your last reply (briefly, one after another), not only the last message.",
     `Each knowledge section has an id in brackets and a picture/video guide. If one guide is exactly what the customer needs next, end with the tag [GUIA:id] (at most one, e.g. [GUIA:no_conecta]); never attach a guide that was already sent or covers a step they already did.`,
+    textoReglas(lang),
     "",
     "KNOWLEDGE:",
     resumenParaIA(lang),
@@ -367,12 +369,13 @@ async function respuestaIA(canal, d, extraUsuario) {
     limpiar = () => { clearInterval(escribiendo); clearTimeout(lenta); };
     const hist = await canal.messages.fetch({ limit: 12 }).catch(() => null);
     let sistema = promptSistema(d.lang);
+    if (d.soloConsejos) sistema += "\n\nThe customer is asking for an exchange/refund: a teammate will take over right after your message. Only give the TEAM RULES tips for their case (photo, how it happened, drying…), say nothing about exchanges, coverage or money, don't offer the team and don't use [HUMANO].";
     if (d.estado === "escalado") sistema += "\n\nA human from the tech team has already been called and will join soon. Keep helping meanwhile, tell the customer they are on the way, and do not use [HUMANO].";
     const mensajes = [{ role: "system", content: sistema }];
     mensajes.push({ role: "user", content: `Order: ${d.pedido}\nName: ${d.nombre}\nProblem: ${d.problema}` });
     if (hist) {
       for (const m of [...hist.values()].reverse()) {
-        if (!m.content || m.content.length < 2) continue;
+        if (!m.content || m.content.length < 2 || esCorreccion(m.content)) continue;
         if (m.author.id === client.user.id) {
           const guia = m.embeds.map((e) => e.title).filter(Boolean).join(", ");
           const txt = [m.content, guia && `(guide sent: ${guia})`].filter(Boolean).join("\n");
@@ -403,18 +406,30 @@ async function respuestaIA(canal, d, extraUsuario) {
       const otra = await responder(CFG.ia, [...mensajes, { role: "system", content: `Rewrite your answer in ${idioma}. Only ${idioma}.` }]).catch(() => null);
       if (otra && idiomaDe(null, otra.texto.replace(/\[[^\]]*\]/g, "")) === d.lang) ({ texto, backend } = otra);
     }
+    // Palabras que nunca debe decir (cambios, reembolsos, tramites inventados): un intento mas y si no, lo atiende un compañero.
+    if (PROHIBIDO.test(texto)) {
+      console.warn(`IA dijo algo prohibido en ${canal.name}, reintento`);
+      const otra = await responder(CFG.ia, [...mensajes, { role: "assistant", content: texto }, { role: "system", content: "Rewrite that answer WITHOUT promising or mentioning replacements, refunds, returns, exchanges, warranty, sending a new unit, emails or registered requests. Follow the TEAM RULES. Same language, same casual tone." }]).catch(() => null);
+      if (otra && !PROHIBIDO.test(otra.texto)) texto = otra.texto;
+      else {
+        limpiar();
+        if (d.estado === "escalado") await canal.send(T[d.lang].devolucionYa);
+        else await escalarTicket(canal, d, "La IA iba a hablar de cambios/garantía", T[d.lang].devolucion);
+        return;
+      }
+    }
     limpiar();
     console.log(`IA (${backend}) en ${canal.name}`);
     // La IA a veces pone [HUMANO] sin que nadie lo pida: solo vale si el cliente insinuo persona/equipo/devolucion.
     const ultimos = mensajes.filter((x) => x.role === "user").slice(-1).map((x) => x.content).join(" ");
     const insinua = /human|persona|alguien|equipo|tecnico|técnico|soporte|agente|real|team|someone|staff|support|devol|regres|reembol|reempla|remplaz|cambi|garant|refund|return|replace|warrant|exchange/i.test(ultimos);
-    const escalar = /\[HUMANO\]/i.test(texto) && insinua;
+    const escalar = /\[HUMANO\]/i.test(texto) && insinua && !d.soloConsejos;
     const guias = [...texto.matchAll(/\[GUIA:\s*([a-z_]+)\]/gi)].map((m) => TEMAS.find((t) => t.id === m[1].toLowerCase())).filter(Boolean).slice(0, 1);
     const limpio = texto.replace(/\[(HUMANO|ESCALATE|GUIA:[^\]]*)\]/gi, "").trim().slice(0, 1900);
     for (const g of guias) await canal.send(embedsTema(g, d.lang)).catch((e) => console.warn("guia:", e.message));
     // El cierre "si quieres te paso con el equipo" solo si la IA no lo dijo ya.
-    const yaOfrece = escalar || /equipo|compa[nñ]ero|team|necesito ayuda|need help/i.test(limpio);
-    await canal.send({ content: yaOfrece ? limpio : `${limpio}\n\n${azar(T[d.lang].sigue)}`, components: [botonesTicket(d.lang)] });
+    const yaOfrece = escalar || d.soloConsejos || /equipo|compa[nñ]ero|team|necesito ayuda|need help/i.test(limpio);
+    await canal.send({ content: yaOfrece ? limpio : `${limpio}\n\n${azar(T[d.lang].sigue)}`, components: d.soloConsejos ? [] : [botonesTicket(d.lang)] });
     if (escalar) await escalarTicket(canal, d, "El cliente pidió hablar con el equipo técnico");
   } catch (e) {
     console.warn("IA:", e.message);
@@ -442,16 +457,35 @@ function pideDevolucion(texto) {
     "refund", "return it", "return them", "return the", "send it back", "send them back", "money back", "replacement", "replace it", "replace my", "warranty", "rma", "exchange",
   ].some((p) => t.includes(p));
 }
+// Reparte los tickets escalados entre los Helpper, por turnos. Sin lista de miembros, se menciona el rol.
+const turnoHelper = new Map();
+async function elegirHelper(guild, rol) {
+  if (!rol) return null;
+  let miembros = [...rol.members.values()];
+  if (!miembros.length) {
+    const lista = await guild.members.list({ limit: 1000 }).catch(() => null);
+    if (lista) miembros = [...lista.values()].filter((m) => m.roles.cache.has(rol.id));
+  }
+  miembros = miembros.filter((m) => !m.user.bot).sort((a, b) => a.id.localeCompare(b.id));
+  if (!miembros.length) return null;
+  const i = ((turnoHelper.get(guild.id) ?? -1) + 1) % miembros.length;
+  turnoHelper.set(guild.id, i);
+  return miembros[i];
+}
+
 async function escalarTicket(canal, d, motivo, texto) {
   if (d.estado === "escalado") return;
-  d.estado = "escalado";
-  await guardarTicket(canal, d);
   const rol = rolPorNombre(canal.guild, CFG.roles.soporte);
+  const helper = await elegirHelper(canal.guild, rol);
+  d.estado = "escalado";
+  if (helper) d.asignado = helper.user.username;
+  await guardarTicket(canal, d);
+  const quien = helper ? `<@${helper.id}>` : rol ? `<@&${rol.id}>` : `@${CFG.roles.soporte}`;
   await canal.send({
-    content: (texto || T[d.lang].companero)(rol ? `<@&${rol.id}>` : `@${CFG.roles.soporte}`),
-    allowedMentions: { roles: rol ? [rol.id] : [] },
+    content: (texto || T[d.lang].companero)(quien),
+    allowedMentions: helper ? { users: [helper.id] } : { roles: rol ? [rol.id] : [] },
   });
-  await registrar(canal, d, "🆘 Escalado a soporte", motivo, null);
+  await registrar(canal, d, "🆘 Escalado a soporte", helper ? `${motivo} · asignado a ${helper.user.username}` : motivo, null);
 }
 
 // --------------------------------------------------------------- tickets
@@ -507,7 +541,7 @@ async function abrirTicket(inter) {
     { id: client.user.id, allow: [PermissionFlagsBits.ViewChannel, PermissionFlagsBits.SendMessages, PermissionFlagsBits.ReadMessageHistory, PermissionFlagsBits.ManageChannels, PermissionFlagsBits.AttachFiles, PermissionFlagsBits.EmbedLinks, PermissionFlagsBits.MentionEveryone] },
   ];
   if (soporte) permisos.push({ id: soporte.id, allow: [PermissionFlagsBits.ViewChannel, PermissionFlagsBits.SendMessages, PermissionFlagsBits.ReadMessageHistory, PermissionFlagsBits.AttachFiles] });
-  const temas = buscarTemas(problema);
+  const temas = casoEspecial(problema) ? [] : buscarTemas(problema);
   const d = { uid: inter.user.id, usuario: inter.user.username, lang, estado: "abierto", pedido, nombre, problema: problema.slice(0, 500), temas: temas.map((t) => t.id).join(",") };
   // El tema va en la creacion: editar el tema despues tiene un tope de 2 cambios cada 10 min.
   const canal = await guild.channels.create({
@@ -529,7 +563,8 @@ async function abrirTicket(inter) {
     );
   await canal.send({ content: `<@${inter.user.id}>`, embeds: [ficha] });
 
-  if (temas.length) {
+  if (pideDevolucion(problema)) await casoDevolucion(canal, d, problema);
+  else if (temas.length) {
     await canal.send(azar(T[lang].bienvenida)(inter.user.username));
     for (const tema of temas) {
       await canal.send(embedsTema(tema, lang));
@@ -601,6 +636,16 @@ client.on("interactionCreate", async (inter) => {
   }
 });
 
+// Cambios, reembolsos o garantia: de eso no se habla, lo atiende un Helpper asignado.
+// Si es algo roto o mojado, antes la IA da los consejos de las reglas (foto, secarlo...).
+async function casoDevolucion(canal, d, texto) {
+  if (d.estado === "escalado") return void (await canal.send(T[d.lang].devolucionYa));
+  const dd = { ...d, soloConsejos: true };
+  if (casoEspecial(texto)) await respuestaIA(canal, dd, texto); // si la guardia ya escalo, dd.estado cambia
+  delete dd.soloConsejos;
+  if (dd.estado !== "escalado") await escalarTicket(canal, dd, "Devolución / reemplazo / garantía", T[d.lang].devolucion);
+}
+
 // Atiende un mensaje del cliente en su ticket: siempre hay respuesta.
 async function atender(canal, d, member, texto) {
   const lang = idiomaDe(member, texto, idiomaTicket.get(canal.id) || d.lang);
@@ -611,10 +656,7 @@ async function atender(canal, d, member, texto) {
     if (d.estado === "escalado") return void (await canal.send(T[lang].yaViene));
     return escalarTicket(canal, dm, "El cliente pidió hablar con el equipo técnico");
   }
-  if (pideDevolucion(texto)) {
-    if (d.estado === "escalado") return void (await canal.send(T[lang].devolucionYa));
-    return escalarTicket(canal, dm, "Devolución / reemplazo / garantía", T[lang].devolucion);
-  }
+  if (pideDevolucion(texto)) return casoDevolucion(canal, dm, texto);
   // La IA lee toda la conversacion (sabe en que paso va el cliente) y elige ella la guia con video/dibujo.
   // Contesta tambien con el ticket escalado, mientras llega el companero.
   await respuestaIA(canal, dm, texto);

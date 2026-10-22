@@ -22,7 +22,7 @@ const TEMAS = [
     pasos: {
       es: [
         "En el kit vienen: **2 correas gruesas con antideslizante** (muslos), **2 o 3 correas largas** (cintura, pecho y cadera, según el kit) y correas normales para el resto.",
-        "Mete el tracker en la correa con el **botón y el puerto USB-C hacia arriba** y **la carita de nuestro personaje siempre mirando al frente**.",
+        "Mete el tracker en la correa por el **riel**, con el **puerto USB-C hacia abajo** (esa punta entra primero): empújalo hasta que **escuches un click** y ahí se queda, con el **USB-C mirando hacia abajo** y **la carita de nuestro personaje siempre mirando al frente**.",
         "Pecho: el arnés va centrado sobre el esternón, ajustado pero sin apretar la respiración.",
         "Muslos (correas gruesas antideslizantes): **justo encima de la rodilla**, al frente del muslo. Si se enrolla, bájala un poco más.",
         "Tobillos: la correa va **justo encima del hueso del tobillo, por el costado de la pierna** (no delante ni en el pie).",
@@ -30,7 +30,7 @@ const TEMAS = [
       ],
       en: [
         "The kit includes: **2 thick anti-slip straps** (thighs), **2 or 3 long straps** (waist, chest and hip, depending on the kit) and regular straps for the rest.",
-        "Put the tracker in the strap with the **button and USB-C port facing up** and **our character's face always facing forward**.",
+        "Slide the tracker into the strap along the **rail**, with the **USB-C port pointing down** (that end goes in first): push until you **hear a click** and it stays there, with the **USB-C port facing down** and **our character's face always facing forward**.",
         "Chest: centre the harness on your sternum, snug but not tight enough to restrict breathing.",
         "Thighs (thick anti-slip straps): **just above the knee**, on the front of the thigh. If it rolls, move it a little lower.",
         "Ankles: the strap goes **just above the ankle bone, on the side of the leg** (not in front and not on the foot).",
@@ -51,7 +51,7 @@ const TEMAS = [
     pasos: {
       es: [
         "Mínimo 5 trackers: **pecho, 2 muslos y 2 tobillos** (mira el dibujo).",
-        "Botón y USB-C **hacia arriba** en todos, y **la carita del personaje siempre mirando al frente**.",
+        "En todos: el tracker entra al riel de la correa hasta el click, con el **USB-C mirando hacia abajo**, y **la carita del personaje siempre mirando al frente**.",
         "Pecho y muslos **mirando al frente**. Tobillos **en el costado exterior** de la pierna.",
         "En SlimeVR asigna cada tracker a su parte del cuerpo (en SlimeVR, nunca en SteamVR).",
         "Como los tobillos van de lado, en SlimeVR ajusta su orientación (Mounting) para que la pierna no salga girada: está en la página 12 del manual (segunda imagen).",
@@ -59,7 +59,7 @@ const TEMAS = [
       ],
       en: [
         "Minimum 5 trackers: **chest, 2 thighs and 2 ankles** (see the drawing).",
-        "Button and USB-C **facing up** on all of them, and **the character's face always facing forward**.",
+        "On all of them: the tracker clicks into the strap rail with the **USB-C port facing down**, and **the character's face always facing forward**.",
         "Chest and thighs **facing forward**. Ankles **on the outer side** of the leg.",
         "Assign each tracker to its body part in SlimeVR (in SlimeVR, never in SteamVR).",
         "Because the ankles sit on the side, fix their orientation in SlimeVR (Mounting) so the leg is not twisted: it is on page 12 of the manual (second image).",
@@ -268,13 +268,15 @@ const TEMAS = [
       es: [
         "Bájalo de GitHub (Releases): hay versión para Windows, Linux, macOS y Android.",
         "**Emparejar**: conecta la antena (receptor) por USB → **↻** → elige el puerto → **Connect** → pestaña del receptor → **Pairing mode** → enciende los trackers uno por uno hasta que aparezcan → sal del modo pairing.",
-        "**Firmware**: conecta el tracker o el receptor por USB y aprieta reset dos veces → **↻**, puerto, **Connect** → elige el firmware en *Select Firmware* → **⬇ Firmware** y espera ~20 s. Tracker y receptor deben quedar en la misma versión.",
+        "**IceCube: NO se les actualiza el firmware.** Si lo actualizan, pierden la cobertura y ya no nos hacemos responsables si fallan. El resto de los modelos sí se pueden actualizar.",
+        "**Firmware** (todos menos IceCube): conecta el tracker o el receptor por USB y aprieta reset dos veces → **↻**, puerto, **Connect** → elige el firmware en *Select Firmware* → **⬇ Firmware** y espera ~20 s. Tracker y receptor deben quedar en la misma versión.",
         "**Calibrar el sensor**: botón **Calibrate** con el tracker quieto ~5 s, o la calibración de **6 caras** siguiendo lo que pide en pantalla.",
       ],
       en: [
         "Download it from GitHub (Releases): there are builds for Windows, Linux, macOS and Android.",
         "**Pairing**: plug the antenna (receiver) into USB → **↻** → pick the port → **Connect** → receiver tab → **Pairing mode** → turn the trackers on one by one until they show up → leave pairing mode.",
-        "**Firmware**: plug the tracker or receiver into USB and press reset twice → **↻**, port, **Connect** → pick the firmware in *Select Firmware* → **⬇ Firmware** and wait ~20 s. Tracker and receiver must be on the same version.",
+        "**IceCube: do NOT update their firmware.** Updating it voids their coverage and we can't be responsible if they fail afterwards. All other models can be updated.",
+        "**Firmware** (all except IceCube): plug the tracker or receiver into USB and press reset twice → **↻**, port, **Connect** → pick the firmware in *Select Firmware* → **⬇ Firmware** and wait ~20 s. Tracker and receiver must be on the same version.",
         "**Sensor calibration**: **Calibrate** button with the tracker still for ~5 s, or the **6-side** calibration following the on-screen steps.",
       ],
     },

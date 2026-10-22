@@ -13,8 +13,8 @@
   },
   "ia": {
     "orden": [
-      "pollinations",
       "opencode",
+      "pollinations",
       "groq"
     ],
     "pollinations_modelo": "openai-fast",
