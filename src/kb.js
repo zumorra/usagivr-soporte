@@ -353,7 +353,7 @@ const TEMAS = [
       ],
       en: [
         "**iPhone and Mac: not available yet**.",
-        "**Android**: yes, we recommend an Android phone with the SlimeVR app, downloaded from the official website.",
+        "**Android**: yes, we recommend an Android phone with the SlimeVR app, on Google Play or as an APK on SlimeVR's GitHub (on the phone, not inside the Quest).",
         "**PC (Windows)**: get SlimeVR from **Steam**.",
         "To play on PC (SteamVR) the PC must be on with SlimeVR open; with the Android app and a standalone Quest you don't need a PC.",
       ],
