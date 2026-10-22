@@ -23,7 +23,7 @@ const { TEMAS, buscarTemas, resumenParaIA } = require("./kb");
 const { responder } = require("./ia");
 const { T } = require("./textos");
 const { notasFaq } = require("./faq");
-const { textoReglas, casoEspecial, PROHIBIDO, COMPRA_FUERA } = require("./reglas");
+const { textoReglas, casoEspecial, PROHIBIDO, COMPRA_FUERA, DANIO, LIQUIDO } = require("./reglas");
 
 const CFG = JSON.parse(fs.readFileSync(path.join(__dirname, "..", "config.json"), "utf8"));
 const ASSETS = path.join(__dirname, "..", "assets");
@@ -85,7 +85,13 @@ function leerTicket(canal) {
   }
   return d;
 }
-const temaCanal = (d) => (`${MARCA} ` + Object.entries(d).map(([k, v]) => `${k}=${encodeURIComponent(v)}`).join(" ")).slice(0, 1024);
+// El tema tiene tope de 1024: el problema va al final y se recorta para que no se pierda ninguna otra clave.
+const temaCanal = (d) => {
+  const base = `${MARCA} ` + Object.entries(d).filter(([k, v]) => k !== "problema" && k !== "soloConsejos" && v != null && v !== "").map(([k, v]) => `${k}=${encodeURIComponent(v)}`).join(" ");
+  let p = String(d.problema || "");
+  while (p && base.length + 10 + encodeURIComponent(p).length > 1024) p = p.slice(0, -20);
+  return p ? `${base} problema=${encodeURIComponent(p)}` : base;
+};
 async function guardarTicket(canal, d) {
   await canal.setTopic(temaCanal(d)).catch((e) => console.warn("topic:", e.message));
 }
@@ -200,8 +206,11 @@ async function canalHistorial(guild) {
 
 // Respuestas que el equipo marca como "la que se esperaba" (mensaje entero en **negritas**):
 // se guardan en #correcciones-ia con la pregunta del cliente y lo que contesto el bot, para revisarlas.
-async function canalCorrecciones(guild) {
-  const nombre = CFG.canales.correcciones || "correcciones-ia";
+// Canal privado del bot para avisos al equipo (bot caido, reporte semanal). Lo usan los workflows vigia y reporte.
+const canalAvisos = (guild) => canalCorrecciones(guild, CFG.canales.avisos || "avisos-bot", "Avisos del bot: si se cae y el reporte semanal de los problemas más comunes.");
+
+async function canalCorrecciones(guild, nombreOtro, temaOtro) {
+  const nombre = nombreOtro || CFG.canales.correcciones || "correcciones-ia";
   let canal = guild.channels.cache.find((c) => c.type === ChannelType.GuildText && c.name === nombre && enCategoria(guild, c));
   if (canal) return canal;
   const cat = catFija(guild);
@@ -215,7 +224,7 @@ async function canalCorrecciones(guild) {
     name: nombre,
     type: ChannelType.GuildText,
     ...(cat ? { parent: cat.id } : {}),
-    topic: "Respuestas que el equipo marcó como la que se esperaba (**en negritas** dentro de un ticket). Sirven para ajustar al bot.",
+    topic: temaOtro || "Respuestas que el equipo marcó como la que se esperaba (**en negritas** dentro de un ticket). Sirven para ajustar al bot.",
     permissionOverwrites: permisos,
   });
 }
@@ -287,7 +296,7 @@ async function transcripcion(canal) {
     .join("\n");
 }
 
-async function registrar(canal, d, resultado, solucion, quien) {
+async function registrar(canal, d, resultado, solucion, quien, resumen) {
   try {
     const hilo = await hiloDeUsuario(canal.guild, d.uid, d.usuario || d.uid);
     const e = new EmbedBuilder()
@@ -300,7 +309,8 @@ async function registrar(canal, d, resultado, solucion, quien) {
         { name: "Problema", value: (d.problema || "-").slice(0, 1000) },
         { name: "Temas detectados", value: d.temas || "ninguno (IA)" },
         { name: "Resultado", value: resultado },
-        { name: "Cómo se resolvió", value: (solucion || "-").slice(0, 1000) }
+        { name: "Cómo se resolvió", value: (solucion || "-").slice(0, 1000) },
+        ...(resumen ? [{ name: "Resumen del caso", value: resumen.slice(0, 1024) }] : [])
       )
       .setFooter({ text: quien ? `Gestionado por ${quien}` : "Gestionado por el bot" })
       .setTimestamp();
@@ -469,7 +479,7 @@ function pideCompra(texto) {
 }
 // Reparte los tickets escalados entre los Helpper, por turnos. Sin lista de miembros, se menciona el rol.
 const turnoHelper = new Map();
-async function elegirHelper(guild, rol) {
+async function elegirHelper(guild, rol, excluir) {
   if (!rol) return null;
   let miembros = [...rol.members.values()];
   if (!miembros.length) {
@@ -477,6 +487,7 @@ async function elegirHelper(guild, rol) {
     if (lista) miembros = [...lista.values()].filter((m) => m.roles.cache.has(rol.id));
   }
   miembros = miembros.filter((m) => !m.user.bot).sort((a, b) => a.id.localeCompare(b.id));
+  if (excluir && miembros.length > 1) miembros = miembros.filter((m) => m.id !== excluir);
   if (!miembros.length) return null;
   const i = ((turnoHelper.get(guild.id) ?? -1) + 1) % miembros.length;
   turnoHelper.set(guild.id, i);
@@ -488,14 +499,50 @@ async function escalarTicket(canal, d, motivo, texto) {
   const rol = rolPorNombre(canal.guild, CFG.roles.soporte);
   const helper = await elegirHelper(canal.guild, rol);
   d.estado = "escalado";
-  if (helper) d.asignado = helper.user.username;
+  d.esc = Date.now();
+  d.motivo = motivo.slice(0, 60);
+  if (helper) Object.assign(d, { asignado: helper.user.username, aid: helper.id });
   await guardarTicket(canal, d);
   const quien = helper ? `<@${helper.id}>` : rol ? `<@&${rol.id}>` : `@${CFG.roles.soporte}`;
   await canal.send({
     content: (texto || T[d.lang].companero)(quien),
     allowedMentions: helper ? { users: [helper.id] } : { roles: rol ? [rol.id] : [] },
   });
-  await registrar(canal, d, "🆘 Escalado a soporte", helper ? `${motivo} · asignado a ${helper.user.username}` : motivo, null);
+  const resumen = await resumenCaso(canal, d);
+  if (helper) await avisarHelper(helper, canal, d, motivo, resumen);
+  await registrar(canal, d, "🆘 Escalado a soporte", helper ? `${motivo} · asignado a ${helper.user.username}` : motivo, null, resumen);
+}
+
+// Resumen corto del caso para el Helpper: asi no tiene que leerse todo el ticket.
+async function resumenCaso(canal, d) {
+  const base = `Pedido ${d.pedido || "-"} · ${d.problema || "-"}`.slice(0, 900);
+  try {
+    const txt = (await transcripcion(canal)).slice(-6000);
+    const { texto } = await responder(CFG.ia, [
+      { role: "system", content: "Eres del equipo de soporte de USAGIVR (trackers SlimeVR). Resume este ticket para el compañero que lo va a atender, en español, máximo 6 viñetas cortas: qué tiene el cliente (kit/modelo si se sabe), cuál es el problema, qué se intentó ya, si mandó fotos, qué pide o espera ahora y su ánimo. Solo hechos del ticket, nada inventado." },
+      { role: "user", content: txt },
+    ]);
+    return texto.replace(/<think>[\s\S]*?<\/think>/g, "").trim().slice(0, 1000) || base;
+  } catch (e) {
+    console.warn("resumen:", e.message);
+    return base;
+  }
+}
+
+// Mensaje privado al Helpper con el caso. Si tiene los MD cerrados, basta con la mencion en el ticket.
+async function avisarHelper(helper, canal, d, motivo, resumen, extra) {
+  const e = new EmbedBuilder()
+    .setColor(COLOR)
+    .setTitle(`Te toca: #${canal.name}`)
+    .setURL(canal.url)
+    .setDescription(resumen)
+    .addFields(
+      { name: "Motivo", value: corta(motivo, 200), inline: true },
+      { name: "Pedido", value: d.pedido || "-", inline: true },
+      { name: "Cliente", value: `<@${d.uid}>`, inline: true }
+    )
+    .setTimestamp();
+  await helper.send({ content: extra || null, embeds: [e] }).catch((err) => console.warn(`MD a ${helper.user.username}:`, err.message));
 }
 
 // --------------------------------------------------------------- tickets
@@ -658,11 +705,25 @@ async function casoDevolucion(canal, d, texto) {
 }
 
 // Atiende un mensaje del cliente en su ticket: siempre hay respuesta.
-async function atender(canal, d, member, texto) {
+async function atender(canal, d, member, texto, fotos = []) {
   const lang = idiomaDe(member, texto, idiomaTicket.get(canal.id) || d.lang);
   idiomaTicket.set(canal.id, lang);
-  console.log(`msg en ${canal.name} (${d.estado}, ${lang}): ${texto.slice(0, 80)}`);
+  console.log(`msg en ${canal.name} (${d.estado}, ${lang}): ${texto.slice(0, 80)}${fotos.length ? ` +${fotos.length} foto(s)` : ""}`);
   const dm = { ...d, lang };
+  if (fotos.length) {
+    await guardarFotos(canal, dm, fotos);
+    // Algo roto o mojado: la foto es lo que pedia el bot, asi que la revisa un compañero.
+    if (await esCasoDanio(canal, dm, texto)) {
+      if (dm.estado === "escalado") {
+        await canal.send(T[lang].fotoYa);
+        const helper = dm.aid && (await canal.guild.members.fetch(dm.aid).catch(() => null));
+        if (helper) await helper.send(`📷 El cliente de ${canal.url} mandó ${fotos.length} foto(s).`).catch(() => {});
+        return;
+      }
+      return escalarTicket(canal, dm, "Foto de algo roto o mojado", T[lang].foto);
+    }
+    texto = `${texto}\n[The customer attached ${fotos.length} image(s). You can't see images: say you got it, and if you need what it shows to help, ask them to tell you briefly (e.g. the error message or which light is on).]`.trim();
+  }
   if (pideHumano(texto)) {
     if (d.estado === "escalado") return void (await canal.send(T[lang].yaViene));
     return escalarTicket(canal, dm, "El cliente pidió hablar con el equipo técnico");
@@ -675,6 +736,23 @@ async function atender(canal, d, member, texto) {
   // La IA lee toda la conversacion (sabe en que paso va el cliente) y elige ella la guia con video/dibujo.
   // Contesta tambien con el ticket escalado, mientras llega el companero.
   await respuestaIA(canal, dm, texto);
+}
+
+// Fotos o videos del cliente: se copian al hilo del cliente en el historial (las ve el equipo aunque se borre el ticket).
+const esImagen = (a) => /^(image|video)\//.test(a.contentType || "") || /\.(png|jpe?g|webp|gif|heic|mp4|mov)$/i.test(a.name || "");
+async function guardarFotos(canal, d, fotos) {
+  try {
+    const hilo = await hiloDeUsuario(canal.guild, d.uid, d.usuario || d.uid);
+    await hilo.send({ content: `📷 Del ticket ${canal.name} (pedido ${d.pedido || "-"})`, files: fotos.slice(0, 10).map((f) => ({ attachment: f.url, name: f.name })) });
+  } catch (e) {
+    console.warn("fotos:", e.message);
+  }
+}
+async function esCasoDanio(canal, d, texto) {
+  const ultimos = await canal.messages.fetch({ limit: 20 }).catch(() => null);
+  const delCliente = ultimos ? [...ultimos.values()].filter((m) => m.author.id === d.uid).map((m) => m.content) : [];
+  const todo = [d.problema, texto, ...delCliente].join("\n");
+  return DANIO.test(todo) || LIQUIDO.test(todo);
 }
 
 const esperas = new Map(); // canal -> temporizador de la rafaga de mensajes
@@ -693,13 +771,15 @@ client.on("messageCreate", async (msg) => {
   msg.channel.sendTyping().catch(() => {});
   const previa = esperas.get(msg.channel.id);
   if (previa) clearTimeout(previa.timer);
-  const textos = [...((previa && previa.textos) || []), msg.content];
+  const textos = [...((previa && previa.textos) || []), msg.content].filter(Boolean);
+  const fotos = [...((previa && previa.fotos) || []), ...[...msg.attachments.values()].filter(esImagen).map((a) => ({ url: a.url, name: a.name }))];
+  if (!textos.length && !fotos.length) return;
   const timer = setTimeout(() => {
     esperas.delete(msg.channel.id);
     const dd = leerTicket(msg.channel) || d;
-    atender(msg.channel, dd, msg.member, textos.join("\n")).catch((e) => console.error("atender:", e));
+    atender(msg.channel, dd, msg.member, textos.join("\n"), fotos).catch((e) => console.error("atender:", e));
   }, (CFG.esperarRafagaSeg || 7) * 1000);
-  esperas.set(msg.channel.id, { timer, textos });
+  esperas.set(msg.channel.id, { timer, textos, fotos });
 });
 
 client.once("clientReady", async () => {
@@ -714,6 +794,7 @@ client.once("clientReady", async () => {
     await montarServidor(guild);
     await asegurarPanel(guild);
     if (catFija(guild)) await canalCorrecciones(guild).catch((e) => console.warn("correcciones:", e.message));
+    if (catFija(guild)) await canalAvisos(guild).catch((e) => console.warn("avisos:", e.message));
     // Tickets cerrados en una sesion anterior que no llegaron a borrarse.
     for (const c of guild.channels.cache.values()) {
       const d = leerTicket(c);
@@ -725,12 +806,94 @@ client.once("clientReady", async () => {
         if (m && m.author.id === d.uid) {
           const member = await guild.members.fetch(d.uid).catch(() => null);
           console.log(`pendiente en ${c.name}`);
-          atender(c, d, member, m.content).catch((e) => console.error("atender:", e)); // sin await: no frena el arranque
+          const fotos = [...m.attachments.values()].filter(esImagen).map((a) => ({ url: a.url, name: a.name }));
+          atender(c, d, member, m.content, fotos).catch((e) => console.error("atender:", e)); // sin await: no frena el arranque
         }
       }
     }
-  }
+  }  revisarTickets().catch((e) => console.warn("seguimiento:", e.message));
+  setInterval(() => revisarTickets().catch((e) => console.warn("seguimiento:", e.message)), (S.revisarCadaMin || 10) * MIN);
 });
+
+// ------------------------------------------------------------ seguimiento
+// Cada pocos minutos: Helpper que no contesta (recordatorio y luego otro Helpper) y tickets sin movimiento (aviso y cierre).
+// Todo sale del tema del canal y de las fechas de los mensajes, asi sobrevive a los reinicios.
+const S = CFG.seguimiento || {};
+const MIN = 60000;
+async function revisarTicket(c) {
+  const d = leerTicket(c);
+  if (!d || (d.estado !== "abierto" && d.estado !== "escalado")) return;
+  const ahora = Date.now();
+  const msgs = await c.messages.fetch({ limit: 50 }).catch(() => null);
+  if (!msgs || !msgs.size) return;
+  const lista = [...msgs.values()]; // del mas nuevo al mas viejo
+
+  // 1) Escalado y ningun compañero ha escrito todavia.
+  if (d.estado === "escalado" && !d.atendido && d.esc) {
+    const esc = Number(d.esc);
+    if (lista.some((m) => !m.author.bot && m.author.id !== d.uid && m.createdTimestamp > esc)) {
+      d.atendido = 1;
+      return guardarTicket(c, d);
+    }
+    const espera = ahora - esc;
+    const reas = Number(d.reas || 0);
+    const rol = rolPorNombre(c.guild, CFG.roles.soporte);
+    if (espera > (S.reasignarHelperMin || 240) * MIN && reas < (S.maxReasignaciones || 3) && rol) {
+      const nuevo = await elegirHelper(c.guild, rol, d.aid);
+      if (nuevo && nuevo.id !== d.aid) {
+        const antes = d.asignado;
+        Object.assign(d, { asignado: nuevo.user.username, aid: nuevo.id, esc: ahora, reas: reas + 1, rec: "" });
+        await guardarTicket(c, d);
+        await c.send({ content: T[d.lang].reasignado(`<@${nuevo.id}>`), allowedMentions: { users: [nuevo.id] } });
+        const resumen = await resumenCaso(c, d);
+        await avisarHelper(nuevo, c, d, `${d.motivo || "Escalado"} (antes ${antes || "nadie"}, sin respuesta)`, resumen);
+        return console.log(`${c.name}: reasignado de ${antes} a ${nuevo.user.username}`);
+      }
+    }
+    if (espera > (S.recordarHelperMin || 120) * MIN && !d.rec) {
+      d.rec = 1;
+      await guardarTicket(c, d);
+      const quien = d.aid ? `<@${d.aid}>` : rol ? `<@&${rol.id}>` : `@${CFG.roles.soporte}`;
+      const horas = Math.round(espera / (60 * MIN));
+      await c.send({ content: `⏰ ${quien} este ticket sigue esperando respuesta (hace ${horas} h).`, allowedMentions: d.aid ? { users: [d.aid] } : { roles: rol ? [rol.id] : [] } });
+      const helper = d.aid && (await c.guild.members.fetch(d.aid).catch(() => null));
+      if (helper) await helper.send(`⏰ Recordatorio: ${c.url} lleva ${horas} h esperando respuesta.`).catch(() => {});
+      return console.log(`${c.name}: recordatorio a ${d.asignado || "rol"}`);
+    }
+    return; // esperando al compañero: no se cierra por inactividad
+  }
+
+  // 2) Sin movimiento del cliente: aviso y, si sigue sin escribir, se cierra guardando la conversacion.
+  const ultimo = lista[0];
+  if (d.aviso) {
+    const aviso = Number(d.aviso);
+    if (lista.some((m) => m.author.id === d.uid && m.createdTimestamp > aviso)) {
+      d.aviso = "";
+      return guardarTicket(c, d);
+    }
+    if (ahora - aviso > (S.cerrarTrasAvisoHoras || 24) * 60 * MIN) {
+      await c.send(T[d.lang].cerradoInactivo);
+      await registrar(c, d, "💤 Cerrado por inactividad", "El cliente no volvió a escribir", null);
+      console.log(`${c.name}: cerrado por inactividad`);
+      return cerrarCanal(c, d);
+    }
+    return;
+  }
+  if (ultimo.author.id !== d.uid && ahora - ultimo.createdTimestamp > (S.avisoInactivoHoras || 48) * 60 * MIN) {
+    d.aviso = ahora;
+    await guardarTicket(c, d);
+    await c.send({ content: T[d.lang].avisoInactivo(`<@${d.uid}>`, S.cerrarTrasAvisoHoras || 24), allowedMentions: { users: [d.uid] } });
+    console.log(`${c.name}: aviso de inactividad`);
+  }
+}
+async function revisarTickets() {
+  for (const guild of client.guilds.cache.values()) {
+    for (const c of guild.channels.cache.values()) {
+      if (c.type !== ChannelType.GuildText || !leerTicket(c)) continue;
+      await revisarTicket(c).catch((e) => console.warn(`seguimiento ${c.name}:`, e.message));
+    }
+  }
+}
 
 // Al invitarlo a un servidor nuevo: monta lo suyo sin esperar a un reinicio.
 client.on("guildCreate", async (guild) => {
@@ -758,4 +921,4 @@ if (require.main === module) {
   client.login(token);
 }
 
-module.exports = { pideDevolucion, pideCompra, promptSistema, pideHumano, idiomaDe, leerTicket };
+module.exports = { pideDevolucion, pideCompra, promptSistema, pideHumano, idiomaDe, leerTicket, temaCanal, esImagen };

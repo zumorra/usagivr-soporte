@@ -52,4 +52,12 @@ const compra = [["cuánto cuesta un tracker extra?", true], ["puedo comprar otra
 for (const [txt, esp] of compra) assert.strictEqual(pideCompra(txt), esp, `pideCompra("${txt}")`);
 const { PROHIBIDO } = require("./src/reglas");
 assert.ok(PROHIBIDO.test("cuesta $45") && PROHIBIDO.test("son 900 pesos") && !PROHIBIDO.test("tienes 7 trackers"));
-console.log(`OK: ${ok} temas + 4 idiomas + ${humano.length} pedir-humano + ${dev.length} devolucion + ${compra.length} compra`);
+// El tema del canal guarda el estado del seguimiento aunque el problema sea larguisimo.
+const { temaCanal, esImagen, leerTicket } = require("./src/index");
+const dt = { uid: "1", usuario: "a b", lang: "es", estado: "escalado", pedido: "123", nombre: "Ñu", esc: 1700000000000, aid: "9", motivo: "Foto de algo roto", problema: "ñ".repeat(800) };
+const tema = temaCanal(dt);
+assert.ok(tema.length <= 1024, "tema <= 1024");
+const lt = leerTicket({ topic: tema });
+assert.strictEqual(lt.aid, "9"); assert.strictEqual(lt.esc, "1700000000000"); assert.ok(lt.problema.startsWith("ñññ"));
+assert.ok(esImagen({ contentType: "image/png" }) && esImagen({ name: "x.JPG" }) && !esImagen({ contentType: "text/plain", name: "log.txt" }));
+console.log(`OK: ${ok} temas + 4 idiomas + ${humano.length} pedir-humano + ${dev.length} devolucion + ${compra.length} compra + seguimiento/fotos`);

@@ -1,0 +1,38 @@
+name: Vigia del bot
+
+# Cada 15 min: si el bot no esta corriendo (se cayo o fallo), lo vuelve a arrancar
+# y si fue por un fallo avisa en #avisos-bot del servidor. Gratis: corre unos segundos.
+on:
+  schedule:
+    - cron: "*/15 * * * *"
+  workflow_dispatch:
+
+permissions:
+  actions: write
+  contents: read
+
+concurrency:
+  group: usagivr-vigia
+
+jobs:
+  vigia:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Revisar el bot
+        env:
+          GH_TOKEN: ${{ github.token }}
+          DISCORD_TOKEN: ${{ secrets.DISCORD_TOKEN }}
+        run: |
+          vivos=$(gh run list -R "$GITHUB_REPOSITORY" -w bot.yml --limit 10 --json status -q '[.[] | select(.status != "completed")] | length')
+          if [ "$vivos" != "0" ]; then echo "bot corriendo ($vivos)"; exit 0; fi
+          ultimo=$(gh run list -R "$GITHUB_REPOSITORY" -w bot.yml --limit 1 --json conclusion,url -q '.[0] | "\(.conclusion) \(.url)"')
+          echo "bot caido: $ultimo"
+          gh workflow run bot.yml -R "$GITHUB_REPOSITORY"
+          # Una sesion que termino bien (sus 5 h) solo se relanza; se avisa si fallo o se corto.
+          case "$ultimo" in success*) exit 0 ;; esac
+          node herramientas/vigia.js "(la última sesión terminó en: ${ultimo%% *})"

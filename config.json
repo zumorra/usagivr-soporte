@@ -9,7 +9,8 @@
     "panel": "test-suport",
     "categoriaTickets": "Tickets USAGIVR",
     "historial": "historial-soporte",
-    "correcciones": "correcciones-ia"
+    "correcciones": "correcciones-ia",
+    "avisos": "avisos-bot"
   },
   "ia": {
     "orden": [
@@ -37,5 +38,13 @@
         "Hellper": "Helpper"
       }
     }
+  },
+  "seguimiento": {
+    "revisarCadaMin": 10,
+    "recordarHelperMin": 120,
+    "reasignarHelperMin": 240,
+    "maxReasignaciones": 3,
+    "avisoInactivoHoras": 48,
+    "cerrarTrasAvisoHoras": 24
   }
 }

@@ -1,0 +1,31 @@
+name: Reporte semanal de soporte
+
+# Lunes 10:00 de Mexico: resumen de los tickets de la semana en #avisos-bot.
+on:
+  schedule:
+    - cron: "0 16 * * 1"
+  workflow_dispatch:
+    inputs:
+      dias:
+        description: "Dias hacia atras"
+        default: "7"
+
+jobs:
+  reporte:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci --omit=dev
+      - name: Cliente de OpenCode (IA gratis)
+        run: npm install -g opencode-ai@1 --no-fund --no-audit || true
+      - name: Reporte
+        env:
+          DISCORD_TOKEN: ${{ secrets.DISCORD_TOKEN }}
+          GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+          DIAS: ${{ github.event.inputs.dias || '7' }}
+        run: node herramientas/reporte.js
