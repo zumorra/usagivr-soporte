@@ -325,7 +325,7 @@ const TEMAS = [
         "**8**: pecho, cadera, 2 muslos, 2 tobillos, 2 pies.",
         "**9**: lo de 8 + cintura.",
         "**10**: lo de 8 + 2 brazos (encima del codo). **11**: lo de 10 + cintura.",
-        "Cintura: arriba de la cadera, a la altura del ombligo. Cadera: donde iría el cinturón. Siempre la carita del personaje al frente y el tobillo corregido en la app (pág. 12 del manual).",
+        "Hay un dibujo para cada cantidad (5 a 11). Cintura: arriba de la cadera, a la altura del ombligo. Cadera: donde iría el cinturón. Siempre la carita del personaje al frente y el tobillo corregido en la app (pág. 12 del manual).",
       ],
       en: [
         "**5**: chest, 2 thighs, 2 ankles.",
@@ -334,11 +334,12 @@ const TEMAS = [
         "**8**: chest, hip, 2 thighs, 2 ankles, 2 feet.",
         "**9**: the 8 setup + waist.",
         "**10**: the 8 setup + 2 upper arms (above the elbow). **11**: the 10 setup + waist.",
-        "Waist: above the hip, at belly-button height. Hip: where a belt would go. Always the character's face forward and the ankle fixed in the app (page 12 of the manual).",
+        "There is a drawing for each count (5 to 11). Waist: above the hip, at belly-button height. Hip: where a belt would go. Always the character's face forward and the ankle fixed in the app (page 12 of the manual).",
       ],
     },
     videos: [{ t: "SlimeVR docs: putting on trackers", u: "https://docs.slimevr.dev/server/putting-on-trackers.html" }],
-    imagenes: ["colocacion-5.png", "colocacion-5mas1.png", "colocacion-5mas3.png", "colocacion-7mas3.png"],
+    // 7, 9 y 11: los dibujos del manual con el tracker de cintura agregado (herramientas/diagramas-cintura.py).
+    imagenes: ["colocacion-5.png", "colocacion-5mas1.png", "colocacion-7.png", "colocacion-5mas3.png", "colocacion-9.png", "colocacion-7mas3.png", "colocacion-11.png"],
   },
   {
     id: "dispositivos",
