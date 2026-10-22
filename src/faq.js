@@ -4,7 +4,12 @@
  * FAQ del paquete de atención de UsagiVR (src/faq.json, generado con herramientas/importar-faq.py).
  * Por cada mensaje se buscan las pocas preguntas más parecidas y se pasan a la IA como notas de referencia.
  */
-const FAQ = require("./faq.json");
+// Correcciones del equipo encima del FAQ importado (quitar / cambiar respuesta / nuevas).
+const CORR = require("./faq-correcciones.json");
+const FAQ = require("./faq.json")
+  .filter((f) => !CORR.quitar.includes(f.id))
+  .map((f) => (CORR.cambiar[f.id] ? { ...f, a: CORR.cambiar[f.id] } : f))
+  .concat(CORR.nuevas);
 
 const VACIAS = new Set(
   ("que como cual cuál para por con los las del una uno unos unas mis mi tu tus sus son esta este esto estan está están hay tengo tiene " +

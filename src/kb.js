@@ -347,7 +347,7 @@ const TEMAS = [
     pasos: {
       es: [
         "**iPhone y Mac: todavía no** está disponible.",
-        "**Android**: sí, recomendamos un teléfono Android con la app de SlimeVR, que se descarga desde la web oficial.",
+        "**Android**: sí, recomendamos un teléfono Android con la app de SlimeVR, que está en Google Play o como APK en el GitHub de SlimeVR (en el celular, no dentro del Quest).",
         "**PC (Windows)**: SlimeVR se descarga desde **Steam**.",
         "Para jugar con PC (SteamVR) la PC tiene que estar prendida con SlimeVR abierto; con el Android y un Quest standalone no hace falta PC.",
       ],
@@ -378,11 +378,15 @@ const TEMAS = [
     titulo: { es: "Quest standalone (sin PC)", en: "Quest standalone (no PC)" },
     pasos: {
       es: [
+        "Corre SlimeVR en un **celular Android** (app oficial en Google Play o el APK del GitHub de SlimeVR) con la antena conectada por **OTG**, o en una PC aunque sea básica. Correrlo dentro del propio Quest no se recomienda: SlimeVR dice que ahí falla y es solo último recurso.",
+        "Quest y celular/PC en la **misma red WiFi**.",
         "En VRChat activa **OSC** y **OSC Trackers**.",
         "En SlimeVR pon la **IP del Quest** en los ajustes de VRChat OSC Trackers.",
         "Calibra en VRChat como siempre (Calibrate FBT).",
       ],
       en: [
+        "Run SlimeVR on an **Android phone** (official app on Google Play or the APK from SlimeVR's GitHub) with the receiver plugged in via **OTG**, or on any PC, even a basic one. Running it inside the Quest itself isn't recommended: SlimeVR says it's buggy there, last resort only.",
+        "Quest and phone/PC on the **same WiFi**.",
         "In VRChat enable **OSC** and **OSC Trackers**.",
         "In SlimeVR enter the **Quest's IP address** in the VRChat OSC Trackers settings.",
         "Calibrate in VRChat as usual (Calibrate FBT).",

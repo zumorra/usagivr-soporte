@@ -1,0 +1,135 @@
+{
+  "nota": "Correcciones del equipo sobre faq.json (revisión con Cum con ojos, 2026-10-21, contra docs.slimevr.dev). Se aplican encima del FAQ importado: no se pierden al reimportar el zip.",
+  "quitar": [
+    "UV-189",
+    "UV-162",
+    "UV-149",
+    "UV-110"
+  ],
+  "cambiar": {
+    "UV-031": {
+      "es": "Según la tabla oficial de SlimeVR, LSM6DSV está en el nivel más alto; BMI270 en el nivel pobre y BMI160 en «evitar». Hoy LSM6DSV es mucho mejor opción.",
+      "en": "In SlimeVR's official IMU tier list, LSM6DSV is top tier; BMI270 is rated poor and BMI160 is in 'avoid'. Today LSM6DSV is clearly the better choice."
+    },
+    "UV-032": {
+      "es": "No son equivalentes: en la tabla oficial de SlimeVR el ICM-45686 está en el nivel más alto y el BNO085 en el nivel pobre. El QMC6309 es un magnetómetro que ayuda contra el drift. Ninguno es drift cero.",
+      "en": "They're not equivalent: SlimeVR's official tier list puts ICM-45686 at the top and BNO085 as poor. The QMC6309 is a magnetometer that helps with drift. Neither is zero-drift."
+    },
+    "UV-006": {
+      "es": "Sí: con la app oficial de SlimeVR para Android (Google Play o el APK del GitHub de SlimeVR) y la antena conectada al celular con un adaptador OTG. Es mejor opción que correrlo dentro del Quest.",
+      "en": "Yes: with the official SlimeVR Android app (Google Play or the APK from SlimeVR's GitHub) and the receiver plugged into the phone with an OTG adapter. It works better than running it inside the Quest."
+    },
+    "UV-012": {
+      "es": "Quest, trackers, la antena, un celular Android con la app de SlimeVR (o una PC aunque sea básica), adaptador OTG si va al celular y todo en la misma red WiFi. Correr SlimeVR dentro del propio Quest no se recomienda: SlimeVR dice que el sistema del Quest falla con la app y que es solo último recurso.",
+      "en": "Quest, trackers, the receiver, an Android phone with the SlimeVR app (or any PC, even a basic one), an OTG adapter for the phone, all on the same WiFi. Running SlimeVR inside the Quest itself isn't recommended: SlimeVR says the Quest OS is buggy with the app, last resort only."
+    },
+    "UV-050": {
+      "es": "Conecta la antena al celular con OTG, abre la app de SlimeVR para Android, deja Quest y celular en la misma red WiFi y activa OSC en el juego (por ejemplo VRChat) apuntando a la IP del celular. Mejor el celular que correrlo dentro del Quest.",
+      "en": "Plug the receiver into the phone via OTG, open the SlimeVR Android app, keep Quest and phone on the same WiFi and enable OSC in the game (e.g. VRChat) pointing to the phone's IP. A phone is better than running it inside the Quest."
+    },
+    "UV-038": {
+      "es": "Primero instala SteamVR desde Steam y ábrelo una vez; después instala SlimeVR (si SteamVR nunca se abrió, el instalador da error). Conecta la antena si tu kit la trae, enciende los trackers, asigna cada uno a su parte del cuerpo y sigue la calibración que muestra SlimeVR. Si solo vas a usar standalone por OSC, en el instalador puedes desmarcar el driver de SteamVR.",
+      "en": "First install SteamVR from Steam and open it once; then install SlimeVR (if SteamVR was never opened, the installer errors). Plug the receiver if your kit has one, turn on the trackers, assign each to its body part and follow SlimeVR's calibration. For standalone OSC only, you can untick the SteamVR driver in the installer."
+    },
+    "UV-015": {
+      "es": "En Linux sí hay SlimeVR oficial (AppImage, .deb, .rpm, Flathub). Para Mac y iPhone no tenemos soporte: recomendamos un celular Android o una PC con Windows/Linux.",
+      "en": "Linux has official SlimeVR builds (AppImage, .deb, .rpm, Flathub). We don't support Mac or iPhone: we recommend an Android phone or a Windows/Linux PC."
+    },
+    "UV-062": {
+      "es": "No como primera medida. A los IceCube NO se les actualiza el firmware (si lo hacen pierden la cobertura). Los demás modelos se actualizan solo con SmolSlimeConfigurator y cuando haga falta.",
+      "en": "Not as a first step. IceCube trackers must NOT get firmware updates (they'd lose coverage). Other models are updated only with SmolSlimeConfigurator, and only if needed."
+    },
+    "UV-173": {
+      "es": "Primero hay que ver qué modelo es. A los IceCube no se les actualiza el firmware. Los demás sí, con SmolSlimeConfigurator, pero solo si hace falta.",
+      "en": "First check the model. IceCube trackers don't get firmware updates. Other models can, with SmolSlimeConfigurator, only if needed."
+    },
+    "UV-037": {
+      "es": "No; somos una tienda independiente con trackers compatibles con SlimeVR. El soporte te lo damos nosotros.",
+      "en": "No; we're an independent shop selling SlimeVR-compatible trackers. Support comes from us."
+    },
+    "UV-209": {
+      "es": "No. Somos una tienda independiente de trackers compatibles con el ecosistema abierto SlimeVR; el soporte es nuestro, no de la organización SlimeVR.",
+      "en": "No. We're an independent shop selling trackers compatible with the open SlimeVR ecosystem; support is ours, not the SlimeVR organization's."
+    },
+    "UV-075": {
+      "es": "El soporte personalizado es para quien compró con nosotros y tiene su número de pedido. Con dudas generales de SlimeVR igual podemos orientarte.",
+      "en": "Personal support is for customers who bought from us and have an order number. For general SlimeVR questions we can still point you in the right direction."
+    },
+    "UV-128": {
+      "es": "Ningún tracker es drift cero. En la tabla oficial de SlimeVR los mejores son ICM-45686 y LSM6DSV; con magnetómetro (QMC6309) el drift baja todavía más.",
+      "en": "No tracker is zero-drift. In SlimeVR's official tier list the best are ICM-45686 and LSM6DSV; with a magnetometer (QMC6309) drift drops further."
+    },
+    "UV-101": {
+      "es": "Se han citado de 3 a 4 días dentro de EE. UU., pero es un estimado, depende de la paquetería.",
+      "en": "3 to 4 days within the US has been quoted, but it's an estimate and depends on the carrier."
+    },
+    "UV-159": {
+      "es": "Pídelo por el mismo lugar donde compraste. Un compañero revisa si el pedido todavía se puede modificar; ya enviado normalmente no se puede.",
+      "en": "Ask through the same place you bought it. A teammate checks if the order can still be changed; once shipped it usually can't."
+    },
+    "UV-114": {
+      "es": "No tenemos programa para entregar trackers usados como parte del pago. Si te interesa algo así, un compañero te puede orientar.",
+      "en": "We don't have a trade-in program for used trackers. If you're interested in something like that, a teammate can point you in the right direction."
+    }
+  },
+  "nuevas": [
+    {
+      "id": "EQ-001",
+      "cat": "Instalación y configuración",
+      "q": {
+        "es": "Cómo pongo el tracker en la correa, hacia dónde va el USB?",
+        "en": "How do I put the tracker in the strap, which way does the USB go?"
+      },
+      "a": {
+        "es": "Entra por el riel de la correa con el USB-C hacia abajo (esa punta entra primero) hasta que hace click. Queda con el USB-C abajo y la carita del personaje al frente.",
+        "en": "It slides into the strap rail with the USB-C pointing down (that end goes in first) until it clicks. It stays with the USB-C down and the character's face forward."
+      },
+      "alias": [
+        "riel",
+        "click",
+        "meter tracker correa",
+        "rail",
+        "strap mount",
+        "como meto el tracker en la correa",
+        "en que sentido va el tracker",
+        "hacia donde va el usb",
+        "which way does the tracker go in the strap"
+      ]
+    },
+    {
+      "id": "EQ-002",
+      "cat": "Problemas técnicos y drift",
+      "q": {
+        "es": "Qué es Stay Aligned, lo activo?",
+        "en": "What is Stay Aligned, should I enable it?"
+      },
+      "a": {
+        "es": "Stay Aligned es una opción de SlimeVR que corrige poco a poco el giro (drift) de los trackers usando tu postura cuando estás quieto o relajado. Normalmente conviene dejarla activada y hacer su calibración de posturas desde SlimeVR.",
+        "en": "Stay Aligned is a SlimeVR feature that gradually corrects tracker yaw drift using your pose when you're standing or relaxed. It's usually worth leaving on and doing its pose setup inside SlimeVR."
+      },
+      "alias": [
+        "stay aligned",
+        "alinear",
+        "drift lento"
+      ]
+    },
+    {
+      "id": "EQ-003",
+      "cat": "Compatibilidad y requisitos",
+      "q": {
+        "es": "Hay app de SlimeVR para Android?",
+        "en": "Is there a SlimeVR app for Android?"
+      },
+      "a": {
+        "es": "Sí, la app oficial de SlimeVR para Android está en Google Play y también como APK en el GitHub de SlimeVR. Con la antena conectada por OTG sirve para jugar en Quest sin PC.",
+        "en": "Yes, the official SlimeVR Android app is on Google Play and as an APK on SlimeVR's GitHub. With the receiver plugged in via OTG it works for Quest without a PC."
+      },
+      "alias": [
+        "app android",
+        "celular",
+        "apk",
+        "google play"
+      ]
+    }
+  ]
+}

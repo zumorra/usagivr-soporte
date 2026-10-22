@@ -10,9 +10,9 @@
 **Cliente:** se rompió cuando la estaba apretando, el plástico de la hebilla
 
 **Bot** _(opencode)_:
-> Gracias por contarme. Entonces fue el plástico de la hebilla al apretarla, ya me imagino la escena.
+> Qué pésimo, cuando se aprieta y truena el plástico de la hebilla siempre da cosa, da la impresión de que se fue a volar de un momento a otro.
 > 
-> ¿Me mandas una foto de esa parte cuando puedas? Y de paso dime qué correa era, si la gruesa del muslo o una de las largas. Con eso el equipo lo revisa bien y te decimos cómo seguimos.
+> ¿Me pasas una foto de cómo quedó la hebilla? Con eso vemos si fue el plástico de la pieza o de la correa. Y si te animas, dime cuál era la correa (la del muslo, la de la cintura, etc.) y qué trackers traía tu kit, para saber si se puede acomodar con las correas largas que vienen de repuesto en el kit.
 
 ---
 
@@ -21,28 +21,33 @@
 **Cliente:** tengo 11 ice cube, son blancos
 
 **Bot** _(opencode)_:
-> Va, con 11 IceCube ya se arma completo. Primero una duda para no mandarte por el camino equivocado: ¿tu kit traía una antenita USB aparte (el receptor, chiquita o en forma de pentágono)? De eso depende cómo se conectan.
+> ¡Con gusto! Para dejarte todo bien armado desde cero, va en este orden:
 > 
-> Mientras me dices, el orden es este:
+> 1. Instala SteamVR desde Steam y ábrelo una sola vez, que necesita terminar de aplicar sus drivers.
+> 2. Ya con eso, instala SlimeVR (también está en Steam), así sus plugins y el driver quedan bien cargados.
+> 3. Conecta la antena/dongle USB a tu PC y abre SlimeVR Server, sigue el asistente "Let's get set up!".
+> 4. Deja los trackers quietos en la mesa cuando te lo pida y después asígnale a cada uno su parte del cuerpo (agítalos para saber cuál es cuál).
+> 5. Ya cuando te los pongas: el puerto USB-C va hacia abajo y la carita de nuestro personaje siempre mirando al frente.
 > 
-> 1. Instala SteamVR desde Steam y ábrelo una vez.
-> 2. Después instala SlimeVR (también desde Steam), así se aplican bien sus complementos.
-> 3. Conecta la antena a un USB de la PC, o si son WiFi, luego vemos ese paso aparte.
-> 4. Enciende los trackers y déjalos quietos en la mesa; ya vienen emparejados, así que deben salir solos en SlimeVR.
-> 5. Ahí mismo en SlimeVR asignas cada uno a su parte del cuerpo.
+> Una duda para saber con qué seguir contigo: ¿tu kit vino con una antenita USB aparte (el receptor)? Si sí, son trackers de antena y ya vienen emparejados de fábrica, así que deberían salir solos al prenderlos. Si no vino, son WiFi y te paso los pasos de esa conexión.
 > 
-> Si la antena va conectada, que quede descubierta y mirando hacia donde juegas.
+> Ah, y un aviso: a los IceCube no se les actualiza el firmware, mejor déjalos como vienen.
 > 
 > `[GUIA:configurar_slimevr]`
 
 **Cliente:** creo que mis trackers son wifi? cómo sé cuáles son
 
 **Bot** _(opencode)_:
-> Por el color o el modelo no se puede saber, así que mejor checarlo directo. Fíjate si en la caja venía una antenita USB aparte, el receptor: puede ser chiquita o grande en forma de pentágono. Si venía, tus trackers trabajan con esa antena; si no venía nada así, entonces son WiFi.
+> Chécate la caja: no tiene que ver con el color ni con el modelo.
 > 
-> Si ya no tienes la caja a mano, revisa tu orden de compra, ahí viene qué kit pediste.
+> - Si en la caja venía un **antenita USB aparte** (el receptor), ya sea la chiquita o la más grande en forma de pentágono, entonces tus trackers son de antena y vienen emparejados de fábrica con ella.
+> - Si no había ninguna antenita en la caja, son **WiFi**.
 > 
-> ¿Me confirmas si traía la antenita o no? Con eso te digo exacto el siguiente paso.
+> Si ya no te acuerdas qué traía el kit, lo puedes checar en tu orden de compra, ahí viene el tipo.
+> 
+> Y ya que vamos a conectarlos: la antenita no debe estar tapada (ni detrás de la torre del PC, ni debajo del escritorio o en un cajón) y tiene que estar mirando hacia la zona donde vas a jugar. Si se te cortan los trackers, un alargue USB para acercarla al área de juego suele arreglarlo.
+> 
+> `[GUIA:no_conecta]`
 
 ---
 
@@ -51,18 +56,9 @@
 **Cliente:** se me cayó agua sobre el tracker, ¿podrían cambiármelo?
 
 **Bot** _(opencode)_:
-> Ay no, lo siento, eso sí está delicado. Agua a un tracker siempre da guerra, así que ve con cuidado:
+> Uy, qué mala suerte, de verdad lo siento. Para darle chance al tracker: no lo prendas, no lo conectes a cargar, sécalo por fuera y déjalo en un lugar seco y ventilado un buen rato antes de probarlo. El agua sí es seria y puede que no vuelva a funcionar, pero así tiene más oportunidad.
 > 
-> 1. No lo prendas ni lo conectes a cargar por ahora, ni aunque parezca que funciona.
-> 2. Sácale el agua con un paño y déjalo secarse al aire libre, en un lugar seco y ventilado, con buen rato de calma (mínimo un par de días antes de volver a probarlo).
-> 3. No lo abras ni le saques la batería, así se seca mejor.
-> 4. Cuando lo pruebes, enciende y déjalo quieto en el suelo unos minutos antes de ponértelo.
-> 
-> El daño por agua es serio y puede que no vuelva a funcionar, pero con buen secado tiene más oportunidad.
-> 
-> Sobre lo de cambiarlo, eso lo ve un compañero del equipo técnico: solo tienes que pedírselo y te atienden.
-> 
-> Apenas me digas, ¿le cayó agua de plano o fue más o menos un splash? Con eso sabemos qué esperar.
+> Y sobre lo que me pides, mejor que alguien del equipo te atienda directo. Solo dime que quieres hablar con ellos o presiona el botón y con gusto te ven.
 > 
 > `[HUMANO]`
 
@@ -73,16 +69,15 @@
 **Cliente:** me compré otra antena porque la mía no agarraba bien, me pueden reembolsar lo que gasté?
 
 **Bot** _(opencode)_:
-> Va, te entiendo. Un par de cosas:
+> Qué lata cuando la antena no engancha bien los trackers, da muchaustration.
 > 
-> El kit ya trae todo lo necesario para funcionar, y lo que compras aparte es decisión de cada quien. Pero si lo compraste porque la antena que venía no agarraba bien, lo ideal era avisarnos primero para revisarla. Igual podemos checar la antena original de tu kit, dime qué le pasaba.
+> Mira, el kit ya trae todo lo necesario para funcionar; si compras algo extra es decisión de cada quien. Solo que si lo compraste porque la del kit no jalaba, lo ideal era avisarnos primero para revisarla. Con gusto le echamos ojo a esa antena que te vino: ¿tu kit sí traía antenita/dongle USB aparte o te llegó sin nada?
 > 
-> Para ubicarme, dos preguntas:
+> También dime qué le pasaba exactamente con la original: ¿no aparecían los trackers en SlimeVR o se caían a ratos?
 > 
-> 1. ¿En tu caja venía la antenita USB aparte (el receptor)? Si sí, tus trackers son de los que usan antena; si no, son WiFi. Por el color o el modelo no se puede saber, y no te quiero mandar por el camino equivocado.
-> 2. ¿La original no detectaba los trackers o se le caían y se desconectaban?
+> Y ya que tienes la nueva, un tip rápido: que no esté tapada (nada de atrás de la torre, debajo del escritorio ni en un cajón) y que esté mirando hacia donde vas a jugar. En un USB directo de la placa, atrás del PC, o con un alargue USB, se conecta mucho mejor.
 > 
-> Y mientras, unos tips de la antena que nos salvan la mayoría de las veces: que no esté tapada (nada de detrás de la torre, debajo del escritorio ni en un cajón), apuntada hacia la zona donde vas a jugar, mejor en alto con un alargue USB, y de preferencia en un USB directo de la placa (atrás del PC).
+> `[GUIA:antena]`
 
 **Bot:** Va, de esto se encarga un compañero. Ya le dejé tu caso a @Helpper-de-turno y te va a atender aquí mismo en cuanto se conecte.
 
@@ -93,13 +88,11 @@
 **Cliente:** quiero actualizar el firmware de mis icecube con el smol configurator, cómo le hago?
 
 **Bot** _(opencode)_:
-> Con los IceCube mejor no, y te lo digo directo: **a los IceCube no se les actualiza el firmware**. SlimeVR los reconoce y todo bien, pero si los flasheas con el SmolSlimeConfigurator pierdes la cobertura y ya no podemos responder por ellos si empiezan a fallar, así que déjalos como vienen.
+> Va, te cuento: a los IceCube **no se les actualiza el firmware**. Si los actualizas, se les pierde la cobertura y ya no podríamos hacerse responsables si empiezan a fallar, así que mejor déjalos tal cual vienen de fábrica.
 > 
-> Si tienes los otros modelos (LSM6DSV/LSM6DSR o ICM-45686), esos sí se actualizan con el SmolSlimeConfigurator: conectas el tracker o el receptor por USB, aprietas el reset dos veces, ↻, eliges el puerto, Connect, escoges el firmware en *Select Firmware* y esperas unos 20 segundos. Ojo: el tracker y el receptor deben quedar en la misma versión.
+> Los demás modelos (LSM6DSV/LSM6DSR e ICM-45686) sí se actualizan con SmolSlimeConfigurator, sin problema.
 > 
-> De paso, con el mismo programa también puedes emparejar trackers o calibrar el sensor, por si más adelante lo necesitas.
-> 
-> `[GUIA:smol_configurator]`
+> Si lo que en realidad necesitas es emparejar o calibrar los IceCube, eso sí se puede hacer en el SmolSlimeConfigurator. ¿Es eso lo que estabas buscando, o era la actualización en sí?
 
 ---
 
@@ -108,11 +101,9 @@
 **Cliente:** cómo meto el tracker en la correa? hacia dónde va el usb?
 
 **Bot** _(opencode)_:
-> ¡Va, es más fácil de lo que parece! Metes el tracker en el **riel** de la correa: la punta con el **puerto USB-C entra primero y va hacia abajo**. Empuja hasta que **haga click** y ya quedó firme ahí.
+> Va por el riel de la correa: mete el tracker con el puerto USB-C hacia abajo, esa punta entra primero, y empújalo hasta que haga click. Así queda con el USB-C mirando hacia abajo y la carita de nuestro personaje siempre al frente.
 > 
-> Ojo con esto: el **USB-C siempre mirando hacia abajo** y la **carita de nuestro personaje siempre al frente**, en todas las correas. Así el tracker no se invierte y el reconocimiento del cuerpo funciona bien.
-> 
-> Si al meterlo se siente flojo, es que no ha Entry el click. Y si te queda corta alguna correa (por ejemplo la del tobillo), usa una de las largas que vienen en el kit.
+> Si tienes los trackers de muslo, usa las correas gruesas antideslizantes y colócalas justo encima de la rodilla, al frente del muslo.
 
 ---
 
@@ -121,19 +112,17 @@
 **Cliente:** acabo de recibir mi kit de 7, qué hago primero? tengo quest 3 y pc
 
 **Bot** _(opencode)_:
-> Qué bueno que ya te llegó. Para arrancar, el orden importa: instala primero **SteamVR** desde Steam y ábrelo una vez; después instala **SlimeVR**, también desde Steam. Así se aplican bien sus plugins y el driver. Con tu Quest 3 vas a jugar desde la PC con SteamVR abierto y SlimeVR corriendo.
+> Qué bueno que ya llegó. Con 7 trackers te tocan: pecho, 2 muslos, 2 tobillos, cadera y cintura (la cintura va a la altura del ombligo y la cadera donde iría el cinturón).
 > 
-> Antes de seguir, una duda para no mandarte pasos de más: ¿tu kit trajo una antenita USB aparte? Es el receptor, puede ser chiquita o en forma de pentágono. Si venía, tus trackers usan esa antena; si no venía, son WiFi y la configuración cambia tantito.
+> Para arrancar, en este orden:
 > 
-> Lo que sigue, más o menos así:
+> 1. ¿En la caja venía la antenita USB aparte (el receptor)? Si sí, tu kit es con antena; si no, son WiFi. Dime cuál te tocó, porque cambia el siguiente paso.
+> 2. En la PC: primero instala y abre SteamVR una vez, y después instala SlimeVR desde Steam. Así es como se aplican bien sus plugins y el driver.
+> 3. Si tu kit trae antena, conéctala a un USB de la PC y déjala sin tapar, nada de detrás de la torre ni en un cajón, y apuntándola hacia donde vas a jugar. Los trackers vienen emparejados de fábrica, así que enciende y deberían salir solos en SlimeVR.
+> 4. Para el Quest 3: SlimeVR se corre en un celular Android (app oficial de Google Play o el APK del GitHub de SlimeVR) con la antena conectada por OTG, y el Quest y el celular en la misma red WiFi. Dentro del Quest no se recomienda. Si vas a jugar en VRChat, activa OSC y OSC Trackers, y pon la IP del Quest en los ajustes de VRChat OSC Trackers dentro de SlimeVR.
+> 5. Al final asigna cada tracker a su parte del cuerpo (agítalos para saber cuál es), siempre con la carita de nuestro personaje al frente y el puerto USB-C hacia abajo, y después sigue las guías de calibración que te muestra SlimeVR dentro del programa.
 > 
-> 1. Conecta la antena a un USB de la PC (si es tu caso), mejor atrás y sin tapar.
-> 2. Enciende los trackers y déjalos quietos un momento.
-> 3. Abre SlimeVR y sigue el asistente tal cual te va mostrando.
-> 4. Ahí mismo asignas cada tracker a su parte del cuerpo; con tu kit de 7 van pecho, cadera, cintura, 2 muslos y 2 tobillos.
-> 5. La carita del personaje siempre al frente y el puerto USB-C hacia abajo al meterlos en la correa.
-> 
-> Dime si traía antena y te digo exactamente qué sigue.
+> Cuéntame qué traía en la caja y seguimos con lo que sigue.
 > 
 > `[GUIA:configurar_slimevr]`
 
@@ -144,11 +133,9 @@
 **Cliente:** one of my straps broke
 
 **Bot** _(opencode)_:
-> Oh no, sorry about that. Can you send me a photo of the strap where it broke? And let me know how it happened — while putting it on, while tightening it, or if it already came like that in the box. That way the team can take a proper look at it.
+> Oh no, sorry about that, that's a pain when it happens. Could you send me a photo of the strap? And tell me how it broke: while you were putting the tracker in, while you were tightening it, or did it already come like that in the box? That way we can check it properly.
 
 **Cliente:** it arrived like that, the elastic was torn
 
 **Bot** _(opencode)_:
-> That's annoying, sorry about it — if the elastic was already torn when it came out of the box, that's not something you did.
-> 
-> Do you still have the packaging? A photo of the strap with the tear, plus a quick shot of the box and the other straps still inside, would help the team see how it was packed. Send that over and one of the teammates will take a look at it.
+> Ah, that explains it then, thanks for telling me. Could you send me a photo of the torn elastic so we can take a look at it? Once we see it, a teammate from the tech team can check what happened and how to solve it.
