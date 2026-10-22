@@ -372,7 +372,7 @@ const TEMAS = [
   },
   {
     id: "quest",
-    claves: ["quest", "standalone", "sin pc", "without pc", "osc", "android", "movil", "phone"],
+    claves: ["quest", "standalone", "sin pc", "without pc", "osc", "android", "movil", "celular", "phone"],
     titulo: { es: "Quest standalone (sin PC)", en: "Quest standalone (no PC)" },
     pasos: {
       es: [

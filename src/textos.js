@@ -5,7 +5,7 @@ const T = {
   es: {
     panelTitulo: "Soporte USAGIVR",
     panelDesc:
-      "¿Problemas con tus trackers? Pulsa **Abrir ticket**, rellena el formulario y te ayudo al momento.\n" +
+      "¿Problemas con tus trackers? Dale clic a **Abrir ticket**, llena el formulario y te ayudo enseguida.\n" +
       "Si no se resuelve, un compañero del equipo te atenderá.",
     abrir: "Abrir ticket",
     modalTitulo: "Ticket de soporte USAGIVR",
