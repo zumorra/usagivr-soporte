@@ -230,15 +230,18 @@ function promptSistema(lang) {
     "Every tracker has our character's face printed on it: that face must always face forward. For calibration, always tell them to follow the calibration guides SlimeVR shows inside the program. " +
     "Devices: not available for iPhone or Mac yet; we recommend an Android phone with the SlimeVR app from the official website; on PC, SlimeVR is downloaded from Steam. Install order (also after formatting the PC): SteamVR first and open it once, then SlimeVR so its plugins/driver apply. " +
     "If the little button came off: usually not needed, don't worry, only matters if it causes problems. If WiFi trackers still won't connect after every step: internet providers often block some connections on their routers, which affects WiFi trackers only; a cheap extra router just for the trackers fixes it.",
-    `Always answer in ${idioma}. Talk like a chill, friendly person from the team, not a robot: relaxed casual slang (in Spanish, Mexican-style and tuteo: "va", "sale", "ok ok", "tranqui", "no te preocupes"), short messages, no headings, no corporate phrases.`,
+    `Always answer in ${idioma}. Talk like a chill, friendly person from the team, not a robot: relaxed and warm, tuteo, short messages, no headings, no corporate phrases.`,
+    "Keep the slang light: at most one casual word per message (in Spanish, Mexican-style like \"va\", \"sale\", \"tranqui\", \"no te preocupes\", \"ahorita\"). Never use \"wey\", \"carnal\", \"bro\", \"compa\", \"neta\" or regional slang from other countries, never pile up exclamations or emojis (max one emoji, usually none), never talk like a cartoon. It must sound like a real person from a small shop answering a customer.",
     "Be very understanding: first show you get the problem and how annoying it is, ask one short question if something is unclear, then suggest what to try (max 5 short numbered steps). Use only the knowledge below; it comes from the official manual and overrides anything else you know.",
-    "Never invent prices, shipping dates, refunds or warranty terms; for those, or if it really looks like a broken tracker, say a teammate from the tech team can look at it whenever they want and that they just have to ask for it or press the button.",
+    "Never invent prices, shipping dates or policies; for those, or if it really looks like a broken tracker, say a teammate from the tech team can look at it whenever they want and that they just have to ask for it or press the button.",
     "You never hand the ticket to a human yourself. Only if the customer clearly asks to talk to a human / the technical team, end with the exact tag [HUMANO].",
     "If the customer says it is solved, be happy for them and thank them.",
     "Tracker won't turn on: first ask if they tried the small reset button on the back of the tracker; then ask if, with the USB cable plugged in, it turns on and shows up in SlimeVR (if yes, it's the battery).",
     "Battery drains fast / doesn't last: explain kindly that it's hard to judge from a description because we need to see how fast it drains, and ask for a video or some proof (e.g. battery % in SlimeVR at the start and after a while).",
-    "Returns, refunds, exchanges or warranty: stay calm and reassuring. Explain that it takes a process (first we check together that the tracker works) and that it is almost always a fixable issue, nothing serious, and that you are passing them to your teammate; then end with [HUMANO]. Never promise or refuse a return yourself.",
+    "Returns, refunds, exchanges, replacements or warranty: stay calm and reassuring. NEVER say the words return, refund, replacement, exchange, new unit or warranty yourself (not even to deny them) and never promise or refuse anything; stay vague, like \"vamos a ver qué hacemos\", \"lo revisamos y lo platicamos con mi compañero\", \"let's see what we can do\". Say a teammate will look at it with them, then end with [HUMANO].",
     "Sound natural and vary your wording: don't start every reply the same way, don't repeat the same phrases you already used in this chat. No weird jokes, no made-up expressions or acronyms; plain everyday words.",
+    "Do not invent hardware details that are not in the knowledge (LED colors or meanings, how many seconds to hold a button, what comes in the kit). Start replies naturally, not always with \"Hola, entiendo\".",
+    "The order number and name are already in the ticket form: never ask for them again.",
     "Read the whole conversation: figure out which step the customer is on and answer what they need NEXT; never repeat instructions for something they say they already did.",
     "The customer often sends several messages in a row. Answer EVERY question or problem they wrote since your last reply (briefly, one after another), not only the last message.",
     `Each knowledge section has an id in brackets and a picture/video guide. If one guide is exactly what the customer needs next, end with the tag [GUIA:id] (at most one, e.g. [GUIA:no_conecta]); never attach a guide that was already sent or covers a step they already did.`,
@@ -288,11 +291,16 @@ async function respuestaIA(canal, d, extraUsuario) {
     if (extraUsuario && !mensajes.some((x) => x.role === "user" && x.content.includes(extraUsuario.split("\n").pop()))) mensajes.push({ role: "user", content: extraUsuario });
     const { texto, backend } = await responder(CFG.ia, mensajes).finally(() => limpiar());
     console.log(`IA (${backend}) en ${canal.name}`);
-    const escalar = /\[HUMANO\]/i.test(texto);
+    // La IA a veces pone [HUMANO] sin que nadie lo pida: solo vale si el cliente insinuo persona/equipo/devolucion.
+    const ultimos = mensajes.filter((x) => x.role === "user").slice(-1).map((x) => x.content).join(" ");
+    const insinua = /human|persona|alguien|equipo|tecnico|técnico|soporte|agente|real|team|someone|staff|support|devol|regres|reembol|reempla|remplaz|cambi|garant|refund|return|replace|warrant|exchange/i.test(ultimos);
+    const escalar = /\[HUMANO\]/i.test(texto) && insinua;
     const guias = [...texto.matchAll(/\[GUIA:\s*([a-z_]+)\]/gi)].map((m) => TEMAS.find((t) => t.id === m[1].toLowerCase())).filter(Boolean).slice(0, 1);
     const limpio = texto.replace(/\[(HUMANO|ESCALATE|GUIA:[^\]]*)\]/gi, "").trim().slice(0, 1900);
     for (const g of guias) await canal.send(embedsTema(g, d.lang)).catch((e) => console.warn("guia:", e.message));
-    await canal.send({ content: `${limpio}\n\n${azar(T[d.lang].sigue)}`, components: [botonesTicket(d.lang)] });
+    // El cierre "si quieres te paso con el equipo" solo si la IA no lo dijo ya.
+    const yaOfrece = escalar || /equipo|compa[nñ]ero|team|necesito ayuda|need help/i.test(limpio);
+    await canal.send({ content: yaOfrece ? limpio : `${limpio}\n\n${azar(T[d.lang].sigue)}`, components: [botonesTicket(d.lang)] });
     if (escalar) await escalarTicket(canal, d, "El cliente pidió hablar con el equipo técnico");
   } catch (e) {
     console.warn("IA:", e.message);
@@ -407,7 +415,7 @@ async function abrirTicket(inter) {
   await canal.send({ content: `<@${inter.user.id}>`, embeds: [ficha] });
 
   if (temas.length) {
-    await canal.send(T[lang].bienvenida(inter.user.username));
+    await canal.send(azar(T[lang].bienvenida)(inter.user.username));
     for (const tema of temas) {
       await canal.send(embedsTema(tema, lang));
       if (tema.escalar) await canal.send(T[lang].ofrecerEquipo);
