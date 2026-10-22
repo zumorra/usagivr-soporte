@@ -237,7 +237,7 @@ function promptSistema(lang) {
     "If the customer says it is solved, be happy for them and thank them.",
     "Tracker won't turn on: first ask if they tried the small reset button on the back of the tracker; then ask if, with the USB cable plugged in, it turns on and shows up in SlimeVR (if yes, it's the battery).",
     "Battery drains fast / doesn't last: explain kindly that it's hard to judge from a description because we need to see how fast it drains, and ask for a video or some proof (e.g. battery % in SlimeVR at the start and after a while).",
-    "Returns, refunds, exchanges or warranty: stay calm and reassuring. Explain that for anything like that we first go through the support process and its steps to confirm how the tracker is working, and that it is almost always a fixable issue, nothing serious. Never promise or refuse a return yourself.",
+    "Returns, refunds, exchanges or warranty: stay calm and reassuring. Explain that it takes a process (first we check together that the tracker works) and that it is almost always a fixable issue, nothing serious, and that you are passing them to your teammate; then end with [HUMANO]. Never promise or refuse a return yourself.",
     "Sound natural and vary your wording: don't start every reply the same way, don't repeat the same phrases you already used in this chat. No weird jokes, no made-up expressions or acronyms; plain everyday words.",
     "Read the whole conversation: figure out which step the customer is on and answer what they need NEXT; never repeat instructions for something they say they already did.",
     "The customer often sends several messages in a row. Answer EVERY question or problem they wrote since your last reply (briefly, one after another), not only the last message.",
@@ -311,13 +311,22 @@ async function respuestaIA(canal, d, extraUsuario) {
   }
 }
 
-async function escalarTicket(canal, d, motivo) {
+// Devoluciones, reembolsos, reemplazos, garantia: siempre con un companero del equipo.
+function pideDevolucion(texto) {
+  const t = ` ${String(texto).toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "")} `;
+  return [
+    "devolucion", "devolver", "regresarlo", "regresarla", "regresarlos", "regresar el", "regresar los", "reembolso", "rembolso", "reembolsar", "mi dinero",
+    "reemplazo", "remplazo", "reemplazar", "remplazar", "cambio por otro", "cambiarlo por", "garantia", "reclamo", "cancelar mi pedido", "cancelar el pedido",
+    "refund", "return it", "return them", "return the", "send it back", "send them back", "money back", "replacement", "replace it", "replace my", "warranty", "rma", "exchange",
+  ].some((p) => t.includes(p));
+}
+async function escalarTicket(canal, d, motivo, texto) {
   if (d.estado === "escalado") return;
   d.estado = "escalado";
   await guardarTicket(canal, d);
   const rol = rolPorNombre(canal.guild, CFG.roles.soporte);
   await canal.send({
-    content: T[d.lang].companero(rol ? `<@&${rol.id}>` : `@${CFG.roles.soporte}`),
+    content: (texto || T[d.lang].companero)(rol ? `<@&${rol.id}>` : `@${CFG.roles.soporte}`),
     allowedMentions: { roles: rol ? [rol.id] : [] },
   });
   await registrar(canal, d, "🆘 Escalado a soporte", motivo, null);
@@ -479,6 +488,10 @@ async function atender(canal, d, member, texto) {
     if (d.estado === "escalado") return void (await canal.send(T[lang].yaViene));
     return escalarTicket(canal, dm, "El cliente pidió hablar con el equipo técnico");
   }
+  if (pideDevolucion(texto)) {
+    if (d.estado === "escalado") return void (await canal.send(T[lang].devolucionYa));
+    return escalarTicket(canal, dm, "Devolución / reemplazo / garantía", T[lang].devolucion);
+  }
   // La IA lee toda la conversacion (sabe en que paso va el cliente) y elige ella la guia con video/dibujo.
   // Contesta tambien con el ticket escalado, mientras llega el companero.
   await respuestaIA(canal, dm, texto);
@@ -551,4 +564,4 @@ if (require.main === module) {
   client.login(token);
 }
 
-module.exports = { promptSistema, pideHumano, idiomaDe, leerTicket };
+module.exports = { pideDevolucion, promptSistema, pideHumano, idiomaDe, leerTicket };
