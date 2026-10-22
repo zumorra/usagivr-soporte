@@ -274,7 +274,7 @@ function promptSistema(lang) {
     "Devices: not available for iPhone or Mac yet; we recommend an Android phone with the SlimeVR app from the official website; on PC, SlimeVR is downloaded from Steam. Install order (also after formatting the PC): SteamVR first and open it once, then SlimeVR so its plugins/driver apply. " +
     "If the little button came off: usually not needed, don't worry, only matters if it causes problems. If WiFi trackers still won't connect after every step: internet providers often block some connections on their routers, which affects WiFi trackers only; a cheap extra router just for the trackers fixes it.",
     `Always answer in ${idioma}. Talk like a chill, friendly person from the team, not a robot: relaxed and warm, tuteo, short messages, no headings, no corporate phrases.`,
-    "Spanish variant: neutral Latin American leaning Mexican, NEVER Spain Spanish. Use \"¿ya intentaste…?\" (not \"¿has probado a…?\"), \"dale clic / presiona\" (not \"pulsa/pincha\"), \"llenar\" (not \"rellenar\"), \"computadora o PC\" (not \"ordenador\"), \"celular\" (not \"móvil\"), \"ustedes\" (never \"vosotros\", \"os\", \"vale\", \"coger\"), \"mantenlo\" without accent. Prefer simple past (\"ya lo cargaste\") over \"has cargado\". No modern internet slang or anglicisms (\"random\", \"literal\", \"crack\", \"bro\").",
+    lang === "es" && "Spanish variant: neutral Latin American leaning Mexican, NEVER Spain Spanish. Use \"¿ya intentaste…?\" (not \"¿has probado a…?\"), \"dale clic / presiona\" (not \"pulsa/pincha\"), \"llenar\" (not \"rellenar\"), \"computadora o PC\" (not \"ordenador\"), \"celular\" (not \"móvil\"), \"ustedes\" (never \"vosotros\", \"os\", \"vale\", \"coger\"), \"mantenlo\" without accent. Prefer simple past (\"ya lo cargaste\") over \"has cargado\". No modern internet slang or anglicisms (\"random\", \"literal\", \"crack\", \"bro\").",
     "Keep the slang light: at most one casual word per message (in Spanish, Mexican-style like \"va\", \"sale\", \"tranqui\", \"no te preocupes\", \"ahorita\"). Never use \"wey\", \"carnal\", \"bro\", \"compa\", \"neta\" or regional slang from other countries, never pile up exclamations or emojis (max one emoji, usually none), never talk like a cartoon. It must sound like a real person from a small shop answering a customer.",
     "Be very understanding: first show you get the problem and how annoying it is, ask one short question if something is unclear, then suggest what to try (max 5 short numbered steps). Use only the knowledge below; it comes from the official manual and overrides anything else you know.",
     "Never invent prices, shipping dates or policies; for those, or if it really looks like a broken tracker, say a teammate from the tech team can look at it whenever they want and that they just have to ask for it or press the button.",
@@ -292,7 +292,7 @@ function promptSistema(lang) {
     "",
     "KNOWLEDGE:",
     resumenParaIA(lang),
-  ].join("\n");
+  ].filter((x) => x !== false).join("\n");
 }
 
 const ocupados = new Set();
@@ -336,7 +336,16 @@ async function respuestaIA(canal, d, extraUsuario) {
     // FAQ de la tienda: las preguntas más parecidas a lo último que escribió el cliente.
     const ultimoCliente = [...mensajes].reverse().find((x) => x.role === "user");
     if (ultimoCliente) mensajes[0].content += notasFaq(ultimoCliente.content, d.lang);
-    const { texto, backend } = await responder(CFG.ia, mensajes).finally(() => limpiar());
+    const idioma = d.lang === "es" ? "Spanish (neutral Latin American)" : "English";
+    mensajes[0].content += `\n\nREPLY ONLY IN ${idioma.toUpperCase()}, whatever language the knowledge or the customer's form uses.`;
+    let { texto, backend } = await responder(CFG.ia, mensajes).catch((e) => { limpiar(); throw e; });
+    // Si se le fue al otro idioma, un segundo intento con la orden al final de la charla.
+    if (idiomaDe(null, texto.replace(/\[[^\]]*\]/g, "")) !== d.lang) {
+      console.warn(`IA contesto en otro idioma en ${canal.name}, reintento`);
+      const otra = await responder(CFG.ia, [...mensajes, { role: "system", content: `Rewrite your answer in ${idioma}. Only ${idioma}.` }]).catch(() => null);
+      if (otra && idiomaDe(null, otra.texto.replace(/\[[^\]]*\]/g, "")) === d.lang) ({ texto, backend } = otra);
+    }
+    limpiar();
     console.log(`IA (${backend}) en ${canal.name}`);
     // La IA a veces pone [HUMANO] sin que nadie lo pida: solo vale si el cliente insinuo persona/equipo/devolucion.
     const ultimos = mensajes.filter((x) => x.role === "user").slice(-1).map((x) => x.content).join(" ");
