@@ -105,6 +105,19 @@ function botonesTicket(lang) {
   );
 }
 
+// Boton fijo arriba del ticket: el cliente cierra el ticket cuando se resuelva, sin esperar a nadie.
+function botonListo(lang) {
+  return new ActionRowBuilder().addComponents(
+    new ButtonBuilder().setCustomId("t:listo").setLabel(T[lang].listo).setStyle(ButtonStyle.Success).setEmoji("✅")
+  );
+}
+// "ya quedo", "ya funciona", "it works now"... corto y sin "pero": se le ofrece el boton, no se cierra solo.
+const YA_QUEDO = /(?<![\p{L}\p{N}])(ya (qued[oó]|jal[oó]|funciona|sirve|prendi[oó]|conect[oó]|se (arregl[oó]|solucion[oó]|resolvi[oó]))|ya est[aá] (todo|resuelto|solucionado)|lo (logr[eé]|resolv[ií]|arregl[eé])|(it|everything) works( now)?|(it'?s|all) (fixed|solved|working)|i fixed it|that (worked|fixed it)|solved)(?![\p{L}\p{N}])/iu;
+function yaQuedo(texto) {
+  const t = (texto || "").trim();
+  return t.length <= 120 && YA_QUEDO.test(t) && !/(?<![\p{L}])(pero|aunque|but|still|todav[ií]a|sigue|no (funciona|sirve|prende|conecta))(?![\p{L}])|\?/iu.test(t);
+}
+
 const azar = (x) => (Array.isArray(x) ? x[Math.floor(Math.random() * x.length)] : x);
 const muletilla = (lang) => azar(T[lang].muletillas);
 
@@ -641,7 +654,8 @@ async function abrirTicket(inter) {
       { name: T[lang].campoNombre, value: nombre, inline: true },
       { name: T[lang].campoProblema, value: problema.slice(0, 1024) }
     );
-  await canal.send({ content: `<@${inter.user.id}>`, embeds: [ficha] });
+  const inicio = await canal.send({ content: `<@${inter.user.id}>\n${T[lang].listoNota}`, embeds: [ficha], components: [botonListo(lang)] });
+  await inicio.pin().catch((e) => console.warn("fijar:", e.message));
 
   if (pideDevolucion(problema)) await casoDevolucion(canal, d, problema);
   else if (pideCompra(problema)) await escalarTicket(canal, d, "Precio / compra extra", T[lang].compra);
@@ -683,12 +697,17 @@ client.on("interactionCreate", async (inter) => {
     const equipo = esEquipo(inter.member);
     const dueno = inter.user.id === d.uid;
 
-    if (inter.isButton() && inter.customId === "t:ok") {
+    if (inter.isButton() && (inter.customId === "t:ok" || inter.customId === "t:listo")) {
       if (!dueno && !equipo) return inter.reply({ content: T[d.lang].soloDueno, ephemeral: true });
+      if (d.estado === "cerrado") return inter.deferUpdate();
       await inter.reply(T[d.lang].gracias);
       const quien = equipo && !dueno ? inter.user.tag : null;
-      await registrar(inter.channel, d, d.estado === "escalado" ? "✅ Resuelto (tras escalar)" : "✅ Resuelto por el bot",
-        d.estado === "escalado" ? "Confirmado como resuelto" : `Con los pasos de: ${d.temas || "respuesta de la IA"}`, quien);
+      const listo = inter.customId === "t:listo";
+      await registrar(inter.channel, d, d.estado === "escalado" ? "✅ Resuelto (tras escalar)" : listo ? "✅ El cliente lo marcó resuelto" : "✅ Resuelto por el bot",
+        d.estado === "escalado" ? "Confirmado como resuelto" : listo ? "Tocó «Ya se resolvió»" : `Con los pasos de: ${d.temas || "respuesta de la IA"}`, quien);
+      // Si ya habia un Helpper asignado, que sepa que ya no hace falta.
+      const helper = d.estado === "escalado" && d.aid && (await inter.guild.members.fetch(d.aid).catch(() => null));
+      if (helper && helper.id !== inter.user.id) await helper.send(`✅ El cliente marcó como resuelto ${inter.channel.name}; ya no hace falta que entres.`).catch(() => {});
       return cerrarCanal(inter.channel, d);
     }
     if (inter.isButton() && inter.customId === "t:ayuda") {
@@ -747,6 +766,7 @@ async function atender(canal, d, member, texto, fotos = []) {
     }
     texto = `${texto}\n[The customer attached ${fotos.length} image(s). You can't see images: say you got it, and if you need what it shows to help, ask them to tell you briefly (e.g. the error message or which light is on).]`.trim();
   }
+  if (!fotos.length && yaQuedo(texto)) return void (await canal.send({ content: T[lang].confirmaListo, components: [botonListo(lang)] }));
   if (pideHumano(texto)) {
     if (d.estado === "escalado") return void (await canal.send(T[lang].yaViene));
     return escalarTicket(canal, dm, "El cliente pidió hablar con el equipo técnico");
@@ -964,4 +984,4 @@ if (require.main === module) {
   client.login(token);
 }
 
-module.exports = { pideDevolucion, pideCompra, promptSistema, pideHumano, idiomaDe, leerTicket, temaCanal, esImagen, estaEnojado, mensajePanel };
+module.exports = { pideDevolucion, pideCompra, promptSistema, pideHumano, idiomaDe, leerTicket, temaCanal, esImagen, estaEnojado, mensajePanel, yaQuedo };
