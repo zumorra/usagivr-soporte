@@ -8,7 +8,8 @@
   "canales": {
     "panel": "test-suport",
     "categoriaTickets": "Tickets USAGIVR",
-    "historial": "historial-soporte"
+    "historial": "historial-soporte",
+    "correcciones": "correcciones-ia"
   },
   "ia": {
     "orden": [

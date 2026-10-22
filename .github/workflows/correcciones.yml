@@ -1,0 +1,26 @@
+name: Exportar correcciones del equipo
+
+# Baja lo que el equipo marco en **negritas** dentro de los tickets (#correcciones-ia)
+# y lo deja como artefacto: correcciones.md (para leer) y correcciones.jsonl.
+on:
+  workflow_dispatch:
+
+jobs:
+  exportar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Exportar
+        env:
+          DISCORD_TOKEN: ${{ secrets.DISCORD_TOKEN }}
+        run: node herramientas/exportar-correcciones.js
+      - uses: actions/upload-artifact@v4
+        with:
+          name: correcciones
+          path: |
+            correcciones.md
+            correcciones.jsonl

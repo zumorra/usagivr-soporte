@@ -197,6 +197,64 @@ async function canalHistorial(guild) {
   return canal;
 }
 
+// Respuestas que el equipo marca como "la que se esperaba" (mensaje entero en **negritas**):
+// se guardan en #correcciones-ia con la pregunta del cliente y lo que contesto el bot, para revisarlas.
+async function canalCorrecciones(guild) {
+  const nombre = CFG.canales.correcciones || "correcciones-ia";
+  let canal = guild.channels.cache.find((c) => c.type === ChannelType.GuildText && c.name === nombre && enCategoria(guild, c));
+  if (canal) return canal;
+  const cat = catFija(guild);
+  const soporte = rolPorNombre(guild, CFG.roles.soporte);
+  const permisos = [
+    { id: guild.roles.everyone.id, deny: [PermissionFlagsBits.ViewChannel] },
+    { id: client.user.id, allow: [PermissionFlagsBits.ViewChannel, PermissionFlagsBits.SendMessages, PermissionFlagsBits.EmbedLinks, PermissionFlagsBits.ReadMessageHistory] },
+  ];
+  if (soporte) permisos.push({ id: soporte.id, allow: [PermissionFlagsBits.ViewChannel, PermissionFlagsBits.ReadMessageHistory] });
+  return guild.channels.create({
+    name: nombre,
+    type: ChannelType.GuildText,
+    ...(cat ? { parent: cat.id } : {}),
+    topic: "Respuestas que el equipo marcó como la que se esperaba (**en negritas** dentro de un ticket). Sirven para ajustar al bot.",
+    permissionOverwrites: permisos,
+  });
+}
+
+const esCorreccion = (texto) => /^\*\*[\s\S]+\*\*$/.test((texto || "").trim());
+const corta = (t, n = 1024) => (t && t.length > n ? t.slice(0, n - 1) + "…" : t || "—");
+
+async function guardarCorreccion(msg, d) {
+  const esperada = msg.content.trim().replace(/^\*\*|\*\*$/g, "").trim();
+  const previos = [...(await msg.channel.messages.fetch({ limit: 30, before: msg.id }).catch(() => new Map())).values()]; // del mas nuevo al mas viejo
+  // Respuesta del bot a la que se refiere: la citada (responder a un mensaje) o la ultima que mando con texto.
+  let bot = msg.reference && previos.find((m) => m.id === msg.reference.messageId);
+  if (!bot || bot.author.id !== client.user.id) bot = previos.find((m) => m.author.id === client.user.id && m.content && m.content.length > 25);
+  // Lo que escribio el cliente justo antes de esa respuesta (la rafaga completa).
+  const cliente = [];
+  if (bot) {
+    for (const m of previos.slice(previos.indexOf(bot) + 1)) {
+      if (m.author.id === d.uid) cliente.unshift(m.content);
+      else if (cliente.length) break;
+    }
+  }
+  const pregunta = cliente.join("\n") || `(formulario) ${d.problema || ""}`;
+  const e = new EmbedBuilder()
+    .setColor(0xf1c40f)
+    .setTitle(`📝 Corrección en #${msg.channel.name}`)
+    .setURL(msg.url)
+    .addFields(
+      { name: "Cliente preguntó", value: corta(pregunta) },
+      { name: "Bot contestó", value: corta(bot ? bot.content : "(no encontré respuesta del bot)") },
+      { name: "Respuesta que se esperaba", value: corta(esperada) },
+      { name: "Idioma", value: d.lang || "?", inline: true },
+      { name: "Marcó", value: msg.author.username, inline: true },
+      { name: "Pedido", value: corta(d.pedido, 100), inline: true },
+    )
+    .setTimestamp(msg.createdAt);
+  const canal = await canalCorrecciones(msg.guild);
+  await canal.send({ embeds: [e] });
+  console.log(`correccion guardada de ${msg.author.username} en ${msg.channel.name}`);
+}
+
 async function hiloDeUsuario(guild, userId, etiqueta) {
   const canal = await canalHistorial(guild);
   const busca = (col) => col.find((h) => h.name.endsWith(`· ${userId}`));
@@ -566,6 +624,12 @@ const esperas = new Map(); // canal -> temporizador de la rafaga de mensajes
 client.on("messageCreate", async (msg) => {
   if (msg.author.bot || !msg.guild) return;
   const d = leerTicket(msg.channel);
+  // El equipo marca en **negritas** la respuesta que se esperaba: se guarda y el bot no contesta.
+  if (d && esEquipo(msg.member) && esCorreccion(msg.content)) {
+    return guardarCorreccion(msg, d)
+      .then(() => msg.react("📝").catch(() => {}))
+      .catch((e) => { console.warn("correccion:", e.message); msg.react("⚠️").catch(() => {}); });
+  }
   // Solo atiende al dueno del ticket; cerrado = nada.
   if (!d || msg.author.id !== d.uid || (d.estado !== "abierto" && d.estado !== "escalado")) return;
   // Espera unos segundos tras el ultimo mensaje: la gente escribe en rafagas y asi se lee todo junto.
