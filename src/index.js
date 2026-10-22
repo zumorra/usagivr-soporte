@@ -35,13 +35,17 @@ const client = new Client({
 });
 
 // ------------------------------------------------------------ utilidades
-const rolPorNombre = (guild, nombre) =>
-  guild.roles.cache.find((r) => r.name.toLowerCase() === String(nombre).toLowerCase());
+// Cada servidor puede llamar distinto a un rol: CFG.servidores[id].roles = { "Hellper": "Helpper" }.
+const nombreRol = (guild, nombre) => ((guild && CFG.servidores?.[guild.id]?.roles) || {})[nombre] || nombre;
+const rolPorNombre = (guild, nombre) => {
+  const real = nombreRol(guild, nombre).toLowerCase();
+  return guild.roles.cache.find((r) => r.name.toLowerCase() === real);
+};
 
 const idiomaTicket = new Map(); // canal -> idioma que el cliente esta usando en esta sesion
 
 function idiomaDe(member, texto = "", previo = null) {
-  const tiene = (n) => member && member.roles && member.roles.cache.some((r) => r.name.toLowerCase() === n.toLowerCase());
+  const tiene = (n) => member && member.roles && member.roles.cache.some((r) => r.name.toLowerCase() === nombreRol(member.guild, n).toLowerCase());
   const t = ` ${texto.toLowerCase().replace(/[?!.,¿¡]/g, (c) => ` ${c} `)} `;
   // Lo que pide el cliente manda sobre todo.
   if (/(en|in) (espanol|español|espaniol|spanish)|habla(me)? (en )?espa/.test(t)) return "es";
@@ -65,7 +69,8 @@ function idiomaDe(member, texto = "", previo = null) {
 function esEquipo(member) {
   if (!member) return false;
   if (member.permissions && member.permissions.has(PermissionFlagsBits.Administrator)) return true;
-  return member.roles.cache.some((r) => r.name.toLowerCase() === CFG.roles.soporte.toLowerCase());
+  const soporte = nombreRol(member.guild, CFG.roles.soporte).toLowerCase();
+  return member.roles.cache.some((r) => r.name.toLowerCase() === soporte);
 }
 
 // Datos del ticket guardados en el tema del canal: "usagivr-ticket uid=.. lang=.. estado=.. temas=.."
@@ -152,7 +157,7 @@ async function montarServidor(guild) {
   if (CFG.servidores && CFG.servidores[guild.id]) {
     await guild.roles.fetch().catch(() => {});
     if (!cat) return console.warn(`${guild.name}: no encuentro la categoría ${CFG.servidores[guild.id].categoria}`);
-    if (!rolPorNombre(guild, CFG.roles.soporte)) console.warn(`${guild.name}: no existe el rol ${CFG.roles.soporte}`);
+    if (!rolPorNombre(guild, CFG.roles.soporte)) console.warn(`${guild.name}: no existe el rol ${nombreRol(guild, CFG.roles.soporte)}`);
     if (!guild.channels.cache.find((c) => c.type === ChannelType.GuildText && c.name === nombrePanel(guild) && c.parentId === cat.id)) {
       await guild.channels
         .create({ name: nombrePanel(guild), type: ChannelType.GuildText, parent: cat.id, permissionOverwrites: permisosPrivados(guild), topic: "Panel de tickets de soporte USAGIVR (en pruebas: solo admins y soporte)." })

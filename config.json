@@ -30,8 +30,11 @@
   "servidores": {
     "1318716973072252970": {
       "categoria": "1318716973781352450",
-      "nota": "pruebas en la categoría soporte: solo admins y Hellper",
-      "panel": "abrir-ticket"
+      "nota": "pruebas en la categoría Soporte: solo admins y Helpper",
+      "panel": "abrir-ticket",
+      "roles": {
+        "Hellper": "Helpper"
+      }
     }
   }
 }
