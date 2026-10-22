@@ -65,9 +65,11 @@ const { estaEnojado, mensajePanel } = require("./src/index");
 for (const t of ["esto es una estafa", "ya me harté, nadie me contesta", "PORQUE NO FUNCIONA NADA DE ESTO", "funciona???!!!", "worst product ever"]) assert.ok(estaEnojado(t), `enojado: ${t}`);
 for (const t of ["mi tracker no prende", "no se conecta al wifi", "OK", "gracias!"]) assert.ok(!estaEnojado(t), `no enojado: ${t}`);
 const { enHorario, proximaApertura } = require("./src/horario");
-const lunes11 = new Date("2026-10-19T17:00:00Z"); // 11:00 en CDMX
+const lunes11 = new Date("2026-10-19T18:00:00Z"); // 11:00 en Tijuana (PDT)
 const domingo = new Date("2026-10-25T20:00:00Z");
 assert.ok(enHorario(lunes11) && !enHorario(domingo));
-assert.strictEqual(new Date(proximaApertura(domingo)).toISOString(), "2026-10-26T16:00:00.000Z"); // lunes 10:00 CDMX
+assert.strictEqual(new Date(proximaApertura(domingo)).toISOString(), "2026-10-26T17:00:00.000Z"); // lunes 10:00 Tijuana
+assert.ok(enHorario(new Date("2026-10-20T03:15:00Z")) && !enHorario(new Date("2026-10-20T03:30:00Z"))); // 8:15 pm si, 8:30 pm ya no
+assert.strictEqual(new Date(proximaApertura(new Date("2026-10-20T03:30:00Z"))).toISOString(), "2026-10-20T17:00:00.000Z"); // martes 10:00
 assert.strictEqual(mensajePanel(["correas", "nada", "colocacion"]).embeds[0].toJSON().fields.length, 3);
 console.log(`OK: ${ok} temas + 4 idiomas + ${humano.length} pedir-humano + ${dev.length} devolucion + ${compra.length} compra + seguimiento/fotos/enojo/horario/panel`);

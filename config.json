@@ -49,8 +49,8 @@
     "insisteMensajes": 12
   },
   "horario": {
-    "nota": "Horario del equipo (hora de la zona). dias: 0=domingo ... 6=sabado",
-    "zona": "America/Mexico_City",
+    "nota": "Horario del equipo (hora de la zona; 20.5 = 8:30 pm). dias: 0=domingo ... 6=sabado",
+    "zona": "America/Tijuana",
     "dias": [
       1,
       2,
@@ -60,6 +60,6 @@
       6
     ],
     "desde": 10,
-    "hasta": 20
+    "hasta": 20.5
   }
 }
