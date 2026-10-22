@@ -4,7 +4,7 @@
 const fs = require("node:fs");
 const path = require("node:path");
 const CFG = require("../config.json");
-const { promptSistema, pideDevolucion } = require("../src/index");
+const { promptSistema, pideDevolucion, pideCompra } = require("../src/index");
 const { responder } = require("../src/ia");
 const { notasFaq } = require("../src/faq");
 const { PROHIBIDO, casoEspecial } = require("../src/reglas");
@@ -18,6 +18,7 @@ const ESCENAS = [
   { titulo: "Firmware de IceCube", lang: "es", problema: "actualizar firmware", turnos: ["quiero actualizar el firmware de mis icecube con el smol configurator, cómo le hago?"] },
   { titulo: "Cómo va en la correa", lang: "es", problema: "correas", turnos: ["cómo meto el tracker en la correa? hacia dónde va el usb?"] },
   { titulo: "Primera configuración", lang: "es", problema: "acabo de recibir mis trackers", turnos: ["acabo de recibir mi kit de 7, qué hago primero? tengo quest 3 y pc"] },
+  { titulo: "Precio de un tracker extra", lang: "es", problema: "duda", turnos: ["oye y si quiero comprar un tracker extra cuánto me sale?"] },
   { titulo: "Strap broke (EN)", lang: "en", problema: "one of my straps broke", turnos: ["one of my straps broke", "it arrived like that, the elastic was torn"] },
 ];
 
@@ -30,6 +31,7 @@ async function escena(e) {
     // Igual que el bot: cambios/reembolsos los atiende un Helpper; si es golpe o liquido, antes van los consejos.
     const devol = pideDevolucion(t);
     const asignar = `**Bot:** ${T[e.lang].devolucion("@Helpper-de-turno")}`;
+    if (pideCompra(t) && !devol) { salida.push(`**Cliente:** ${t}\n\n**Bot:** ${T[e.lang].compra("@Helpper-de-turno")}`); break; }
     if (devol && !casoEspecial(t)) { salida.push(`**Cliente:** ${t}\n\n${asignar}`); break; }
     // Mensajes seguidos del cliente en uno solo, como hace el bot.
     const msgs = [];

@@ -23,7 +23,7 @@ const { TEMAS, buscarTemas, resumenParaIA } = require("./kb");
 const { responder } = require("./ia");
 const { T } = require("./textos");
 const { notasFaq } = require("./faq");
-const { textoReglas, casoEspecial, PROHIBIDO } = require("./reglas");
+const { textoReglas, casoEspecial, PROHIBIDO, COMPRA_FUERA } = require("./reglas");
 
 const CFG = JSON.parse(fs.readFileSync(path.join(__dirname, "..", "config.json"), "utf8"));
 const ASSETS = path.join(__dirname, "..", "assets");
@@ -457,6 +457,16 @@ function pideDevolucion(texto) {
     "refund", "return it", "return them", "return the", "send it back", "send them back", "money back", "replacement", "replace it", "replace my", "warranty", "rma", "exchange",
   ].some((p) => t.includes(p));
 }
+// Precios o comprar algo extra: el bot no da precios, lo atiende un Helpper asignado.
+function pideCompra(texto) {
+  const t = ` ${String(texto).toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "")} `;
+  if (COMPRA_FUERA.test(texto)) return false; // "me compre otra antena" es otra regla
+  return [
+    "precio", "cuanto cuesta", "cuanto cuestan", "cuanto sale", "cuanto salen", "cuanto vale", "cuanto valen", "cuanto cobran", "cuanto costaria", "cotiza", "descuento",
+    "comprar otro", "comprar otra", "comprar uno", "comprar una", "comprar mas", "quiero comprar", "puedo comprar", "se puede comprar", "venden ", "tracker extra", "trackers extra", "correa extra", "correas extra", "antena extra", "adicional",
+    "price", "how much", "cost ", "costs ", "discount", "buy another", "buy more", "buy extra", "buy an extra", "buy a ", "want to buy", "can i buy", "do you sell", "extra tracker", "extra strap",
+  ].some((p) => t.includes(p));
+}
 // Reparte los tickets escalados entre los Helpper, por turnos. Sin lista de miembros, se menciona el rol.
 const turnoHelper = new Map();
 async function elegirHelper(guild, rol) {
@@ -564,6 +574,7 @@ async function abrirTicket(inter) {
   await canal.send({ content: `<@${inter.user.id}>`, embeds: [ficha] });
 
   if (pideDevolucion(problema)) await casoDevolucion(canal, d, problema);
+  else if (pideCompra(problema)) await escalarTicket(canal, d, "Precio / compra extra", T[lang].compra);
   else if (temas.length) {
     await canal.send(azar(T[lang].bienvenida)(inter.user.username));
     for (const tema of temas) {
@@ -657,6 +668,10 @@ async function atender(canal, d, member, texto) {
     return escalarTicket(canal, dm, "El cliente pidió hablar con el equipo técnico");
   }
   if (pideDevolucion(texto)) return casoDevolucion(canal, dm, texto);
+  if (pideCompra(texto)) {
+    if (d.estado === "escalado") return void (await canal.send(T[lang].devolucionYa));
+    return escalarTicket(canal, dm, "Precio / compra extra", T[lang].compra);
+  }
   // La IA lee toda la conversacion (sabe en que paso va el cliente) y elige ella la guia con video/dibujo.
   // Contesta tambien con el ticket escalado, mientras llega el companero.
   await respuestaIA(canal, dm, texto);
@@ -743,4 +758,4 @@ if (require.main === module) {
   client.login(token);
 }
 
-module.exports = { pideDevolucion, promptSistema, pideHumano, idiomaDe, leerTicket };
+module.exports = { pideDevolucion, pideCompra, promptSistema, pideHumano, idiomaDe, leerTicket };

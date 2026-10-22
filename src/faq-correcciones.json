@@ -4,7 +4,12 @@
     "UV-189",
     "UV-162",
     "UV-149",
-    "UV-110"
+    "UV-110",
+    "UV-111",
+    "UV-112",
+    "UV-113",
+    "UV-138",
+    "UV-142"
   ],
   "cambiar": {
     "UV-031": {
@@ -70,6 +75,10 @@
     "UV-114": {
       "es": "No tenemos programa para entregar trackers usados como parte del pago. Si te interesa algo así, un compañero te puede orientar.",
       "en": "We don't have a trade-in program for used trackers. If you're interested in something like that, a teammate can point you in the right direction."
+    },
+    "UV-030": {
+      "es": "Ice Cube es la línea de entrada; las versiones high-end usan otros sensores y rinden mejor. Para saber cuál te conviene, un compañero te orienta.",
+      "en": "Ice Cube is the entry line; high-end versions use different sensors and perform better. A teammate can help you pick."
     }
   },
   "nuevas": [

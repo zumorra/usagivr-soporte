@@ -2,7 +2,7 @@
 // Pruebas sin Discord ni internet: deteccion de tema e idioma.
 const assert = require("node:assert");
 const { buscarTemas } = require("./src/kb");
-const { idiomaDe, pideHumano, pideDevolucion } = require("./src/index");
+const { idiomaDe, pideHumano, pideDevolucion, pideCompra } = require("./src/index");
 
 const casos = [
   ["mi tracker no enciende", "no_enciende"],
@@ -47,4 +47,9 @@ for (const [txt, esp] of humano) assert.strictEqual(pideHumano(txt), esp, `pideH
 const dev = [["quiero una devolución", true], ["me lo pueden reemplazar?", true], ["quiero regresarlo", true], ["I want a refund", true], ["can I get a replacement", true],
   ["mi tracker no enciende", false], ["como hago el reset", false], ["se me salio el boton", false]];
 for (const [txt, esp] of dev) assert.strictEqual(pideDevolucion(txt), esp, `pideDevolucion("${txt}")`);
-console.log(`OK: ${ok} temas + 4 idiomas + ${humano.length} pedir-humano + ${dev.length} devolucion`);
+const compra = [["cuánto cuesta un tracker extra?", true], ["puedo comprar otra correa?", true], ["quiero comprar 2 trackers mas", true], ["how much is an extra tracker", true], ["can I buy another strap?", true],
+  ["me compré otra antena porque la mía no jalaba", false], ["mi tracker no enciende", false], ["como pongo la correa", false]];
+for (const [txt, esp] of compra) assert.strictEqual(pideCompra(txt), esp, `pideCompra("${txt}")`);
+const { PROHIBIDO } = require("./src/reglas");
+assert.ok(PROHIBIDO.test("cuesta $45") && PROHIBIDO.test("son 900 pesos") && !PROHIBIDO.test("tienes 7 trackers"));
+console.log(`OK: ${ok} temas + 4 idiomas + ${humano.length} pedir-humano + ${dev.length} devolucion + ${compra.length} compra`);

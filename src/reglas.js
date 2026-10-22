@@ -16,6 +16,8 @@ const REGLAS = [
   "Putting the tracker in the strap: the USB-C port points DOWN the whole time; slide the tracker into the strap's rail (USB-C end goes in first, downward) until it clicks, and it stays there with the USB-C facing down and the character's face forward. Never say the USB-C faces up or forward.",
   // 7. Lo ya contestado
   "Never answer again something you already answered earlier in the chat (e.g. the broken strap) unless the customer brings it back. Answer only what's new.",
+  // 9. Precios y compras extra
+  "PRICES and buying extras: NEVER give a price, cost, amount, currency, discount or shipping cost, not even an estimate. If the customer asks how much something costs or wants to buy an extra tracker, strap, antenna or any part, just say kindly that a teammate will help them with that, then end with [HUMANO].",
   // 8. Nada de tramites inventados
   "Never claim you registered a request, opened a claim, sent an email or will do something by email: you can't do any of that.",
 ];
@@ -51,6 +53,6 @@ const COMPRA_FUERA = /(compr[eé]|me compr[eé]|tuve que comprar|bought|had to b
 const casoEspecial = (t) => DANIO.test(t) || LIQUIDO.test(t) || COMPRA_FUERA.test(t);
 
 // Palabras que el bot nunca debe decir por su cuenta (cambios, reembolsos, tramites inventados).
-const PROHIBIDO = /reempla|remplaz|reembols|refund|replacement|devoluci|devolver(te|le)? (el|tu) dinero|money back|exchange|garant[ií]a|warrant|(registr|levant)[eéa]\w* (la |tu |una )?(solicitud|reclamo|petici)|te (enviamos|mandamos|mandaremos|enviaremos) (otr|uno nuevo|una nueva)|send you (a new|another)|por correo|by email/i;
+const PROHIBIDO = /reempla|remplaz|reembols|refund|replacement|devoluci|devolver(te|le)? (el|tu) dinero|money back|exchange|garant[ií]a|warrant|(registr|levant)[eéa]\w* (la |tu |una )?(solicitud|reclamo|petici)|te (enviamos|mandamos|mandaremos|enviaremos) (otr|uno nuevo|una nueva)|send you (a new|another)|por correo|by email|\$\s?\d|\d\s?(usd|mxn|d[oó]lares|pesos|euros?)\b/i;
 
 module.exports = { textoReglas, casoEspecial, PROHIBIDO, DANIO, LIQUIDO, COMPRA_FUERA };
