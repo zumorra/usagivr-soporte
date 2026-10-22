@@ -116,15 +116,50 @@ function mensajePanel() {
 }
 
 async function asegurarPanel(guild) {
-  const canal = guild.channels.cache.find((c) => c.type === ChannelType.GuildText && c.name === CFG.canales.panel);
+  const canal = guild.channels.cache.find((c) => c.type === ChannelType.GuildText && c.name === nombrePanel(guild) && enCategoria(guild, c));
   if (!canal) return;
   const msgs = await canal.messages.fetch({ limit: 30 }).catch(() => null);
   const yaEsta = msgs && msgs.some((m) => m.author.id === client.user.id && m.components.length);
   if (!yaEsta) await canal.send(mensajePanel()).catch((e) => console.warn("panel:", e.message));
 }
 
-// Solo en los servidores de prueba listados: crea roles y canal del panel si faltan.
+// Servidores con una categoria fija (CFG.servidores[id].categoria): panel, historial y tickets van todos ahi,
+// privados para admins y el rol de soporte. No se crean roles ni se toca nada fuera de esa categoria.
+const catFija = (guild) => {
+  const id = CFG.servidores && CFG.servidores[guild.id] && CFG.servidores[guild.id].categoria;
+  return id ? guild.channels.cache.get(id) || null : null;
+};
+const nombrePanel = (guild) => (CFG.servidores && CFG.servidores[guild.id] && CFG.servidores[guild.id].panel) || CFG.canales.panel;
+const enCategoria = (guild, c) => {
+  const cat = catFija(guild);
+  return !cat || c.parentId === cat.id;
+};
+// Canal privado: nadie lo ve salvo el bot, admins (por permiso) y el rol de soporte.
+function permisosPrivados(guild, extraSoporte = []) {
+  const soporte = rolPorNombre(guild, CFG.roles.soporte);
+  const p = [
+    { id: guild.roles.everyone.id, deny: [PermissionFlagsBits.ViewChannel] },
+    { id: client.user.id, allow: [PermissionFlagsBits.ViewChannel, PermissionFlagsBits.SendMessages, PermissionFlagsBits.ReadMessageHistory, PermissionFlagsBits.EmbedLinks, PermissionFlagsBits.AttachFiles] },
+  ];
+  if (soporte) p.push({ id: soporte.id, allow: [PermissionFlagsBits.ViewChannel, PermissionFlagsBits.ReadMessageHistory, ...extraSoporte] });
+  return p;
+}
+
+// Solo en los servidores listados: crea roles (solo pruebas) y canal del panel si faltan.
 async function montarServidor(guild) {
+  const cat = catFija(guild);
+  if (CFG.servidores && CFG.servidores[guild.id]) {
+    await guild.roles.fetch().catch(() => {});
+    if (!cat) return console.warn(`${guild.name}: no encuentro la categoría ${CFG.servidores[guild.id].categoria}`);
+    if (!rolPorNombre(guild, CFG.roles.soporte)) console.warn(`${guild.name}: no existe el rol ${CFG.roles.soporte}`);
+    if (!guild.channels.cache.find((c) => c.type === ChannelType.GuildText && c.name === nombrePanel(guild) && c.parentId === cat.id)) {
+      await guild.channels
+        .create({ name: nombrePanel(guild), type: ChannelType.GuildText, parent: cat.id, permissionOverwrites: permisosPrivados(guild), topic: "Panel de tickets de soporte USAGIVR (en pruebas: solo admins y soporte)." })
+        .then((c) => console.log(`${guild.name}: creado #${c.name}`))
+        .catch((e) => console.warn("canal:", e.message));
+    }
+    return;
+  }
   if (!(CFG.montarEnServidores || []).includes(guild.id)) return;
   await guild.roles.fetch().catch(() => {});
   for (const nombre of Object.values(CFG.roles)) {
@@ -137,8 +172,9 @@ async function montarServidor(guild) {
 
 // ------------------------------------------------------------ historial
 async function canalHistorial(guild) {
-  let canal = guild.channels.cache.find((c) => c.type === ChannelType.GuildText && c.name === CFG.canales.historial);
+  let canal = guild.channels.cache.find((c) => c.type === ChannelType.GuildText && c.name === CFG.canales.historial && enCategoria(guild, c));
   if (canal) return canal;
+  const cat = catFija(guild);
   const soporte = rolPorNombre(guild, CFG.roles.soporte);
   const permisos = [
     { id: guild.roles.everyone.id, deny: [PermissionFlagsBits.ViewChannel] },
@@ -148,6 +184,7 @@ async function canalHistorial(guild) {
   canal = await guild.channels.create({
     name: CFG.canales.historial,
     type: ChannelType.GuildText,
+    ...(cat ? { parent: cat.id } : {}),
     topic: "Historial de soporte por cliente: un hilo por usuario (problema y cómo se resolvió). Solo admins y soporte.",
     permissionOverwrites: permisos,
   });
@@ -324,7 +361,7 @@ function pideDevolucion(texto) {
   const t = ` ${String(texto).toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "")} `;
   return [
     "devolucion", "devolver", "regresarlo", "regresarla", "regresarlos", "regresar el", "regresar los", "reembolso", "rembolso", "reembolsar", "mi dinero",
-    "reemplazo", "remplazo", "reemplazar", "remplazar", "cambio por otro", "cambiarlo por", "garantia", "reclamo", "cancelar mi pedido", "cancelar el pedido",
+    "reemplazo", "remplazo", "reemplazar", "remplazar", "cambio por otro", "cambiarlo por", "me lo cambien", "me los cambien", "cambien por", "uno nuevo", "otro nuevo", "garantia", "reclamo", "cancelar mi pedido", "cancelar el pedido",
     "refund", "return it", "return them", "return the", "send it back", "send them back", "money back", "replacement", "replace it", "replace my", "warranty", "rma", "exchange",
   ].some((p) => t.includes(p));
 }
@@ -342,6 +379,7 @@ async function escalarTicket(canal, d, motivo, texto) {
 
 // --------------------------------------------------------------- tickets
 async function categoriaTickets(guild) {
+  if (catFija(guild)) return catFija(guild);
   let cat = guild.channels.cache.find((c) => c.type === ChannelType.GuildCategory && c.name === CFG.canales.categoriaTickets);
   if (cat) return cat;
   const soporte = rolPorNombre(guild, CFG.roles.soporte);
@@ -525,7 +563,7 @@ client.on("messageCreate", async (msg) => {
 });
 
 client.once("clientReady", async () => {
-  console.log(`Conectado como ${client.user.tag} en ${client.guilds.cache.size} servidor(es)`);
+  console.log(`Conectado como ${client.user.tag} en ${client.guilds.cache.size} servidor(es): ${[...client.guilds.cache.values()].map((g) => `${g.name} (${g.id})`).join(", ")}`);
   const cmd = new SlashCommandBuilder()
     .setName("panel-soporte")
     .setDescription("Publica el panel de tickets de soporte en este canal")

@@ -26,5 +26,12 @@
     "1540174644311756832"
   ],
   "esperarRafagaSeg": 7,
-  "muletillaTrasSeg": 6
+  "muletillaTrasSeg": 6,
+  "servidores": {
+    "1318716973072252970": {
+      "categoria": "1318716973781352450",
+      "nota": "pruebas en la categoría soporte: solo admins y Hellper",
+      "panel": "abrir-ticket"
+    }
+  }
 }
