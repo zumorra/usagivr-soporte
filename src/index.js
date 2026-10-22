@@ -21,6 +21,7 @@ const {
 } = require("discord.js");
 const { TEMAS, buscarTemas, resumenParaIA } = require("./kb");
 const { responder } = require("./ia");
+const { enHorario, proximaApertura } = require("./horario");
 const { T } = require("./textos");
 const { notasFaq } = require("./faq");
 const { textoReglas, casoEspecial, PROHIBIDO, COMPRA_FUERA, DANIO, LIQUIDO } = require("./reglas");
@@ -117,11 +118,18 @@ function pideHumano(texto) {
 }
 
 // --------------------------------------------------------------- panel
-function mensajePanel() {
+// dudas: ids de TEMAS (los mas comunes del reporte semanal), se muestran con su primer paso para que
+// algunos lo resuelvan sin abrir ticket.
+function mensajePanel(dudas = []) {
   const e = new EmbedBuilder()
     .setColor(COLOR)
     .setTitle(`${T.en.panelTitulo} · ${T.es.panelTitulo}`)
     .setDescription(`🇬🇧 ${T.en.panelDesc}\n\n🇪🇸 ${T.es.panelDesc}`);
+  const temas = dudas.map((id) => TEMAS.find((t) => t.id === id)).filter(Boolean).slice(0, 3);
+  if (temas.length) {
+    e.addFields({ name: "💡 Common questions · Dudas comunes", value: "Try this first · Prueba esto primero:" });
+    for (const t of temas) e.addFields({ name: `${t.titulo.en} · ${t.titulo.es}`, value: corta(`🇬🇧 ${t.pasos.en[0]}\n🇪🇸 ${t.pasos.es[0]}`, 1024) });
+  }
   const fila = new ActionRowBuilder().addComponents(
     new ButtonBuilder().setCustomId("panel:abrir").setLabel(`${T.en.abrir} / ${T.es.abrir}`).setStyle(ButtonStyle.Primary).setEmoji("🎫")
   );
@@ -132,8 +140,20 @@ async function asegurarPanel(guild) {
   const canal = guild.channels.cache.find((c) => c.type === ChannelType.GuildText && c.name === nombrePanel(guild) && enCategoria(guild, c));
   if (!canal) return;
   const msgs = await canal.messages.fetch({ limit: 30 }).catch(() => null);
-  const yaEsta = msgs && msgs.some((m) => m.author.id === client.user.id && m.components.length);
-  if (!yaEsta) await canal.send(mensajePanel()).catch((e) => console.warn("panel:", e.message));
+  const panel = msgs && msgs.find((m) => m.author.id === client.user.id && m.components.length);
+  const nuevo = mensajePanel(await dudasComunes(guild));
+  if (!panel) return void (await canal.send(nuevo).catch((e) => console.warn("panel:", e.message)));
+  // Se actualiza solo si cambiaron las dudas (asi no se edita en cada reinicio).
+  const campos = (m) => JSON.stringify((m.embeds[0] && m.embeds[0].fields ? m.embeds[0].fields : []).map((f) => f.name));
+  if (campos(panel) !== JSON.stringify(nuevo.embeds[0].toJSON().fields ? nuevo.embeds[0].toJSON().fields.map((f) => f.name) : []))
+    await panel.edit(nuevo).catch((e) => console.warn("panel:", e.message));
+}
+// El reporte semanal deja en su pie "top: id1,id2,id3" (los temas mas comunes).
+async function dudasComunes(guild) {
+  const canal = guild.channels.cache.find((c) => c.type === ChannelType.GuildText && c.name === (CFG.canales.avisos || "avisos-bot"));
+  const msgs = canal && (await canal.messages.fetch({ limit: 30 }).catch(() => null));
+  const rep = msgs && msgs.find((m) => m.author.id === client.user.id && m.embeds[0] && /^top: /.test((m.embeds[0].footer && m.embeds[0].footer.text) || ""));
+  return rep ? rep.embeds[0].footer.text.slice(5).split(",").filter(Boolean) : [];
 }
 
 // Servidores con una categoria fija (CFG.servidores[id].categoria): panel, historial y tickets van todos ahi,
@@ -499,7 +519,9 @@ async function escalarTicket(canal, d, motivo, texto) {
   const rol = rolPorNombre(canal.guild, CFG.roles.soporte);
   const helper = await elegirHelper(canal.guild, rol);
   d.estado = "escalado";
-  d.esc = Date.now();
+  // Fuera de horario la espera empieza a contar cuando abre el equipo (asi no se reasigna de noche).
+  const abre = proximaApertura();
+  d.esc = abre;
   d.motivo = motivo.slice(0, 60);
   if (helper) Object.assign(d, { asignado: helper.user.username, aid: helper.id });
   await guardarTicket(canal, d);
@@ -508,6 +530,7 @@ async function escalarTicket(canal, d, motivo, texto) {
     content: (texto || T[d.lang].companero)(quien),
     allowedMentions: helper ? { users: [helper.id] } : { roles: rol ? [rol.id] : [] },
   });
+  if (abre > Date.now() + 60000) await canal.send(T[d.lang].fueraHorario(Math.floor(abre / 1000)));
   const resumen = await resumenCaso(canal, d);
   if (helper) await avisarHelper(helper, canal, d, motivo, resumen);
   await registrar(canal, d, "🆘 Escalado a soporte", helper ? `${motivo} · asignado a ${helper.user.username}` : motivo, null, resumen);
@@ -729,6 +752,12 @@ async function atender(canal, d, member, texto, fotos = []) {
     return escalarTicket(canal, dm, "El cliente pidió hablar con el equipo técnico");
   }
   if (pideDevolucion(texto)) return casoDevolucion(canal, dm, texto);
+  // Cliente molesto o que ya lleva muchos mensajes sin resolver: mejor que lo vea una persona pronto.
+  if (d.estado !== "escalado") {
+    const enojo = estaEnojado(texto);
+    const insiste = !enojo && (await mensajesDelCliente(canal, d.uid)) >= ((CFG.seguimiento || {}).insisteMensajes || 12);
+    if (enojo || insiste) return escalarTicket(canal, dm, enojo ? "Cliente molesto" : "Muchos mensajes sin resolver", T[lang].enojo);
+  }
   if (pideCompra(texto)) {
     if (d.estado === "escalado") return void (await canal.send(T[lang].devolucionYa));
     return escalarTicket(canal, dm, "Precio / compra extra", T[lang].compra);
@@ -736,6 +765,19 @@ async function atender(canal, d, member, texto, fotos = []) {
   // La IA lee toda la conversacion (sabe en que paso va el cliente) y elige ella la guia con video/dibujo.
   // Contesta tambien con el ticket escalado, mientras llega el companero.
   await respuestaIA(canal, dm, texto);
+}
+
+// Palabras fuertes, groserias, "nadie me contesta", muchos !!! o todo en mayusculas.
+const ENOJO = /\b(estafa|fraude|scam|rip ?off|p[eé]simo|basura|garbage|trash|horrible|wtf|mierda|chingad\w*|pinche|harto|harta|me hart[eé]|hart[oa]s|me cans[eé]|rid[ií]culo|ridiculous|in[uú]til|useless|worst|terrible|fed up|i'?m done|nadie (me )?(responde|contesta|ayuda)|nobody (answers|helps|replies)|no mam[ea]n?|ya van \d+ (veces|d[ií]as)|for \d+ days)\b|!{3,}/i;
+function estaEnojado(texto) {
+  const t = texto || "";
+  if (ENOJO.test(t)) return true;
+  const letras = t.replace(/[^a-zA-ZÁÉÍÓÚÑáéíóúñ]/g, "");
+  return letras.length >= 20 && letras.replace(/[^A-ZÁÉÍÓÚÑ]/g, "").length / letras.length > 0.7;
+}
+async function mensajesDelCliente(canal, uid) {
+  const ms = await canal.messages.fetch({ limit: 100 }).catch(() => null);
+  return ms ? ms.filter((m) => m.author.id === uid).size : 0;
 }
 
 // Fotos o videos del cliente: se copian al hilo del cliente en el historial (las ve el equipo aunque se borre el ticket).
@@ -835,6 +877,7 @@ async function revisarTicket(c) {
       d.atendido = 1;
       return guardarTicket(c, d);
     }
+    if (!enHorario()) return;
     const espera = ahora - esc;
     const reas = Number(d.reas || 0);
     const rol = rolPorNombre(c.guild, CFG.roles.soporte);
@@ -921,4 +964,4 @@ if (require.main === module) {
   client.login(token);
 }
 
-module.exports = { pideDevolucion, pideCompra, promptSistema, pideHumano, idiomaDe, leerTicket, temaCanal, esImagen };
+module.exports = { pideDevolucion, pideCompra, promptSistema, pideHumano, idiomaDe, leerTicket, temaCanal, esImagen, estaEnojado, mensajePanel };

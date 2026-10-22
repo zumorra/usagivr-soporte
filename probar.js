@@ -60,4 +60,14 @@ assert.ok(tema.length <= 1024, "tema <= 1024");
 const lt = leerTicket({ topic: tema });
 assert.strictEqual(lt.aid, "9"); assert.strictEqual(lt.esc, "1700000000000"); assert.ok(lt.problema.startsWith("ñññ"));
 assert.ok(esImagen({ contentType: "image/png" }) && esImagen({ name: "x.JPG" }) && !esImagen({ contentType: "text/plain", name: "log.txt" }));
-console.log(`OK: ${ok} temas + 4 idiomas + ${humano.length} pedir-humano + ${dev.length} devolucion + ${compra.length} compra + seguimiento/fotos`);
+// Enojo, horario y panel con dudas comunes.
+const { estaEnojado, mensajePanel } = require("./src/index");
+for (const t of ["esto es una estafa", "ya me harté, nadie me contesta", "PORQUE NO FUNCIONA NADA DE ESTO", "funciona???!!!", "worst product ever"]) assert.ok(estaEnojado(t), `enojado: ${t}`);
+for (const t of ["mi tracker no prende", "no se conecta al wifi", "OK", "gracias!"]) assert.ok(!estaEnojado(t), `no enojado: ${t}`);
+const { enHorario, proximaApertura } = require("./src/horario");
+const lunes11 = new Date("2026-10-19T17:00:00Z"); // 11:00 en CDMX
+const domingo = new Date("2026-10-25T20:00:00Z");
+assert.ok(enHorario(lunes11) && !enHorario(domingo));
+assert.strictEqual(new Date(proximaApertura(domingo)).toISOString(), "2026-10-26T16:00:00.000Z"); // lunes 10:00 CDMX
+assert.strictEqual(mensajePanel(["correas", "nada", "colocacion"]).embeds[0].toJSON().fields.length, 3);
+console.log(`OK: ${ok} temas + 4 idiomas + ${humano.length} pedir-humano + ${dev.length} devolucion + ${compra.length} compra + seguimiento/fotos/enojo/horario/panel`);

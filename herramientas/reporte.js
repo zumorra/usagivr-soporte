@@ -82,7 +82,9 @@ function contar(lista) {
     ];
     await api(`/channels/${canal.id}/messages`, "POST", {
       embeds: [
-        { color: 0xff6fb5, title: `📊 Reporte de soporte · últimos ${DIAS} días`, fields, timestamp: new Date().toISOString() },
+        { color: 0xff6fb5, title: `📊 Reporte de soporte · últimos ${DIAS} días`, fields, timestamp: new Date().toISOString(),
+          // El bot lee este pie al arrancar y pone estas dudas en el panel de tickets.
+          footer: { text: `top: ${temas.filter(([k]) => /^[a-z_]+$/.test(k)).slice(0, 3).map(([k]) => k).join(",")}` } },
         ...(analisis ? [{ color: 0xff6fb5, title: "Qué se repite y qué agregar a la FAQ", description: analisis }] : []),
       ],
     });

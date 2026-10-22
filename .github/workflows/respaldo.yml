@@ -1,0 +1,42 @@
+name: Respaldo semanal del historial
+
+# Domingo: baja #historial-soporte (fichas, conversaciones y fotos), lo cifra con la clave publica
+# del repo y lo sube como release. Solo se abre con la clave privada que Yuki guarda en la master
+# (~/superyuki-arreglos/usagivr-respaldo/), asi que es seguro aunque el repo sea publico.
+on:
+  schedule:
+    - cron: "0 9 * * 0"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  respaldo:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Bajar el historial
+        env:
+          DISCORD_TOKEN: ${{ secrets.DISCORD_TOKEN }}
+        run: node herramientas/respaldo.js
+      - name: Cifrar
+        run: |
+          umask 077
+          openssl rand -hex 32 > clave.txt
+          tar czf - respaldo | openssl enc -aes-256-cbc -pbkdf2 -iter 200000 -pass file:clave.txt -out respaldo.tar.gz.enc
+          openssl pkeyutl -encrypt -pubin -inkey herramientas/respaldo-publica.pem -pkeyopt rsa_padding_mode:oaep -in clave.txt -out clave.enc
+          rm -rf clave.txt respaldo
+          ls -l respaldo.tar.gz.enc clave.enc
+      - name: Subir como release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          tag="respaldo-$(date -u +%Y-%m-%d-%H%M)"
+          gh release create "$tag" respaldo.tar.gz.enc clave.enc -R "$GITHUB_REPOSITORY" --title "$tag" --notes "Respaldo cifrado del historial de soporte. Se abre con descifrar.sh y la clave privada de la master."
+          # Se quedan los ultimos 12 (unos 3 meses).
+          gh release list -R "$GITHUB_REPOSITORY" --limit 100 --json tagName -q '.[].tagName' | grep '^respaldo-' | sort -r | tail -n +13 | while read t; do gh release delete "$t" -R "$GITHUB_REPOSITORY" --cleanup-tag -y; done

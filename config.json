@@ -45,6 +45,21 @@
     "reasignarHelperMin": 240,
     "maxReasignaciones": 3,
     "avisoInactivoHoras": 48,
-    "cerrarTrasAvisoHoras": 24
+    "cerrarTrasAvisoHoras": 24,
+    "insisteMensajes": 12
+  },
+  "horario": {
+    "nota": "Horario del equipo (hora de la zona). dias: 0=domingo ... 6=sabado",
+    "zona": "America/Mexico_City",
+    "dias": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+    ],
+    "desde": 10,
+    "hasta": 20
   }
 }
