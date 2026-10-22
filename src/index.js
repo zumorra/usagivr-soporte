@@ -656,6 +656,7 @@ client.once("clientReady", async () => {
     await guild.commands.set([cmd]).catch((e) => console.warn("comandos:", e.message));
     await montarServidor(guild);
     await asegurarPanel(guild);
+    if (catFija(guild)) await canalCorrecciones(guild).catch((e) => console.warn("correcciones:", e.message));
     // Tickets cerrados en una sesion anterior que no llegaron a borrarse.
     for (const c of guild.channels.cache.values()) {
       const d = leerTicket(c);
