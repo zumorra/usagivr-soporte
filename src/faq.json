@@ -1,0 +1,3498 @@
+[
+{
+"id": "UV-001",
+"cat": "Compatibilidad y requisitos",
+"q": {
+"es": "Funcionan con Meta Quest 2?",
+"en": "Will these work with Meta Quest 2?"
+},
+"a": {
+"es": "Sí, pero el camino depende del modelo de tracker y de si usa Quest standalone o PCVR.",
+"en": "Yes, with a compatible setup; the required path depends on your tracker model and whether you play PCVR or Quest standalone."
+},
+"alias": [
+"Funcionan con Meta Quest 2?",
+"Hola, funcionan con Meta Quest 2?",
+"Quisiera saber: funcionan con Meta Quest 2?",
+"sirven para la quest 2?",
+"Tengo una meta quest dos, son compatibles?",
+"puedo usarlos con mi quest dos?",
+"sirven para visor quest dos?",
+"Will these work with Meta Quest 2?",
+"Hi, will these work with Meta Quest 2?",
+"Could you tell me: will these work with Meta Quest 2?",
+"will these work with my Q2?",
+"Quest 2 compatibility?",
+"Can I run it on a Quest 2 headset?"
+]
+},
+{
+"id": "UV-002",
+"cat": "Compatibilidad y requisitos",
+"q": {
+"es": "Funcionan con Quest 3 o Quest 3S?",
+"en": "Are these compatible with Quest 3 or 3S?"
+},
+"a": {
+"es": "Sí en configuraciones compatibles; validar modelo de tracker, PCVR o standalone y dispositivo intermediario.",
+"en": "They can work with Quest 3/3S in supported setups. Please confirm which tracker kit you mean and whether you use PCVR or standalone."
+},
+"alias": [
+"Funcionan con Quest 3 o Quest 3S?",
+"Hola, funcionan con Quest 3 o Quest 3S?",
+"Quisiera saber: funcionan con Quest 3 o Quest 3S?",
+"quest 3 sin computadora?",
+"Sirven con meta 3s?",
+"Q3S es compatible?",
+"los puedo usar en una quest 3?",
+"Are these compatible with Quest 3 or 3S?",
+"Hi, are these compatible with Quest 3 or 3S?",
+"Could you tell me: are these compatible with Quest 3 or 3S?",
+"I have a Quest 3S, compatible?",
+"Will this work with my Q3?",
+"Quest three without a PC?"
+]
+},
+{
+"id": "UV-003",
+"cat": "Compatibilidad y requisitos",
+"q": {
+"es": "Funcionan con Quest Pro?",
+"en": "Will they work with Quest Pro?"
+},
+"a": {
+"es": "Sí, según el modo PCVR o standalone y los requisitos del kit comprado.",
+"en": "Quest Pro can be used with supported PCVR or standalone configurations; the exact requirements depend on the kit."
+},
+"alias": [
+"Funcionan con Quest Pro?",
+"Hola, funcionan con Quest Pro?",
+"Quisiera saber: funcionan con Quest Pro?",
+"Una pregunta: Funcionan con Quest Pro?",
+"Will they work with Quest Pro?",
+"Hi, will they work with Quest Pro?",
+"Could you tell me: will they work with Quest Pro?"
+]
+},
+{
+"id": "UV-004",
+"cat": "Compatibilidad y requisitos",
+"q": {
+"es": "Necesito una PC gamer?",
+"en": "Do I need a gaming PC?"
+},
+"a": {
+"es": "Para determinados kits con dongle en standalone puede bastar Android o laptop Windows básica; para PCVR si se necesita PC apta para VR.",
+"en": "For some dongle-based standalone setups, an Android device or basic Windows PC may run SlimeVR Server. PCVR itself requires a VR-capable computer."
+},
+"alias": [
+"Necesito una PC gamer?",
+"Hola, necesito una PC gamer?",
+"Quisiera saber: necesito una PC gamer?",
+"ocupo pc potente?",
+"necesito computadora gamer para esto?",
+"puede funcionar sin pc gamer?",
+"con una laptop vieja jala?",
+"Do I need a gaming PC?",
+"Hi, do I need a gaming PC?",
+"Could you tell me: do I need a gaming PC?",
+"Do I need a high-end computer?",
+"Can I use a regular laptop?",
+"Is a gaming computer mandatory?"
+]
+},
+{
+"id": "UV-005",
+"cat": "Compatibilidad y requisitos",
+"q": {
+"es": "Puedo usar trackers solo con Quest sin ningún otro dispositivo?",
+"en": "Can I use them with only a Quest and nothing else?"
+},
+"a": {
+"es": "En la ruta standalone documentada con dongle hace falta Android o una computadora básica que ejecute SlimeVR Server; Quest por si sola no completa ese flujo.",
+"en": "For our documented dongle-based Quest standalone setup, you also need Android or a compatible computer running SlimeVR Server."
+},
+"alias": [
+"Puedo usar trackers solo con Quest sin ningún otro dispositivo?",
+"Hola, puedo usar trackers solo con Quest sin ningún otro dispositivo?",
+"Quisiera saber: puedo usar trackers solo con Quest sin ningún otro dispositivo?",
+"solo tengo el visor, basta?",
+"sin cel ni compu se puede?",
+"mi quest sola y trackers?",
+"Can I use them with only a Quest and nothing else?",
+"Hi, can I use them with only a Quest and nothing else?",
+"Could you tell me: can I use them with only a Quest and nothing else?",
+"Can I use it with only the headset?",
+"No Android, no PC: will it work?",
+"Just a Quest and trackers?"
+]
+},
+{
+"id": "UV-006",
+"cat": "Compatibilidad y requisitos",
+"q": {
+"es": "Puedo usar un teléfono Android o tablet Android?",
+"en": "Can I use my Android phone or tablet?"
+},
+"a": {
+"es": "Sí para la ruta standalone documentada con dongle y SlimeVR Server; puede requerirse adaptador USB OTG.",
+"en": "Yes, for a supported dongle-based standalone setup. You may need a USB-OTG adapter to connect the receiver."
+},
+"alias": [
+"Puedo usar un teléfono Android o tablet Android?",
+"Hola, puedo usar un teléfono Android o tablet Android?",
+"Quisiera saber: puedo usar un teléfono Android o tablet Android?",
+"Una pregunta: Puedo usar un teléfono Android o tablet Android?",
+"Can I use my Android phone or tablet?",
+"Hi, can I use my Android phone or tablet?",
+"Could you tell me: can I use my Android phone or tablet?"
+]
+},
+{
+"id": "UV-007",
+"cat": "Compatibilidad y requisitos",
+"q": {
+"es": "Puedo usar iPhone o iPad como servidor standalone?",
+"en": "Can I use an iPhone or iPad to run SlimeVR?"
+},
+"a": {
+"es": "No es compatible con el flujo standalone documentado; orientar a Android o computadora compatible.",
+"en": "The documented Quest standalone server setup does not support iPhone/iPad. An Android device or compatible computer is needed."
+},
+"alias": [
+"Puedo usar iPhone o iPad como servidor standalone?",
+"Hola, puedo usar iPhone o iPad como servidor standalone?",
+"Quisiera saber: puedo usar iPhone o iPad como servidor standalone?",
+"sirve mi iphone para el server?",
+"ios puede correr slimevr?",
+"ipad para standalone?",
+"Can I use an iPhone or iPad to run SlimeVR?",
+"Hi, can I use an iPhone or iPad to run SlimeVR?",
+"Could you tell me: can I use an iPhone or iPad to run SlimeVR?",
+"Can I use iOS as the server?",
+"Will an iPad run this setup?",
+"Only have an iPhone and Quest. Is that enough?"
+]
+},
+{
+"id": "UV-008",
+"cat": "Compatibilidad y requisitos",
+"q": {
+"es": "Funcionan con Valve Index, HTC Vive o Pico?",
+"en": "Do they work with Valve Index, Vive, or Pico?"
+},
+"a": {
+"es": "Hay soporte en modos PCVR compatibles con SteamVR; verificar headset, software y listing especificos.",
+"en": "Compatible PCVR/SteamVR setups can support those headsets. Please tell us the exact headset and tracker kit."
+},
+"alias": [
+"Funcionan con Valve Index, HTC Vive o Pico?",
+"Hola, funcionan con Valve Index, HTC Vive o Pico?",
+"Quisiera saber: funcionan con Valve Index, HTC Vive o Pico?",
+"Una pregunta: Funcionan con Valve Index, HTC Vive o Pico?",
+"Do they work with Valve Index, Vive, or Pico?",
+"Hi, do they work with Valve Index, Vive, or Pico?",
+"Could you tell me: do they work with Valve Index, Vive, or Pico?"
+]
+},
+{
+"id": "UV-009",
+"cat": "Compatibilidad y requisitos",
+"q": {
+"es": "Funcionan con VRChat?",
+"en": "Do they work in VRChat?"
+},
+"a": {
+"es": "Sí mediante un flujo compatible SlimeVR y VRChat OSC o SteamVR; requiere configuración.",
+"en": "Yes, when the trackers, SlimeVR Server, and VRChat FBT/OSC or SteamVR integration are configured correctly."
+},
+"alias": [
+"Funcionan con VRChat?",
+"Hola, funcionan con VRChat?",
+"Quisiera saber: funcionan con VRChat?",
+"Una pregunta: Funcionan con VRChat?",
+"Do they work in VRChat?",
+"Hi, do they work in VRChat?",
+"Could you tell me: do they work in VRChat?"
+]
+},
+{
+"id": "UV-010",
+"cat": "Compatibilidad y requisitos",
+"q": {
+"es": "Funcionan con SteamVR?",
+"en": "Do they work with SteamVR?"
+},
+"a": {
+"es": "Los kits PCVR compatibles usan SlimeVR Server con SteamVR; confirmar versión y requisitos.",
+"en": "Compatible PCVR kits work through SlimeVR Server and SteamVR. Exact requirements depend on the setup."
+},
+"alias": [
+"Funcionan con SteamVR?",
+"Hola, funcionan con SteamVR?",
+"Quisiera saber: funcionan con SteamVR?",
+"Una pregunta: Funcionan con SteamVR?",
+"Do they work with SteamVR?",
+"Hi, do they work with SteamVR?",
+"Could you tell me: do they work with SteamVR?"
+]
+},
+{
+"id": "UV-011",
+"cat": "Compatibilidad y requisitos",
+"q": {
+"es": "Necesito base stations de Vive o SteamVR?",
+"en": "Do I need base stations or Vive trackers?"
+},
+"a": {
+"es": "No se requieren base stations para que los trackers SlimeVR compatibles midan movimiento corporal.",
+"en": "SlimeVR-compatible inertial trackers do not need SteamVR base stations to track body motion."
+},
+"alias": [
+"Necesito base stations de Vive o SteamVR?",
+"Hola, necesito base stations de Vive o SteamVR?",
+"Quisiera saber: necesito base stations de Vive o SteamVR?",
+"Una pregunta: Necesito base stations de Vive o SteamVR?",
+"Do I need base stations or Vive trackers?",
+"Hi, do I need base stations or Vive trackers?",
+"Could you tell me: do I need base stations or Vive trackers?"
+]
+},
+{
+"id": "UV-012",
+"cat": "Compatibilidad y requisitos",
+"q": {
+"es": "Qué se necesita para usar Quest en standalone?",
+"en": "What do I need for Quest standalone?"
+},
+"a": {
+"es": "Para el flujo con dongle: Quest compatible, trackers, dongle, Android o laptop básica con SlimeVR, red local y adaptador OTG si aplica.",
+"en": "For a supported dongle kit: Quest, trackers, receiver, Android with OTG or a basic PC, SlimeVR Server, and a shared local network."
+},
+"alias": [
+"Qué se necesita para usar Quest en standalone?",
+"Hola, qué se necesita para usar Quest en standalone?",
+"Quisiera saber: qué se necesita para usar Quest en standalone?",
+"que necesito comprar para modo standalone?",
+"requisitos para Quest sin pc gamer",
+"stand alone lista de cosas",
+"What do I need for Quest standalone?",
+"Hi, what do I need for Quest standalone?",
+"Could you tell me: what do I need for Quest standalone?",
+"What else do I need for standalone VR?",
+"Quest standalone requirements?",
+"What devices do I need besides Quest?"
+]
+},
+{
+"id": "UV-013",
+"cat": "Compatibilidad y requisitos",
+"q": {
+"es": "Se necesita Wi-Fi incluso si los trackers tienen dongle?",
+"en": "Do I still need Wi-Fi if I use a dongle?"
+},
+"a": {
+"es": "El dongle conecta trackers al dispositivo servidor; Quest y dicho servidor necesitan comunicarse por la red local. No confundirlo con la conexión Wi-Fi directa de los trackers Budget.",
+"en": "The dongle links the trackers to the server device; Quest and that device still need a network connection. This differs from Wi-Fi Budget trackers."
+},
+"alias": [
+"Se necesita Wi-Fi incluso si los trackers tienen dongle?",
+"Hola, se necesita Wi-Fi incluso si los trackers tienen dongle?",
+"Quisiera saber: se necesita Wi-Fi incluso si los trackers tienen dongle?",
+"Una pregunta: Se necesita Wi-Fi incluso si los trackers tienen dongle?",
+"Do I still need Wi-Fi if I use a dongle?",
+"Hi, do I still need Wi-Fi if I use a dongle?",
+"Could you tell me: do I still need Wi-Fi if I use a dongle?"
+]
+},
+{
+"id": "UV-014",
+"cat": "Compatibilidad y requisitos",
+"q": {
+"es": "Puedo usar red de 5 GHz?",
+"en": "Can I use a 5 GHz network?"
+},
+"a": {
+"es": "Para trackers Budget de Wi-Fi directo se requiere banda 2.4 GHz. La red entre servidor y Quest depende del entorno; validar el SKU.",
+"en": "Our Wi-Fi Budget trackers require a 2.4 GHz Wi-Fi band. The connection between the server device and Quest is a separate question."
+},
+"alias": [
+"Puedo usar red de 5 GHz?",
+"Hola, puedo usar red de 5 GHz?",
+"Quisiera saber: puedo usar red de 5 GHz?",
+"mi router solo es 5g",
+"corre en 5ghz o tiene que ser 2.4?",
+"puede usar wifi 5g?",
+"Can I use a 5 GHz network?",
+"Hi, can I use a 5 GHz network?",
+"Could you tell me: can I use a 5 GHz network?",
+"Does it require 2.4G WiFi?",
+"Can these join my 5 GHz router?",
+"I only have 5G Wi-Fi. Will it work?"
+]
+},
+{
+"id": "UV-015",
+"cat": "Compatibilidad y requisitos",
+"q": {
+"es": "Funcionan en Linux o macOS?",
+"en": "Does it run on macOS or Linux?"
+},
+"a": {
+"es": "Depende de la versión de SlimeVR Server, dongle y flujo de uso. Verificar compatibilidad actual; no prometer soporte universal.",
+"en": "Support varies by SlimeVR Server version, firmware and connection method. Please share your OS and tracker model for verification."
+},
+"alias": [
+"Funcionan en Linux o macOS?",
+"Hola, funcionan en Linux o macOS?",
+"Quisiera saber: funcionan en Linux o macOS?",
+"Una pregunta: Funcionan en Linux o macOS?",
+"Does it run on macOS or Linux?",
+"Hi, does it run on macOS or Linux?",
+"Could you tell me: does it run on macOS or Linux?"
+]
+},
+{
+"id": "UV-016",
+"cat": "Compatibilidad y requisitos",
+"q": {
+"es": "Funcionan en otros juegos aparte de VRChat?",
+"en": "Can I use it in games other than VRChat?"
+},
+"a": {
+"es": "Depende del soporte de FBT de cada juego y de su integracion con SteamVR/OSC; comprobar el titulo especifico.",
+"en": "That depends on each game's FBT support and SteamVR/OSC integration; tell us the game title and setup."
+},
+"alias": [
+"Funcionan en otros juegos aparte de VRChat?",
+"Hola, funcionan en otros juegos aparte de VRChat?",
+"Quisiera saber: funcionan en otros juegos aparte de VRChat?",
+"Una pregunta: Funcionan en otros juegos aparte de VRChat?",
+"Can I use it in games other than VRChat?",
+"Hi, can I use it in games other than VRChat?",
+"Could you tell me: can I use it in games other than VRChat?"
+]
+},
+{
+"id": "UV-017",
+"cat": "Contenido del paquete",
+"q": {
+"es": "Qué incluye exactamente el kit?",
+"en": "What exactly is in the box?"
+},
+"a": {
+"es": "Normalmente cantidad seleccionada de trackers, correas, cables USB, accesorios de carga e instrucciones; confirmar anuncio y variante.",
+"en": "The selected trackers and matching accessories are listed in each product variation; historically kits included straps, USB charging items and instructions. Please share the listing."
+},
+"alias": [
+"Qué incluye exactamente el kit?",
+"Hola, qué incluye exactamente el kit?",
+"Quisiera saber: qué incluye exactamente el kit?",
+"que trae la caja?",
+"que accesorios mandan?",
+"vienen completos?",
+"que incluye ese set?",
+"What exactly is in the box?",
+"Hi, what exactly is in the box?",
+"Could you tell me: what exactly is in the box?",
+"What comes in the box?",
+"Is everything included?",
+"What accessories are bundled?"
+]
+},
+{
+"id": "UV-018",
+"cat": "Contenido del paquete",
+"q": {
+"es": "El dongle o antena viene incluido?",
+"en": "Is the USB dongle included?"
+},
+"a": {
+"es": "Los kits que lo requieren suelen incluir dongle/receptor; los Budget Wi-Fi pueden no usarlo. Consultar SKU y contenido listado.",
+"en": "Dongle-based kits usually include the matching receiver; Wi-Fi Budget models may not need one. Please confirm the exact listing."
+},
+"alias": [
+"El dongle o antena viene incluido?",
+"Hola, el dongle o antena viene incluido?",
+"Quisiera saber: el dongle o antena viene incluido?",
+"viene el usb receptor?",
+"incluye el usb bluetooth?",
+"necesito comprar dongle aparte?",
+"viene antena?",
+"Is the USB dongle included?",
+"Hi, is the USB dongle included?",
+"Could you tell me: is the USB dongle included?",
+"Does this come with a receiver?",
+"Is the dongle sold separately?",
+"Do I need to buy the USB thing?"
+]
+},
+{
+"id": "UV-019",
+"cat": "Contenido del paquete",
+"q": {
+"es": "Incluye correas para todos los trackers?",
+"en": "Are straps included for every tracker?"
+},
+"a": {
+"es": "Los sets documentados incluyen correas apropiadas; verificar número y tamaños especificos del pedido.",
+"en": "Our historical sets included matching body straps. We can verify the number and sizes against the listing you select."
+},
+"alias": [
+"Incluye correas para todos los trackers?",
+"Hola, incluye correas para todos los trackers?",
+"Quisiera saber: incluye correas para todos los trackers?",
+"Una pregunta: Incluye correas para todos los trackers?",
+"Are straps included for every tracker?",
+"Hi, are straps included for every tracker?",
+"Could you tell me: are straps included for every tracker?"
+]
+},
+{
+"id": "UV-020",
+"cat": "Contenido del paquete",
+"q": {
+"es": "Incluye cables USB para cargarlos?",
+"en": "Do USB charging cables come with it?"
+},
+"a": {
+"es": "Los kits históricamente incluyen cables de carga; verificar cantidad y conectores según el anuncio.",
+"en": "Historical tracker sets included charging cables; quantities and connector types must be checked against your listing."
+},
+"alias": [
+"Incluye cables USB para cargarlos?",
+"Hola, incluye cables USB para cargarlos?",
+"Quisiera saber: incluye cables USB para cargarlos?",
+"Una pregunta: Incluye cables USB para cargarlos?",
+"Do USB charging cables come with it?",
+"Hi, do USB charging cables come with it?",
+"Could you tell me: do USB charging cables come with it?"
+]
+},
+{
+"id": "UV-021",
+"cat": "Contenido del paquete",
+"q": {
+"es": "Incluye cargadores de pared?",
+"en": "Are wall chargers included?"
+},
+"a": {
+"es": "En varios sets si, pero no generalizar a todos los productos; comprobar el contenido del listing.",
+"en": "Some kits include charging adapters, but this is not universal. The exact item description takes priority."
+},
+"alias": [
+"Incluye cargadores de pared?",
+"Hola, incluye cargadores de pared?",
+"Quisiera saber: incluye cargadores de pared?",
+"viene el cubo para cargar?",
+"incluye adaptador de pared?",
+"trae enchufe de carga?",
+"Are wall chargers included?",
+"Hi, are wall chargers included?",
+"Could you tell me: are wall chargers included?",
+"Does it include the charging bricks?",
+"Are power adapters in the box?",
+"Do I need my own wall charger?"
+]
+},
+{
+"id": "UV-022",
+"cat": "Contenido del paquete",
+"q": {
+"es": "El adaptador USB OTG para Android viene incluido?",
+"en": "Is a USB-OTG adapter for Android included?"
+},
+"a": {
+"es": "No asumirlo; la guia indica que puede ser necesario y debe verificarse como accesorio del pedido.",
+"en": "Do not assume OTG is included; check the listing. It may be needed for an Android standalone setup."
+},
+"alias": [
+"El adaptador USB OTG para Android viene incluido?",
+"Hola, el adaptador USB OTG para Android viene incluido?",
+"Quisiera saber: el adaptador USB OTG para Android viene incluido?",
+"Una pregunta: El adaptador USB OTG para Android viene incluido?",
+"Is a USB-OTG adapter for Android included?",
+"Hi, is a USB-OTG adapter for Android included?",
+"Could you tell me: is a USB-OTG adapter for Android included?"
+]
+},
+{
+"id": "UV-023",
+"cat": "Contenido del paquete",
+"q": {
+"es": "Incluye manual y tutorial de instalación?",
+"en": "Does it include instructions or a setup guide?"
+},
+"a": {
+"es": "La documentación e instrucciones se mencionan en kits historicos; comprobar la versión y entregar guia correspondiente.",
+"en": "Historical kits offer instructions and setup guidance; we will share the correct guide for your tracker model."
+},
+"alias": [
+"Incluye manual y tutorial de instalación?",
+"Hola, incluye manual y tutorial de instalación?",
+"Quisiera saber: incluye manual y tutorial de instalación?",
+"Una pregunta: Incluye manual y tutorial de instalación?",
+"Does it include instructions or a setup guide?",
+"Hi, does it include instructions or a setup guide?",
+"Could you tell me: does it include instructions or a setup guide?"
+]
+},
+{
+"id": "UV-024",
+"cat": "Contenido del paquete",
+"q": {
+"es": "Los trackers ya vienen sincronizados con el dongle?",
+"en": "Are the trackers already paired to the dongle?"
+},
+"a": {
+"es": "En sets con dongle se ha indicado presincronización antes del envío; validar lote y pedido, y resincronizar al cambiar receptor.",
+"en": "Many dongle-based sets were paired before shipping. If your receiver was replaced or the units do not appear, support can verify pairing."
+},
+"alias": [
+"Los trackers ya vienen sincronizados con el dongle?",
+"Hola, los trackers ya vienen sincronizados con el dongle?",
+"Quisiera saber: los trackers ya vienen sincronizados con el dongle?",
+"Una pregunta: Los trackers ya vienen sincronizados con el dongle?",
+"Are the trackers already paired to the dongle?",
+"Hi, are the trackers already paired to the dongle?",
+"Could you tell me: are the trackers already paired to the dongle?"
+]
+},
+{
+"id": "UV-025",
+"cat": "Contenido del paquete",
+"q": {
+"es": "Puedo escoger el color de las correas o carcasas?",
+"en": "Can I choose the strap or case color?"
+},
+"a": {
+"es": "Solo si la variante del anuncio lo permite; algunos anuncios advierten colores sujetos al inventario.",
+"en": "Only where the listing's variation allows it; otherwise the color can depend on available stock."
+},
+"alias": [
+"Puedo escoger el color de las correas o carcasas?",
+"Hola, puedo escoger el color de las correas o carcasas?",
+"Quisiera saber: puedo escoger el color de las correas o carcasas?",
+"Una pregunta: Puedo escoger el color de las correas o carcasas?",
+"Can I choose the strap or case color?",
+"Hi, can I choose the strap or case color?",
+"Could you tell me: can I choose the strap or case color?"
+]
+},
+{
+"id": "UV-026",
+"cat": "Contenido del paquete",
+"q": {
+"es": "Vienen cargados y listos para usar?",
+"en": "Do they arrive charged and ready to play?"
+},
+"a": {
+"es": "Se prueban antes de enviarse en los anuncios que asi lo indican, pero puede requerirse carga y configuración inicial.",
+"en": "Some listings state units are tested before shipping, but you may still need to charge and complete initial setup and calibration."
+},
+"alias": [
+"Vienen cargados y listos para usar?",
+"Hola, vienen cargados y listos para usar?",
+"Quisiera saber: vienen cargados y listos para usar?",
+"Una pregunta: Vienen cargados y listos para usar?",
+"Do they arrive charged and ready to play?",
+"Hi, do they arrive charged and ready to play?",
+"Could you tell me: do they arrive charged and ready to play?"
+]
+},
+{
+"id": "UV-027",
+"cat": "Cantidad y modelos",
+"q": {
+"es": "Cuántos trackers necesito para full body tracking?",
+"en": "How many trackers are needed for full body tracking?"
+},
+"a": {
+"es": "El minimo recomendado documentado es cinco: pecho, muslos izquierdo y derecho, tobillos izquierdo y derecho.",
+"en": "Our documented minimum is five: chest, both thighs and both ankles."
+},
+"alias": [
+"Cuántos trackers necesito para full body tracking?",
+"Hola, cuántos trackers necesito para full body tracking?",
+"Quisiera saber: cuántos trackers necesito para full body tracking?",
+"con cuantos sensores jala cuerpo completo?",
+"con 4 trackers sirve?",
+"5 trackers son suficientes?",
+"How many trackers are needed for full body tracking?",
+"Hi, how many trackers are needed for full body tracking?",
+"Could you tell me: how many trackers are needed for full body tracking?",
+"Minimum trackers for FBT?",
+"Is a five-pack enough?",
+"How many slime trackers do I need?"
+]
+},
+{
+"id": "UV-028",
+"cat": "Cantidad y modelos",
+"q": {
+"es": "Qué beneficio tiene un kit de seis trackers?",
+"en": "What is the benefit of six trackers?"
+},
+"a": {
+"es": "Agrega un tracker en la cadera/pelvis para mejorar la representacion del movimiento.",
+"en": "A sixth tracker adds hip/pelvis tracking to the five-point configuration."
+},
+"alias": [
+"Qué beneficio tiene un kit de seis trackers?",
+"Hola, qué beneficio tiene un kit de seis trackers?",
+"Quisiera saber: qué beneficio tiene un kit de seis trackers?",
+"Una pregunta: Qué beneficio tiene un kit de seis trackers?",
+"What is the benefit of six trackers?",
+"Hi, what is the benefit of six trackers?",
+"Could you tell me: what is the benefit of six trackers?"
+]
+},
+{
+"id": "UV-029",
+"cat": "Cantidad y modelos",
+"q": {
+"es": "Para que sirven sets de ocho u once trackers?",
+"en": "Why buy an 8- or 11-tracker kit?"
+},
+"a": {
+"es": "Agregan puntos de seguimiento como codos u otras articulaciones según esquema y soporte de SlimeVR.",
+"en": "Higher-count kits add body points such as elbows, depending on the supported mapping and software."
+},
+"alias": [
+"Para que sirven sets de ocho u once trackers?",
+"Hola, para que sirven sets de ocho u once trackers?",
+"Quisiera saber: para que sirven sets de ocho u once trackers?",
+"Una pregunta: Para que sirven sets de ocho u once trackers?",
+"Why buy an 8- or 11-tracker kit?",
+"Hi, why buy an 8- or 11-tracker kit?",
+"Could you tell me: why buy an 8- or 11-tracker kit?"
+]
+},
+{
+"id": "UV-030",
+"cat": "Cantidad y modelos",
+"q": {
+"es": "Cuál es la diferencia entre Ice Cube y High-End?",
+"en": "What's the difference between Ice Cube and high-end trackers?"
+},
+"a": {
+"es": "Ice Cube/Budget prioriza precio y suele usar sensores de entrada; versiones high-end cambian sensores y comportamiento de drift, no solo color de carcasa.",
+"en": "Ice Cube/Budget emphasizes affordability; higher-end options use different sensors and may perform differently. It is not just a case-color change."
+},
+"alias": [
+"Cuál es la diferencia entre Ice Cube y High-End?",
+"Hola, cuál es la diferencia entre Ice Cube y High-End?",
+"Quisiera saber: cuál es la diferencia entre Ice Cube y High-End?",
+"ice cube vs smol?",
+"solo cambia el color?",
+"qué cambia de la versión económica a la premium?",
+"What's the difference between Ice Cube and high-end trackers?",
+"Hi, what's the difference between Ice Cube and high-end trackers?",
+"Could you tell me: what's the difference between Ice Cube and high-end trackers?",
+"Is it only a different shell?",
+"Ice Cube vs premium?",
+"Why is the high-end version different?"
+]
+},
+{
+"id": "UV-031",
+"cat": "Cantidad y modelos",
+"q": {
+"es": "Cuál es mejor, LSM6DSV o BMI160/BMI270?",
+"en": "Is LSM6DSV better than BMI160 or BMI270?"
+},
+"a": {
+"es": "Son familias distintas; en anuncios historicos se recomendaba LSM6DSV con dongle sobre los Budget Wi-Fi para una experiencia más comoda. Aclarar precio y compatibilidad.",
+"en": "These are different hardware families. Our historical advice favors LSM6DSV dongle kits over entry-level Wi-Fi kits for some use cases; confirm your budget and setup."
+},
+"alias": [
+"Cuál es mejor, LSM6DSV o BMI160/BMI270?",
+"Hola, cuál es mejor, LSM6DSV o BMI160/BMI270?",
+"Quisiera saber: cuál es mejor, LSM6DSV o BMI160/BMI270?",
+"Una pregunta: Cuál es mejor, LSM6DSV o BMI160/BMI270?",
+"Is LSM6DSV better than BMI160 or BMI270?",
+"Hi, is LSM6DSV better than BMI160 or BMI270?",
+"Could you tell me: is LSM6DSV better than BMI160 or BMI270?"
+]
+},
+{
+"id": "UV-032",
+"cat": "Cantidad y modelos",
+"q": {
+"es": "Qué es mejor, BNO085 o ICM45686 con QMC6309?",
+"en": "Is BNO085 better than ICM45686 plus QMC6309?"
+},
+"a": {
+"es": "Son opciones high-end con caracteristicas distintas; comparar SKU exacto, tipo de conexión, rendimiento validado y precio, sin prometer cero drift.",
+"en": "Both are higher-end configurations with different characteristics. Compare verified SKU specifications, connection type and price; neither should be advertised as zero-drift."
+},
+"alias": [
+"Qué es mejor, BNO085 o ICM45686 con QMC6309?",
+"Hola, qué es mejor, BNO085 o ICM45686 con QMC6309?",
+"Quisiera saber: qué es mejor, BNO085 o ICM45686 con QMC6309?",
+"Una pregunta: Qué es mejor, BNO085 o ICM45686 con QMC6309?",
+"Is BNO085 better than ICM45686 plus QMC6309?",
+"Hi, is BNO085 better than ICM45686 plus QMC6309?",
+"Could you tell me: is BNO085 better than ICM45686 plus QMC6309?"
+]
+},
+{
+"id": "UV-033",
+"cat": "Cantidad y modelos",
+"q": {
+"es": "Los trackers más baratos tienen más drift?",
+"en": "Do cheaper trackers drift more?"
+},
+"a": {
+"es": "Los sensores Budget históricamente se describieron con más deriva relativa que modelos high-end; la experiencia depende también de configuración.",
+"en": "Budget-class sensors have historically been described as more prone to drift than some higher-end options; configuration also affects results."
+},
+"alias": [
+"Los trackers más baratos tienen más drift?",
+"Hola, los trackers más baratos tienen más drift?",
+"Quisiera saber: los trackers más baratos tienen más drift?",
+"cuales giran menos solos?",
+"los baratos se descalibran más?",
+"hay drift en el bmi?",
+"Do cheaper trackers drift more?",
+"Hi, do cheaper trackers drift more?",
+"Could you tell me: do cheaper trackers drift more?",
+"Do budget trackers drift a lot?",
+"Does the cheaper IMU rotate on its own?",
+"Which model has less drift?"
+]
+},
+{
+"id": "UV-034",
+"cat": "Cantidad y modelos",
+"q": {
+"es": "Los modelos LSM6DSV necesitan Wi-Fi 2.4 GHz como los Budget?",
+"en": "Do LSM6DSV trackers require 2.4 GHz Wi-Fi?"
+},
+"a": {
+"es": "Si usan dongle, la conexión tracker a receptor difiere de la de Budget Wi-Fi; verificar SKU y aun considerar la red de Quest/servidor.",
+"en": "On a dongle-based LSM6DSV kit, trackers connect to the receiver rather than the Budget Wi-Fi method. Quest-to-server networking is separate."
+},
+"alias": [
+"Los modelos LSM6DSV necesitan Wi-Fi 2.4 GHz como los Budget?",
+"Hola, los modelos LSM6DSV necesitan Wi-Fi 2.4 GHz como los Budget?",
+"Quisiera saber: los modelos LSM6DSV necesitan Wi-Fi 2.4 GHz como los Budget?",
+"Una pregunta: Los modelos LSM6DSV necesitan Wi-Fi 2.4 GHz como los Budget?",
+"Do LSM6DSV trackers require 2.4 GHz Wi-Fi?",
+"Hi, do LSM6DSV trackers require 2.4 GHz Wi-Fi?",
+"Could you tell me: do LSM6DSV trackers require 2.4 GHz Wi-Fi?"
+]
+},
+{
+"id": "UV-035",
+"cat": "Cantidad y modelos",
+"q": {
+"es": "Se sigue vendiendo ICM42688?",
+"en": "Do you still sell the ICM42688 version?"
+},
+"a": {
+"es": "Fue marcado como discontinuado en comunicaciones históricas; confirmar inventario vigente, no ofrecerlo por defecto.",
+"en": "That sensor line was marked discontinued in historical communications. Current stock must be verified in the live listing."
+},
+"alias": [
+"Se sigue vendiendo ICM42688?",
+"Hola, se sigue vendiendo ICM42688?",
+"Quisiera saber: se sigue vendiendo ICM42688?",
+"Una pregunta: Se sigue vendiendo ICM42688?",
+"Do you still sell the ICM42688 version?",
+"Hi, do you still sell the ICM42688 version?",
+"Could you tell me: do you still sell the ICM42688 version?"
+]
+},
+{
+"id": "UV-036",
+"cat": "Cantidad y modelos",
+"q": {
+"es": "Puedo mezclar trackers de distintos sensores o kits?",
+"en": "Can I mix sensors or trackers from different kits?"
+},
+"a": {
+"es": "No prometer compatibilidad de mezcla sin validar firmware, receiver, SlimeVR Server y configuración concreta.",
+"en": "Maybe, but compatibility requires checking receiver, firmware, SlimeVR Server and each unit before recommending a mixed setup."
+},
+"alias": [
+"Puedo mezclar trackers de distintos sensores o kits?",
+"Hola, puedo mezclar trackers de distintos sensores o kits?",
+"Quisiera saber: puedo mezclar trackers de distintos sensores o kits?",
+"Una pregunta: Puedo mezclar trackers de distintos sensores o kits?",
+"Can I mix sensors or trackers from different kits?",
+"Hi, can I mix sensors or trackers from different kits?",
+"Could you tell me: can I mix sensors or trackers from different kits?"
+]
+},
+{
+"id": "UV-037",
+"cat": "Cantidad y modelos",
+"q": {
+"es": "Son trackers oficiales de SlimeVR?",
+"en": "Are these official SlimeVR trackers?"
+},
+"a": {
+"es": "No; son productos independientes compatibles con el ecosistema SlimeVR. UsagiVR proporciona soporte y cobertura del producto vendido.",
+"en": "They are independent UsagiVR products compatible with the open-source SlimeVR ecosystem, not official SlimeVR-manufactured products."
+},
+"alias": [
+"Son trackers oficiales de SlimeVR?",
+"Hola, son trackers oficiales de SlimeVR?",
+"Quisiera saber: son trackers oficiales de SlimeVR?",
+"Una pregunta: Son trackers oficiales de SlimeVR?",
+"Are these official SlimeVR trackers?",
+"Hi, are these official SlimeVR trackers?",
+"Could you tell me: are these official SlimeVR trackers?"
+]
+},
+{
+"id": "UV-038",
+"cat": "Instalación y configuración",
+"q": {
+"es": "Cómo empiezo a instalarlos?",
+"en": "How do I get started with setup?"
+},
+"a": {
+"es": "Instalar SlimeVR Server adecuado al equipo, conectar dongle si aplica, encender trackers, asignar partes del cuerpo y seguir el asistente de calibración.",
+"en": "Install the appropriate SlimeVR Server, connect the receiver if applicable, power on the trackers, assign their body positions and run calibration."
+},
+"alias": [
+"Cómo empiezo a instalarlos?",
+"Hola, cómo empiezo a instalarlos?",
+"Quisiera saber: cómo empiezo a instalarlos?",
+"como comienzo?",
+"tutorial para iniciar slimevr",
+"recién los compré que hago?",
+"How do I get started with setup?",
+"Hi, how do I get started with setup?",
+"Could you tell me: how do I get started with setup?",
+"How to start setup?",
+"I just got them. Where do I begin?",
+"Quick start instructions?"
+]
+},
+{
+"id": "UV-039",
+"cat": "Instalación y configuración",
+"q": {
+"es": "Cómo conecto el dongle?",
+"en": "How do I plug in the receiver?"
+},
+"a": {
+"es": "Conectar al dispositivo servidor y revisar si los trackers presincronizados aparecen. Si no, diagnosticar drivers, USB y emparejamiento.",
+"en": "Connect the receiver to the device running SlimeVR Server and check whether paired trackers appear. If not, support can check USB detection and pairing."
+},
+"alias": [
+"Cómo conecto el dongle?",
+"Hola, cómo conecto el dongle?",
+"Quisiera saber: cómo conecto el dongle?",
+"conecto el receptor y nada",
+"el usb dongle como se conecta?",
+"donde pongo el usb?",
+"How do I plug in the receiver?",
+"Hi, how do I plug in the receiver?",
+"Could you tell me: how do I plug in the receiver?",
+"How do I connect the little USB dongle?",
+"Where does the receiver go?",
+"Dongle connected but nothing appears."
+]
+},
+{
+"id": "UV-040",
+"cat": "Instalación y configuración",
+"q": {
+"es": "Cómo configuro trackers Budget por Wi-Fi?",
+"en": "How do I set up the Wi-Fi Budget trackers?"
+},
+"a": {
+"es": "Usar flujo de aprovisionamiento compatible con firmware y red Wi-Fi 2.4 GHz; diagnosticar red/credenciales sin pedir contrasenas al agente.",
+"en": "Use the Wi-Fi setup process for that firmware on a 2.4 GHz network. Never send your network password to support."
+},
+"alias": [
+"Cómo configuro trackers Budget por Wi-Fi?",
+"Hola, cómo configuro trackers Budget por Wi-Fi?",
+"Quisiera saber: cómo configuro trackers Budget por Wi-Fi?",
+"Una pregunta: Cómo configuro trackers Budget por Wi-Fi?",
+"How do I set up the Wi-Fi Budget trackers?",
+"Hi, how do I set up the Wi-Fi Budget trackers?",
+"Could you tell me: how do I set up the Wi-Fi Budget trackers?"
+]
+},
+{
+"id": "UV-041",
+"cat": "Instalación y configuración",
+"q": {
+"es": "Dónde asigno pecho, muslos, tobillos y cadera?",
+"en": "Where do I assign chest, thighs, ankles and hip?"
+},
+"a": {
+"es": "En la interfaz de SlimeVR Server, asignar cada tracker a su posicion física antes de calibrar.",
+"en": "Assign the body locations to each tracker in SlimeVR Server before running the calibration wizard."
+},
+"alias": [
+"Dónde asigno pecho, muslos, tobillos y cadera?",
+"Hola, dónde asigno pecho, muslos, tobillos y cadera?",
+"Quisiera saber: dónde asigno pecho, muslos, tobillos y cadera?",
+"Una pregunta: Dónde asigno pecho, muslos, tobillos y cadera?",
+"Where do I assign chest, thighs, ankles and hip?",
+"Hi, where do I assign chest, thighs, ankles and hip?",
+"Could you tell me: where do I assign chest, thighs, ankles and hip?"
+]
+},
+{
+"id": "UV-042",
+"cat": "Instalación y configuración",
+"q": {
+"es": "Cómo habilito Full Body Tracking en VRChat?",
+"en": "How do I enable full-body tracking in VRChat?"
+},
+"a": {
+"es": "Configurar SlimeVR y su salida OSC o integracion SteamVR según PCVR/standalone; habilitar OSC en VRChat cuando aplique y calibrar dentro del juego.",
+"en": "Set up the appropriate OSC or SteamVR integration, enable OSC in VRChat when required, and complete in-game calibration."
+},
+"alias": [
+"Cómo habilito Full Body Tracking en VRChat?",
+"Hola, cómo habilito Full Body Tracking en VRChat?",
+"Quisiera saber: cómo habilito Full Body Tracking en VRChat?",
+"como activo full body en vrc?",
+"activar osc en vrchat",
+"quiero fbt en vrc",
+"How do I enable full-body tracking in VRChat?",
+"Hi, how do I enable full-body tracking in VRChat?",
+"Could you tell me: how do I enable full-body tracking in VRChat?",
+"How do I enable FBT in VRC?",
+"How to turn on OSC in VRChat?",
+"My avatar needs full body."
+]
+},
+{
+"id": "UV-043",
+"cat": "Instalación y configuración",
+"q": {
+"es": "Por qué no aparece mi avatar con FBT en VRChat?",
+"en": "Why isn't VRChat showing my full-body tracking?"
+},
+"a": {
+"es": "Verificar deteccion de trackers, asignacion, salida del servidor, OSC/SteamVR y calibración en ese orden.",
+"en": "First check detection in SlimeVR, then body assignments, output mode, OSC/SteamVR, and in-game calibration."
+},
+"alias": [
+"Por qué no aparece mi avatar con FBT en VRChat?",
+"Hola, por qué no aparece mi avatar con FBT en VRChat?",
+"Quisiera saber: por qué no aparece mi avatar con FBT en VRChat?",
+"Una pregunta: Por qué no aparece mi avatar con FBT en VRChat?",
+"Why isn't VRChat showing my full-body tracking?",
+"Hi, why isn't VRChat showing my full-body tracking?",
+"Could you tell me: why isn't VRChat showing my full-body tracking?"
+]
+},
+{
+"id": "UV-044",
+"cat": "Instalación y configuración",
+"q": {
+"es": "Debo hacer calibración inicial?",
+"en": "Do I have to calibrate the trackers at first setup?"
+},
+"a": {
+"es": "Si; seguir el wizard y la calibración en el juego, con los trackers bien colocados.",
+"en": "Yes. Fit and assign the units, then follow the SlimeVR calibration steps and in-game calibration."
+},
+"alias": [
+"Debo hacer calibración inicial?",
+"Hola, debo hacer calibración inicial?",
+"Quisiera saber: debo hacer calibración inicial?",
+"Una pregunta: Debo hacer calibración inicial?",
+"Do I have to calibrate the trackers at first setup?",
+"Hi, do I have to calibrate the trackers at first setup?",
+"Could you tell me: do I have to calibrate the trackers at first setup?"
+]
+},
+{
+"id": "UV-045",
+"cat": "Instalación y configuración",
+"q": {
+"es": "Cuánto tarda la instalación?",
+"en": "How long does installation take?"
+},
+"a": {
+"es": "La guia ha descrito un wizard corto, pero el tiempo real varía según experiencia y problemas de red; no prometer minutos exactos.",
+"en": "The guided flow can be short, but setup time varies by network, hardware and prior experience; we cannot promise an exact number of minutes."
+},
+"alias": [
+"Cuánto tarda la instalación?",
+"Hola, cuánto tarda la instalación?",
+"Quisiera saber: cuánto tarda la instalación?",
+"Una pregunta: Cuánto tarda la instalación?",
+"How long does installation take?",
+"Hi, how long does installation take?",
+"Could you tell me: how long does installation take?"
+]
+},
+{
+"id": "UV-046",
+"cat": "Instalación y configuración",
+"q": {
+"es": "Debo sincronizar cada vez que juego?",
+"en": "Do I have to re-pair every time I play?"
+},
+"a": {
+"es": "No es un paso obligatorio recurrente en el uso normal de kits ya vinculados; reconectar o resincronizar si se cambia dongle o hay pérdida del enlace.",
+"en": "Normally not with an already paired receiver kit. Re-pairing may be needed after a receiver change or connection reset."
+},
+"alias": [
+"Debo sincronizar cada vez que juego?",
+"Hola, debo sincronizar cada vez que juego?",
+"Quisiera saber: debo sincronizar cada vez que juego?",
+"Una pregunta: Debo sincronizar cada vez que juego?",
+"Do I have to re-pair every time I play?",
+"Hi, do I have to re-pair every time I play?",
+"Could you tell me: do I have to re-pair every time I play?"
+]
+},
+{
+"id": "UV-047",
+"cat": "Instalación y configuración",
+"q": {
+"es": "Cómo emparejo un tracker adicional?",
+"en": "How do I pair one extra tracker?"
+},
+"a": {
+"es": "Seguir pairing compatible con receptor y firmware; pedir el modelo exacto para las instrucciones correctas.",
+"en": "The steps depend on receiver and firmware version. Tell us the exact model before pairing a new unit."
+},
+"alias": [
+"Cómo emparejo un tracker adicional?",
+"Hola, cómo emparejo un tracker adicional?",
+"Quisiera saber: cómo emparejo un tracker adicional?",
+"Una pregunta: Cómo emparejo un tracker adicional?",
+"How do I pair one extra tracker?",
+"Hi, how do I pair one extra tracker?",
+"Could you tell me: how do I pair one extra tracker?"
+]
+},
+{
+"id": "UV-049",
+"cat": "Instalación y configuración",
+"q": {
+"es": "Debo activar Stay Aligned?",
+"en": "Should I turn on Stay Aligned?"
+},
+"a": {
+"es": "Depende del sensor, drift, movimiento y versión del software; guiar una prueba supervisada, no establecer valor universal.",
+"en": "It depends on sensor model and tracking behavior. Support can guide a short comparison instead of recommending one global setting."
+},
+"alias": [
+"Debo activar Stay Aligned?",
+"Hola, debo activar Stay Aligned?",
+"Quisiera saber: debo activar Stay Aligned?",
+"Una pregunta: Debo activar Stay Aligned?",
+"Should I turn on Stay Aligned?",
+"Hi, should I turn on Stay Aligned?",
+"Could you tell me: should I turn on Stay Aligned?"
+]
+},
+{
+"id": "UV-050",
+"cat": "Instalación y configuración",
+"q": {
+"es": "Cómo configuro Quest con Android?",
+"en": "How do I set this up using Android and Quest?"
+},
+"a": {
+"es": "Conectar dongle al Android mediante OTG, ejecutar SlimeVR compatible, poner Quest y servidor en red local y configurar OSC/FBT.",
+"en": "For a supported dongle kit, connect the receiver to Android via OTG, run compatible SlimeVR software, connect to Quest over the local network, and configure FBT."
+},
+"alias": [
+"Cómo configuro Quest con Android?",
+"Hola, cómo configuro Quest con Android?",
+"Quisiera saber: cómo configuro Quest con Android?",
+"Una pregunta: Cómo configuro Quest con Android?",
+"How do I set this up using Android and Quest?",
+"Hi, how do I set this up using Android and Quest?",
+"Could you tell me: how do I set this up using Android and Quest?"
+]
+},
+{
+"id": "UV-051",
+"cat": "Instalación y configuración",
+"q": {
+"es": "Puedo usar una laptop normal en vez de Android?",
+"en": "Can I use a regular laptop instead of Android?"
+},
+"a": {
+"es": "Sí, para la ruta standalone documentada con dongle una laptop Windows básica puede ejecutar el servidor, sin ser computadora gamer.",
+"en": "Yes, a compatible basic Windows laptop can run the documented Quest standalone server workflow; a gaming-grade PC is not essential for that workflow."
+},
+"alias": [
+"Puedo usar una laptop normal en vez de Android?",
+"Hola, puedo usar una laptop normal en vez de Android?",
+"Quisiera saber: puedo usar una laptop normal en vez de Android?",
+"Una pregunta: Puedo usar una laptop normal en vez de Android?",
+"Can I use a regular laptop instead of Android?",
+"Hi, can I use a regular laptop instead of Android?",
+"Could you tell me: can I use a regular laptop instead of Android?"
+]
+},
+{
+"id": "UV-052",
+"cat": "Instalación y configuración",
+"q": {
+"es": "Qué ajustes de router se recomiendan?",
+"en": "Why can't SlimeVR see my trackers?"
+},
+"a": {
+"es": "Para Budget habilitar 2.4 GHz, señal estable, router cercano y evitar congestion. Revisar la arquitectura de conexión del pedido.",
+"en": "We need to confirm the exact kit and whether it uses a dongle or 2.4 GHz Wi-Fi before checking detection step by step."
+},
+"alias": [
+"Qué ajustes de router se recomiendan?",
+"Hola, qué ajustes de router se recomiendan?",
+"Quisiera saber: qué ajustes de router se recomiendan?",
+"slimevr no detecta",
+"no salen los trackers en la app",
+"server no los encuentra",
+"Why can't SlimeVR see my trackers?",
+"Hi, why can't SlimeVR see my trackers?",
+"Could you tell me: why can't SlimeVR see my trackers?",
+"My trackers don't show up in SlimeVR.",
+"Slime server cannot detect anything.",
+"None of the trackers appear in the app."
+]
+},
+{
+"id": "UV-053",
+"cat": "Problemas técnicos y drift",
+"q": {
+"es": "Mi tracker no se conecta o no aparece, está defectuoso?",
+"en": "Why does one tracker refuse to connect?"
+},
+"a": {
+"es": "Primero descartar USB, receptor, energia, emparejamiento, software y red. Solicitar Order ID, video o registros; solo diagnóstico confirma defecto.",
+"en": "We can check power status, receiver or Wi-Fi connectivity and whether only one unit is affected. Share the order and a brief video if available."
+},
+"alias": [
+"Mi tracker no se conecta o no aparece, está defectuoso?",
+"Hola, mi tracker no se conecta o no aparece, está defectuoso?",
+"Quisiera saber: mi tracker no se conecta o no aparece, está defectuoso?",
+"uno de los seis no enlaza",
+"no conecta solo un sensor",
+"uno se niega a vincular",
+"Why does one tracker refuse to connect?",
+"Hi, why does one tracker refuse to connect?",
+"Could you tell me: why does one tracker refuse to connect?",
+"One tracker refuses to connect.",
+"Five connect but the sixth won't.",
+"A single sensor won't pair."
+]
+},
+{
+"id": "UV-055",
+"cat": "Problemas técnicos y drift",
+"q": {
+"es": "La pierna o cadera virtual gira incorrectamente, qué hago?",
+"en": "Why does my avatar's body twist or face the wrong way?"
+},
+"a": {
+"es": "Comprobar posicion física, orientación, asignacion y calibración; seguir solucion por pasos.",
+"en": "Check tracker body assignments, mounting orientation and calibration first. A video can help a technician reproduce the problem."
+},
+"alias": [
+"La pierna o cadera virtual gira incorrectamente, qué hago?",
+"Hola, la pierna o cadera virtual gira incorrectamente, qué hago?",
+"Quisiera saber: la pierna o cadera virtual gira incorrectamente, qué hago?",
+"Una pregunta: La pierna o cadera virtual gira incorrectamente, qué hago?",
+"Why does my avatar's body twist or face the wrong way?",
+"Hi, why does my avatar's body twist or face the wrong way?",
+"Could you tell me: why does my avatar's body twist or face the wrong way?"
+]
+},
+{
+"id": "UV-056",
+"cat": "Problemas técnicos y drift",
+"q": {
+"es": "Pierdo tracking y los trackers se desconectan, por qué?",
+"en": "Why is my tracking drifting?"
+},
+"a": {
+"es": "Revisar batería, distancia, receptor, interferencia o Wi-Fi 2.4 GHz según modelo, y recopilar logs.",
+"en": "Drift can result from sensor behavior, placement or calibration. Please describe when it starts and send a short video before we diagnose hardware."
+},
+"alias": [
+"Pierdo tracking y los trackers se desconectan, por qué?",
+"Hola, pierdo tracking y los trackers se desconectan, por qué?",
+"Quisiera saber: pierdo tracking y los trackers se desconectan, por qué?",
+"drift demasiado al bailar",
+"se me mueven las piernas solas",
+"el cuerpo gira solo después de un rato",
+"Why is my tracking drifting?",
+"Hi, why is my tracking drifting?",
+"Could you tell me: why is my tracking drifting?",
+"My legs drift badly.",
+"Trackers rotate away over time.",
+"There is too much drift when dancing."
+]
+},
+{
+"id": "UV-057",
+"cat": "Problemas técnicos y drift",
+"q": {
+"es": "Por qué SlimeVR muestra trackers pero VRChat no?",
+"en": "Why does drift return after calibration?"
+},
+"a": {
+"es": "Separar deteccion en servidor de transferencia OSC/SteamVR y calibración en VRChat.",
+"en": "Support needs the sensor model, time until drift returns and exact calibration procedure to distinguish expected behavior from a fault."
+},
+"alias": [
+"Por qué SlimeVR muestra trackers pero VRChat no?",
+"Hola, por qué SlimeVR muestra trackers pero VRChat no?",
+"Quisiera saber: por qué SlimeVR muestra trackers pero VRChat no?",
+"Una pregunta: Por qué SlimeVR muestra trackers pero VRChat no?",
+"Why does drift return after calibration?",
+"Hi, why does drift return after calibration?",
+"Could you tell me: why does drift return after calibration?"
+]
+},
+{
+"id": "UV-058",
+"cat": "Problemas técnicos y drift",
+"q": {
+"es": "Uno de mis trackers funciona diferente a los demas, es normal?",
+"en": "The tracker moves in SlimeVR but not VRChat. Why?"
+},
+"a": {
+"es": "Comparar sensor, firmware, orientación, batería y pruebas cruzadas. Solicitar video para diagnóstico.",
+"en": "Verify the server's output, VRChat OSC or SteamVR integration and in-game calibration; detection alone does not complete FBT setup."
+},
+"alias": [
+"Uno de mis trackers funciona diferente a los demas, es normal?",
+"Hola, uno de mis trackers funciona diferente a los demas, es normal?",
+"Quisiera saber: uno de mis trackers funciona diferente a los demas, es normal?",
+"Una pregunta: Uno de mis trackers funciona diferente a los demas, es normal?",
+"The tracker moves in SlimeVR but not VRChat. Why?",
+"Hi, the tracker moves in SlimeVR but not VRChat. Why?",
+"Could you tell me: the tracker moves in SlimeVR but not VRChat. Why?"
+]
+},
+{
+"id": "UV-059",
+"cat": "Problemas técnicos y drift",
+"q": {
+"es": "Mi tracker no prende, que debo hacer?",
+"en": "Is my tracker faulty or just misconfigured?"
+},
+"a": {
+"es": "Solicitar modelo, fecha, carga, LED, foto/video y Order ID; evitar instrucciones de apertura o batería peligrosas; escalar.",
+"en": "We cannot determine that without details. Tell us the model, symptoms, tests already tried and optionally share a short clip."
+},
+"alias": [
+"Mi tracker no prende, que debo hacer?",
+"Hola, mi tracker no prende, que debo hacer?",
+"Quisiera saber: mi tracker no prende, que debo hacer?",
+"Una pregunta: Mi tracker no prende, que debo hacer?",
+"Is my tracker faulty or just misconfigured?",
+"Hi, is my tracker faulty or just misconfigured?",
+"Could you tell me: is my tracker faulty or just misconfigured?"
+]
+},
+{
+"id": "UV-060",
+"cat": "Problemas técnicos y drift",
+"q": {
+"es": "Mi dongle USB no lo detecta la PC, está dañado?",
+"en": "Why is tracking laggy or jittery?"
+},
+"a": {
+"es": "Verificar puerto/otro equipo y evidencia; el soporte diagnostica hardware antes de autorizar cambio.",
+"en": "Network quality, placement, power and software settings can affect motion. Please share your connection type and whether it happens on all trackers."
+},
+"alias": [
+"Mi dongle USB no lo detecta la PC, está dañado?",
+"Hola, mi dongle USB no lo detecta la PC, está dañado?",
+"Quisiera saber: mi dongle USB no lo detecta la PC, está dañado?",
+"Una pregunta: Mi dongle USB no lo detecta la PC, está dañado?",
+"Why is tracking laggy or jittery?",
+"Hi, why is tracking laggy or jittery?",
+"Could you tell me: why is tracking laggy or jittery?"
+]
+},
+{
+"id": "UV-061",
+"cat": "Problemas técnicos y drift",
+"q": {
+"es": "Tengo un problema con OSC, quien me ayuda?",
+"en": "Can you help me with OSC problems?"
+},
+"a": {
+"es": "Confirmar que SlimeVR ve trackers y que VRChat tenga OSC habilitado; continuar troubleshooting con logs.",
+"en": "First confirm the trackers appear and are assigned in SlimeVR, then check that OSC is enabled in the appropriate app. A technician can continue with logs."
+},
+"alias": [
+"Tengo un problema con OSC, quien me ayuda?",
+"Hola, tengo un problema con OSC, quien me ayuda?",
+"Quisiera saber: tengo un problema con OSC, quien me ayuda?",
+"Una pregunta: Tengo un problema con OSC, quien me ayuda?",
+"Can you help me with OSC problems?",
+"Hi, can you help me with OSC problems?",
+"Could you tell me: can you help me with OSC problems?"
+]
+},
+{
+"id": "UV-062",
+"cat": "Problemas técnicos y drift",
+"q": {
+"es": "Debo reinstalar firmware para resolver un problema?",
+"en": "Can I reset my trackers safely?"
+},
+"a": {
+"es": "No como primera medida; depende del dispositivo y versión. Evitar firmware no verificado o procedimientos que puedan bloquearlo.",
+"en": "Reset procedures vary by hardware. Do not flash firmware or reset pairing without confirming the model and instructions."
+},
+"alias": [
+"Debo reinstalar firmware para resolver un problema?",
+"Hola, debo reinstalar firmware para resolver un problema?",
+"Quisiera saber: debo reinstalar firmware para resolver un problema?",
+"Una pregunta: Debo reinstalar firmware para resolver un problema?",
+"Can I reset my trackers safely?",
+"Hi, can I reset my trackers safely?",
+"Could you tell me: can I reset my trackers safely?"
+]
+},
+{
+"id": "UV-063",
+"cat": "Problemas técnicos y drift",
+"q": {
+"es": "Se calienta, huele mal o la batería está hinchada, qué hago?",
+"en": "How do I check battery status?"
+},
+"a": {
+"es": "Dejar de usar y cargar el dispositivo, mantenerlo lejos de combustibles y escalar de inmediato. No pedir manipulacion de batería.",
+"en": "Battery display is available in many SlimeVR-compatible setups but can depend on firmware and charging state; confirm your model."
+},
+"alias": [
+"Se calienta, huele mal o la batería está hinchada, qué hago?",
+"Hola, se calienta, huele mal o la batería está hinchada, qué hago?",
+"Quisiera saber: se calienta, huele mal o la batería está hinchada, qué hago?",
+"Una pregunta: Se calienta, huele mal o la batería está hinchada, qué hago?",
+"How do I check battery status?",
+"Hi, how do I check battery status?",
+"Could you tell me: how do I check battery status?"
+]
+},
+{
+"id": "UV-064",
+"cat": "Batería y carga",
+"q": {
+"es": "Cuántas horas dura la batería?",
+"en": "How long does the battery last?"
+},
+"a": {
+"es": "En comunicaciones históricas se indicaron 16 a 20 horas aprox. y algunos anuncios Budget hasta 18 horas; confirmar autonomía especifica por SKU y condiciones.",
+"en": "Runtime depends on model and use. Older communications mention roughly 16–20 hours; a Wi-Fi Budget listing quoted up to 18 hours, not a universal guarantee."
+},
+"alias": [
+"Cuántas horas dura la batería?",
+"Hola, cuántas horas dura la batería?",
+"Quisiera saber: cuántas horas dura la batería?",
+"cuanto les dura la pila?",
+"rinden todo el día?",
+"duración batería real?",
+"How long does the battery last?",
+"Hi, how long does the battery last?",
+"Could you tell me: how long does the battery last?",
+"How many hours per charge?",
+"Battery life?",
+"Will they last a full VRChat session?"
+]
+},
+{
+"id": "UV-065",
+"cat": "Batería y carga",
+"q": {
+"es": "Cómo se cuando está cargando?",
+"en": "What does the blue light mean while charging?"
+},
+"a": {
+"es": "Algunos modelos usan luz azul mientras cargan y se apaga al completar; confirmar significado de LED por revision de hardware.",
+"en": "Some versions use a blue charging LED. Its exact meaning depends on board revision; check the applicable guide."
+},
+"alias": [
+"Cómo se cuando está cargando?",
+"Hola, cómo se cuando está cargando?",
+"Quisiera saber: cómo se cuando está cargando?",
+"Una pregunta: Cómo se cuando está cargando?",
+"What does the blue light mean while charging?",
+"Hi, what does the blue light mean while charging?",
+"Could you tell me: what does the blue light mean while charging?"
+]
+},
+{
+"id": "UV-066",
+"cat": "Batería y carga",
+"q": {
+"es": "Cómo se cuando llegó a 100 por ciento?",
+"en": "How do I know the battery is 100% charged?"
+},
+"a": {
+"es": "En ciertos modelos la luz de carga apagada indica carga completa; verificar guia del hardware exacto y no basarse solo en LED.",
+"en": "Some revisions turn off the charging indicator when complete; confirm the model instead of relying on a universal LED rule."
+},
+"alias": [
+"Cómo se cuando llegó a 100 por ciento?",
+"Hola, cómo se cuando llegó a 100 por ciento?",
+"Quisiera saber: cómo se cuando llegó a 100 por ciento?",
+"Una pregunta: Cómo se cuando llegó a 100 por ciento?",
+"How do I know the battery is 100% charged?",
+"Hi, how do I know the battery is 100% charged?",
+"Could you tell me: how do I know the battery is 100% charged?"
+]
+},
+{
+"id": "UV-067",
+"cat": "Batería y carga",
+"q": {
+"es": "Puedo ver el porcentaje de batería en SlimeVR?",
+"en": "Can I see battery percentage in SlimeVR?"
+},
+"a": {
+"es": "En muchos modelos la app muestra batería; en algunos puede depender de desconectar el cargador y de la versión de firmware.",
+"en": "Many models report battery level in the app. It may depend on firmware and whether charging is connected."
+},
+"alias": [
+"Puedo ver el porcentaje de batería en SlimeVR?",
+"Hola, puedo ver el porcentaje de batería en SlimeVR?",
+"Quisiera saber: puedo ver el porcentaje de batería en SlimeVR?",
+"Una pregunta: Puedo ver el porcentaje de batería en SlimeVR?",
+"Can I see battery percentage in SlimeVR?",
+"Hi, can I see battery percentage in SlimeVR?",
+"Could you tell me: can I see battery percentage in SlimeVR?"
+]
+},
+{
+"id": "UV-068",
+"cat": "Batería y carga",
+"q": {
+"es": "Qué cargador USB debo utilizar?",
+"en": "What USB charger should I use?"
+},
+"a": {
+"es": "Usar cargador compatible con instrucciones del SKU; no prometer compatibilidad con cualquier protocolo o cargador rapido.",
+"en": "Use the charger type stated in the exact product guide; do not assume every fast-charging adapter is suitable."
+},
+"alias": [
+"Qué cargador USB debo utilizar?",
+"Hola, qué cargador USB debo utilizar?",
+"Quisiera saber: qué cargador USB debo utilizar?",
+"Una pregunta: Qué cargador USB debo utilizar?",
+"What USB charger should I use?",
+"Hi, what USB charger should I use?",
+"Could you tell me: what USB charger should I use?"
+]
+},
+{
+"id": "UV-069",
+"cat": "Batería y carga",
+"q": {
+"es": "Un tracker no carga, aplica garantía?",
+"en": "One tracker won't charge. Is that under warranty?"
+},
+"a": {
+"es": "Pedir evidencia del LED, cable, puerto, cargador y pedido, diagnosticar y escalar si falla hardware.",
+"en": "Please provide the order, cable/charger test results and a picture or video. Hardware claims require technician review and policy verification."
+},
+"alias": [
+"Un tracker no carga, aplica garantía?",
+"Hola, un tracker no carga, aplica garantía?",
+"Quisiera saber: un tracker no carga, aplica garantía?",
+"Una pregunta: Un tracker no carga, aplica garantía?",
+"One tracker won't charge. Is that under warranty?",
+"Hi, one tracker won't charge. Is that under warranty?",
+"Could you tell me: one tracker won't charge. Is that under warranty?"
+]
+},
+{
+"id": "UV-070",
+"cat": "Batería y carga",
+"q": {
+"es": "Puedo jugar mientras cargan los trackers?",
+"en": "Can I play while the trackers are charging?"
+},
+"a": {
+"es": "Depende del hardware, calor y recomendaciones del fabricante; revisar manual exacto antes de aconsejar.",
+"en": "This depends on the hardware, temperature and manual. Please check the exact model before doing so."
+},
+"alias": [
+"Puedo jugar mientras cargan los trackers?",
+"Hola, puedo jugar mientras cargan los trackers?",
+"Quisiera saber: puedo jugar mientras cargan los trackers?",
+"Una pregunta: Puedo jugar mientras cargan los trackers?",
+"Can I play while the trackers are charging?",
+"Hi, can I play while the trackers are charging?",
+"Could you tell me: can I play while the trackers are charging?"
+]
+},
+{
+"id": "UV-072",
+"cat": "Atención y soporte",
+"q": {
+"es": "Qué horario tiene el soporte?",
+"en": "What are your support hours?"
+},
+"a": {
+"es": "Lunes a sabado 11:00 a 20:00 hora del Pacifico; no es atención 24/7.",
+"en": "Our historically stated support hours are Monday–Saturday, 11 a.m.–8 p.m. Pacific time; not around the clock. Availability should be confirmed."
+},
+"alias": [
+"Qué horario tiene el soporte?",
+"Hola, qué horario tiene el soporte?",
+"Quisiera saber: qué horario tiene el soporte?",
+"Una pregunta: Qué horario tiene el soporte?",
+"What are your support hours?",
+"Hi, what are your support hours?",
+"Could you tell me: what are your support hours?"
+]
+},
+{
+"id": "UV-073",
+"cat": "Atención y soporte",
+"q": {
+"es": "Puedo tener ayuda personalizada 1 a 1?",
+"en": "Can I get one-on-one help?"
+},
+"a": {
+"es": "Historial menciona soporte uno a uno y sesion de configuración; coordinar disponibilidad en horario.",
+"en": "Personalized setup support has been offered for buyers; please share your order ID and we can coordinate a session when available."
+},
+"alias": [
+"Puedo tener ayuda personalizada 1 a 1?",
+"Hola, puedo tener ayuda personalizada 1 a 1?",
+"Quisiera saber: puedo tener ayuda personalizada 1 a 1?",
+"Una pregunta: Puedo tener ayuda personalizada 1 a 1?",
+"Can I get one-on-one help?",
+"Hi, can I get one-on-one help?",
+"Could you tell me: can I get one-on-one help?"
+]
+},
+{
+"id": "UV-074",
+"cat": "Atención y soporte",
+"q": {
+"es": "Qué información necesitan para ayudarme?",
+"en": "What details do you need for support?"
+},
+"a": {
+"es": "Order ID, plataforma de compra, modelo, sensores si se conocen, headset, PC/Android, sintomas y fotos/video/logs relevantes.",
+"en": "We need your order ID, purchase channel, exact tracker model, headset and server device, symptoms, and relevant non-sensitive photos/videos or logs."
+},
+"alias": [
+"Qué información necesitan para ayudarme?",
+"Hola, qué información necesitan para ayudarme?",
+"Quisiera saber: qué información necesitan para ayudarme?",
+"Una pregunta: Qué información necesitan para ayudarme?",
+"What details do you need for support?",
+"Hi, what details do you need for support?",
+"Could you tell me: what details do you need for support?"
+]
+},
+{
+"id": "UV-075",
+"cat": "Atención y soporte",
+"q": {
+"es": "Pueden ayudarme si compré mis trackers a otro vendedor?",
+"en": "Do you support trackers bought from another seller?"
+},
+"a": {
+"es": "El soporte postventa personalizado y garantía de UsagiVR se orientan al comprador de UsagiVR con pedido verificable.",
+"en": "UsagiVR's personalized post-sale service and warranty are intended for its verified buyers. General public setup resources may still help."
+},
+"alias": [
+"Pueden ayudarme si compré mis trackers a otro vendedor?",
+"Hola, pueden ayudarme si compré mis trackers a otro vendedor?",
+"Quisiera saber: pueden ayudarme si compré mis trackers a otro vendedor?",
+"Una pregunta: Pueden ayudarme si compré mis trackers a otro vendedor?",
+"Do you support trackers bought from another seller?",
+"Hi, do you support trackers bought from another seller?",
+"Could you tell me: do you support trackers bought from another seller?"
+]
+},
+{
+"id": "UV-077",
+"cat": "Atención y soporte",
+"q": {
+"es": "Dan soporte para actualizaciones y calibración?",
+"en": "Can you help with updates and calibration?"
+},
+"a": {
+"es": "Los compradores documentados reciben orientación de setup y troubleshooting compatible, según capacidad y horario.",
+"en": "Existing customer support historically includes compatible setup and troubleshooting guidance, subject to the model and support availability."
+},
+"alias": [
+"Dan soporte para actualizaciones y calibración?",
+"Hola, dan soporte para actualizaciones y calibración?",
+"Quisiera saber: dan soporte para actualizaciones y calibración?",
+"Una pregunta: Dan soporte para actualizaciones y calibración?",
+"Can you help with updates and calibration?",
+"Hi, can you help with updates and calibration?",
+"Could you tell me: can you help with updates and calibration?"
+]
+},
+{
+"id": "UV-099",
+"cat": "Envíos y seguimiento",
+"q": {
+"es": "Desde donde envían los trackers?",
+"en": "Where are the trackers shipped from?"
+},
+"a": {
+"es": "Historial indica inventario y despacho desde California, Estados Unidos; comprobar almacen activo para pedido actual.",
+"en": "Historically our stock shipped from California, USA. The active shipping location for a new order must be checked."
+},
+"alias": [
+"Desde donde envían los trackers?",
+"Hola, desde donde envían los trackers?",
+"Quisiera saber: desde donde envían los trackers?",
+"Una pregunta: Desde donde envían los trackers?",
+"Where are the trackers shipped from?",
+"Hi, where are the trackers shipped from?",
+"Could you tell me: where are the trackers shipped from?"
+]
+},
+{
+"id": "UV-100",
+"cat": "Envíos y seguimiento",
+"q": {
+"es": "Cuándo enviarán mi pedido?",
+"en": "When will my order ship?"
+},
+"a": {
+"es": "Segun historial hay manejo mismo o siguiente día habil, pero depende de stock, montaje, personalizacion y fecha de compra.",
+"en": "Historical orders were often handled same/next business day, but stock, customization and current fulfillment status can change this."
+},
+"alias": [
+"Cuándo enviarán mi pedido?",
+"Hola, cuándo enviarán mi pedido?",
+"Quisiera saber: cuándo enviarán mi pedido?",
+"Una pregunta: Cuándo enviarán mi pedido?",
+"When will my order ship?",
+"Hi, when will my order ship?",
+"Could you tell me: when will my order ship?"
+]
+},
+{
+"id": "UV-101",
+"cat": "Envíos y seguimiento",
+"q": {
+"es": "Cuánto tarda USPS Priority Mail?",
+"en": "How many days does USPS Priority take?"
+},
+"a": {
+"es": "En comunicaciones se han citado 3 a 4 días dentro de EE. UU. como estimación, no como entrega garantizada.",
+"en": "Older communications cited about 3–4 business days in the US as an estimate, not a guaranteed delivery date."
+},
+"alias": [
+"Cuánto tarda USPS Priority Mail?",
+"Hola, cuánto tarda USPS Priority Mail?",
+"Quisiera saber: cuánto tarda USPS Priority Mail?",
+"Una pregunta: Cuánto tarda USPS Priority Mail?",
+"How many days does USPS Priority take?",
+"Hi, how many days does USPS Priority take?",
+"Could you tell me: how many days does USPS Priority take?"
+]
+},
+{
+"id": "UV-102",
+"cat": "Envíos y seguimiento",
+"q": {
+"es": "Dónde esta mi número de tracking?",
+"en": "Where can I find my tracking number?"
+},
+"a": {
+"es": "Obtenerlo del marketplace u orden real; no inventar número ni enlace.",
+"en": "Your marketplace order page should contain the shipment tracking when available; support can check the real order details."
+},
+"alias": [
+"Dónde esta mi número de tracking?",
+"Hola, dónde esta mi número de tracking?",
+"Quisiera saber: dónde esta mi número de tracking?",
+"Una pregunta: Dónde esta mi número de tracking?",
+"Where can I find my tracking number?",
+"Hi, where can I find my tracking number?",
+"Could you tell me: where can I find my tracking number?"
+]
+},
+{
+"id": "UV-103",
+"cat": "Envíos y seguimiento",
+"q": {
+"es": "Mi etiqueta fue creada pero USPS no actualiza, se perdió?",
+"en": "USPS says label created with no updates. Is it lost?"
+},
+"a": {
+"es": "Puede faltar primer escaneo tras recoleccion; revisar eventos reales antes de concluir pérdida.",
+"en": "A first acceptance scan can be delayed. We need to check actual tracking events and dates before declaring a loss."
+},
+"alias": [
+"Mi etiqueta fue creada pero USPS no actualiza, se perdió?",
+"Hola, mi etiqueta fue creada pero USPS no actualiza, se perdió?",
+"Quisiera saber: mi etiqueta fue creada pero USPS no actualiza, se perdió?",
+"solo dice shipping label created",
+"tracking sin escaneo",
+"usps no recibió el paquete?",
+"USPS says label created with no updates. Is it lost?",
+"Hi, uSPS says label created with no updates. Is it lost?",
+"Could you tell me: uSPS says label created with no updates. Is it lost?",
+"USPS only shows label created.",
+"No carrier scan yet.",
+"Has my item actually shipped?"
+]
+},
+{
+"id": "UV-104",
+"cat": "Envíos y seguimiento",
+"q": {
+"es": "Mi paquete figura como Delivered pero no lo tengo, que hacemos?",
+"en": "Tracking says delivered but I have nothing."
+},
+"a": {
+"es": "Gracias por avisarnos. Compártenos el número de pedido y el tracking que aparece como entregado. Revisaremos los datos y un agente humano continuará el caso; no podemos determinar el resultado sin investigarlo.",
+"en": "Thanks for telling us. Please share the order ID and the tracking that shows delivered. A human agent will review the case; we cannot determine the outcome without investigating."
+},
+"alias": [
+"Mi paquete figura como Delivered pero no lo tengo, que hacemos?",
+"Hola, mi paquete figura como Delivered pero no lo tengo, que hacemos?",
+"Quisiera saber: mi paquete figura como Delivered pero no lo tengo, que hacemos?",
+"entregado pero no tengo nada",
+"usps dice delivery y no llegó",
+"me lo dejaron a otra persona?",
+"Tracking says delivered but I have nothing.",
+"Hi, tracking says delivered but I have nothing.",
+"Could you tell me: tracking says delivered but I have nothing.",
+"Marked delivered but not received.",
+"USPS says delivered, nothing here.",
+"Where is my package? Tracking says delivered."
+]
+},
+{
+"id": "UV-106",
+"cat": "Envíos y seguimiento",
+"q": {
+"es": "Puse la dirección incorrecta, pueden cambiarla?",
+"en": "I entered the wrong shipping address. Can you change it?"
+},
+"a": {
+"es": "Antes del envío depende de plataforma; después de enviado no prometer cambio, interceptacion o reposicion sin confirmacion del carrier.",
+"en": "We must check the platform and shipment status. Do not expect an in-transit address change unless the carrier/platform confirms it."
+},
+"alias": [
+"Puse la dirección incorrecta, pueden cambiarla?",
+"Hola, puse la dirección incorrecta, pueden cambiarla?",
+"Quisiera saber: puse la dirección incorrecta, pueden cambiarla?",
+"Una pregunta: Puse la dirección incorrecta, pueden cambiarla?",
+"I entered the wrong shipping address. Can you change it?",
+"Hi, i entered the wrong shipping address. Can you change it?",
+"Could you tell me: i entered the wrong shipping address. Can you change it?"
+]
+},
+{
+"id": "UV-107",
+"cat": "Envíos y seguimiento",
+"q": {
+"es": "Hacen envíos internacionales?",
+"en": "Do you ship internationally?"
+},
+"a": {
+"es": "Se mencionó reapertura de envíos internacionales; validar pais habilitado, carrier, restricciones y cotizacion actual.",
+"en": "International shipping has been offered historically. Country availability, fees and carrier options require current checkout verification."
+},
+"alias": [
+"Hacen envíos internacionales?",
+"Hola, hacen envíos internacionales?",
+"Quisiera saber: hacen envíos internacionales?",
+"Una pregunta: Hacen envíos internacionales?",
+"Do you ship internationally?",
+"Hi, do you ship internationally?",
+"Could you tell me: do you ship internationally?"
+]
+},
+{
+"id": "UV-108",
+"cat": "Envíos y seguimiento",
+"q": {
+"es": "Debo pagar aduana e impuestos?",
+"en": "Do I have to pay import duties or taxes?"
+},
+"a": {
+"es": "En políticas históricas esos cargos corren por cuenta del comprador internacional; confirmar canal y pais.",
+"en": "Cross-border duties may apply depending on your destination and checkout terms. Check the specific listing, tax collection and destination rules."
+},
+"alias": [
+"Debo pagar aduana e impuestos?",
+"Hola, debo pagar aduana e impuestos?",
+"Quisiera saber: debo pagar aduana e impuestos?",
+"Una pregunta: Debo pagar aduana e impuestos?",
+"Do I have to pay import duties or taxes?",
+"Hi, do I have to pay import duties or taxes?",
+"Could you tell me: do I have to pay import duties or taxes?"
+]
+},
+{
+"id": "UV-109",
+"cat": "Envíos y seguimiento",
+"q": {
+"es": "El paquete lleva firma para entregar?",
+"en": "Will you require a signature on delivery?"
+},
+"a": {
+"es": "Algunos envíos usan firma; verificar servicio especifico de la etiqueta en lugar de asumirlo.",
+"en": "Some shipments use signature service. We must verify it on the actual shipping label."
+},
+"alias": [
+"El paquete lleva firma para entregar?",
+"Hola, el paquete lleva firma para entregar?",
+"Quisiera saber: el paquete lleva firma para entregar?",
+"Una pregunta: El paquete lleva firma para entregar?",
+"Will you require a signature on delivery?",
+"Hi, will you require a signature on delivery?",
+"Could you tell me: will you require a signature on delivery?"
+]
+},
+{
+"id": "UV-110",
+"cat": "Envíos y seguimiento",
+"q": {
+"es": "Mi paquete llegó incompleto o dañado, qué hago?",
+"en": "My package arrived damaged or missing parts."
+},
+"a": {
+"es": "Pedir Order ID, fotos del empaque, etiqueta, contenido y fecha de entrega; abrir investigacion/garantía según caso.",
+"en": "Please provide the order ID, delivery date, photos of the label/packaging and a list of missing or damaged items. A person will review it."
+},
+"alias": [
+"Mi paquete llegó incompleto o dañado, qué hago?",
+"Hola, mi paquete llegó incompleto o dañado, qué hago?",
+"Quisiera saber: mi paquete llegó incompleto o dañado, qué hago?",
+"Una pregunta: Mi paquete llegó incompleto o dañado, qué hago?",
+"My package arrived damaged or missing parts.",
+"Hi, my package arrived damaged or missing parts.",
+"Could you tell me: my package arrived damaged or missing parts."
+]
+},
+{
+"id": "UV-111",
+"cat": "Precios y ventas",
+"q": {
+"es": "Me puedes dar un descuento o bajar el precio?",
+"en": "Can you give me a discount?"
+},
+"a": {
+"es": "Los precios y promociones son los publicados en la tienda. Si me compartes el producto exacto, puedo ayudarte a revisar la opción adecuada sin prometer descuentos no autorizados.",
+"en": "Prices and promotions are as listed in the store. Share the exact product so I can help compare options without promising unauthorized discounts."
+},
+"alias": [
+"Me puedes dar un descuento o bajar el precio?",
+"Hola, me puedes dar un descuento o bajar el precio?",
+"Quisiera saber: me puedes dar un descuento o bajar el precio?",
+"es tu mejor precio?",
+"me haces rebaja?",
+"descuento si compro seis?",
+"Can you give me a discount?",
+"Hi, can you give me a discount?",
+"Could you tell me: can you give me a discount?",
+"What's the lowest you'll take?",
+"Can you do a better price?",
+"Any discount if I buy six?"
+]
+},
+{
+"id": "UV-112",
+"cat": "Precios y ventas",
+"q": {
+"es": "Cuánto cuesta un set de 5, 6, 8 u 11 trackers?",
+"en": "How much are 5, 6, 8 or 11 trackers?"
+},
+"a": {
+"es": "Consultar precio vigente del anuncio/SKU y moneda. No usar precios historicos como actuales.",
+"en": "Prices depend on the current model, sensor and selected quantity. Please check the current listing rather than relying on historical prices."
+},
+"alias": [
+"Cuánto cuesta un set de 5, 6, 8 u 11 trackers?",
+"Hola, cuánto cuesta un set de 5, 6, 8 u 11 trackers?",
+"Quisiera saber: cuánto cuesta un set de 5, 6, 8 u 11 trackers?",
+"Una pregunta: Cuánto cuesta un set de 5, 6, 8 u 11 trackers?",
+"How much are 5, 6, 8 or 11 trackers?",
+"Hi, how much are 5, 6, 8 or 11 trackers?",
+"Could you tell me: how much are 5, 6, 8 or 11 trackers?"
+]
+},
+{
+"id": "UV-113",
+"cat": "Precios y ventas",
+"q": {
+"es": "Qué diferencia justifica que High-End cueste más?",
+"en": "Why are high-end trackers more expensive?"
+},
+"a": {
+"es": "Sensores, tipo de conexión, materiales y rendimiento esperado cambian; explicar solo datos comprobados del modelo.",
+"en": "Sensor choice, connection hardware and other verified SKU features affect cost. We can compare the specific two models you are considering."
+},
+"alias": [
+"Qué diferencia justifica que High-End cueste más?",
+"Hola, qué diferencia justifica que High-End cueste más?",
+"Quisiera saber: qué diferencia justifica que High-End cueste más?",
+"Una pregunta: Qué diferencia justifica que High-End cueste más?",
+"Why are high-end trackers more expensive?",
+"Hi, why are high-end trackers more expensive?",
+"Could you tell me: why are high-end trackers more expensive?"
+]
+},
+{
+"id": "UV-114",
+"cat": "Precios y ventas",
+"q": {
+"es": "Puedo entregar mi kit anterior como parte del pago?",
+"en": "Can I trade in my older trackers?"
+},
+"a": {
+"es": "Una política previa indicaba que no se aceptan trade-ins/buybacks; confirmar vigencia y no ofrecer por defecto.",
+"en": "We have historically not offered a standard trade-in program. Any current exchange or upgrade offer must be confirmed."
+},
+"alias": [
+"Puedo entregar mi kit anterior como parte del pago?",
+"Hola, puedo entregar mi kit anterior como parte del pago?",
+"Quisiera saber: puedo entregar mi kit anterior como parte del pago?",
+"Una pregunta: Puedo entregar mi kit anterior como parte del pago?",
+"Can I trade in my older trackers?",
+"Hi, can I trade in my older trackers?",
+"Could you tell me: can I trade in my older trackers?"
+]
+},
+{
+"id": "UV-115",
+"cat": "Precios y ventas",
+"q": {
+"es": "Hay stock disponible?",
+"en": "Are they in stock?"
+},
+"a": {
+"es": "Consultar inventario en vivo; nunca inferir stock de una conversacion antigua.",
+"en": "Live inventory needs to be checked in the store before we can confirm availability."
+},
+"alias": [
+"Hay stock disponible?",
+"Hola, hay stock disponible?",
+"Quisiera saber: hay stock disponible?",
+"Una pregunta: Hay stock disponible?",
+"Are they in stock?",
+"Hi, are they in stock?",
+"Could you tell me: are they in stock?"
+]
+},
+{
+"id": "UV-116",
+"cat": "Precios y ventas",
+"q": {
+"es": "eBay me cobró pero ustedes dicen no tener pago?",
+"en": "eBay charged me but you say the payment is missing."
+},
+"a": {
+"es": "eBay procesa pagos; consultar estado transaccional y orientar al soporte de la plataforma cuando corresponda, sin solicitar datos bancarios.",
+"en": "eBay processes the transaction. Please check the order/payment status in eBay without sharing card or banking details with us."
+},
+"alias": [
+"eBay me cobró pero ustedes dicen no tener pago?",
+"Hola, eBay me cobró pero ustedes dicen no tener pago?",
+"Quisiera saber: eBay me cobró pero ustedes dicen no tener pago?",
+"Una pregunta: eBay me cobró pero ustedes dicen no tener pago?",
+"eBay charged me but you say the payment is missing.",
+"Hi, eBay charged me but you say the payment is missing.",
+"Could you tell me: eBay charged me but you say the payment is missing."
+]
+},
+{
+"id": "UV-117",
+"cat": "Precios y ventas",
+"q": {
+"es": "En que tienda compro y que método de pago aceptan?",
+"en": "Where can I buy and what payments do you take?"
+},
+"a": {
+"es": "Consultar marketplace oficial y metodos visibles al checkout, evitando enlaces de pago externos no verificados.",
+"en": "Purchase through the listed official marketplace or storefront; available payment methods appear at checkout. Do not send payment to unverified accounts."
+},
+"alias": [
+"En que tienda compro y que método de pago aceptan?",
+"Hola, en que tienda compro y que método de pago aceptan?",
+"Quisiera saber: en que tienda compro y que método de pago aceptan?",
+"Una pregunta: En que tienda compro y que método de pago aceptan?",
+"Where can I buy and what payments do you take?",
+"Hi, where can I buy and what payments do you take?",
+"Could you tell me: where can I buy and what payments do you take?"
+]
+},
+{
+"id": "UV-118",
+"cat": "Super Dock y accesorios",
+"q": {
+"es": "El SlimeVR Super Dock incluye trackers?",
+"en": "Does the Super Dock come with trackers?"
+},
+"a": {
+"es": "No. Es un dock de carga; se vende sin trackers.",
+"en": "No. The Super Dock is a charging accessory and does not include trackers."
+},
+"alias": [
+"El SlimeVR Super Dock incluye trackers?",
+"Hola, el SlimeVR Super Dock incluye trackers?",
+"Quisiera saber: el SlimeVR Super Dock incluye trackers?",
+"el dock trae trackers?",
+"viene set incluido con la base de carga?",
+"son siete sensores?",
+"Does the Super Dock come with trackers?",
+"Hi, does the Super Dock come with trackers?",
+"Could you tell me: does the Super Dock come with trackers?",
+"Are seven trackers included with the dock?",
+"Is this dock only?",
+"Does the charging station come with trackers?"
+]
+},
+{
+"id": "UV-119",
+"cat": "Super Dock y accesorios",
+"q": {
+"es": "Para cuantos trackers sirve el Super Dock?",
+"en": "How many trackers fit on the Super Dock?"
+},
+"a": {
+"es": "El anuncio histórico indica siete puertos y capacidad para cargar hasta siete trackers a la vez, con adaptadores según variante.",
+"en": "The historical Super Dock listing described seven charging ports; exact supported cables/adapters vary by variant."
+},
+"alias": [
+"Para cuantos trackers sirve el Super Dock?",
+"Hola, para cuantos trackers sirve el Super Dock?",
+"Quisiera saber: para cuantos trackers sirve el Super Dock?",
+"Una pregunta: Para cuantos trackers sirve el Super Dock?",
+"How many trackers fit on the Super Dock?",
+"Hi, how many trackers fit on the Super Dock?",
+"Could you tell me: how many trackers fit on the Super Dock?"
+]
+},
+{
+"id": "UV-120",
+"cat": "Super Dock y accesorios",
+"q": {
+"es": "Incluye adaptadores USB-A a USB-C?",
+"en": "Are USB-A to USB-C adapters included with the dock?"
+},
+"a": {
+"es": "El listado histórico del Super Dock menciona adaptadores; confirmar cantidad y variante exacta.",
+"en": "Some Super Dock listings included adapters. We need the exact variation to verify quantity and type."
+},
+"alias": [
+"Incluye adaptadores USB-A a USB-C?",
+"Hola, incluye adaptadores USB-A a USB-C?",
+"Quisiera saber: incluye adaptadores USB-A a USB-C?",
+"Una pregunta: Incluye adaptadores USB-A a USB-C?",
+"Are USB-A to USB-C adapters included with the dock?",
+"Hi, are USB-A to USB-C adapters included with the dock?",
+"Could you tell me: are USB-A to USB-C adapters included with the dock?"
+]
+},
+{
+"id": "UV-122",
+"cat": "Super Dock y accesorios",
+"q": {
+"es": "El dongle se vende solo y funciona de inmediato?",
+"en": "Can I buy a dongle alone, and will it work immediately?"
+},
+"a": {
+"es": "Depende del modelo: algunos dongles vendidos por separado requieren firmware y pueden ser AS-IS sin soporte. Consultar anuncio exacto.",
+"en": "Standalone dongles vary by firmware and pairing requirements. Verify the specific listing before assuming plug-and-play or support coverage."
+},
+"alias": [
+"El dongle se vende solo y funciona de inmediato?",
+"Hola, el dongle se vende solo y funciona de inmediato?",
+"Quisiera saber: el dongle se vende solo y funciona de inmediato?",
+"Una pregunta: El dongle se vende solo y funciona de inmediato?",
+"Can I buy a dongle alone, and will it work immediately?",
+"Hi, can I buy a dongle alone, and will it work immediately?",
+"Could you tell me: can I buy a dongle alone, and will it work immediately?"
+]
+},
+{
+"id": "UV-124",
+"cat": "Prospección y preventa",
+"q": {
+"es": "Todavía no compro, ¿qué kit me recomiendan?",
+"en": "I have not ordered yet. Which kit should I get?"
+},
+"a": {
+"es": "Te ayudo a elegir. ¿Usarás Quest standalone o PCVR? Después podemos comparar cantidad de trackers, sensores y conexión del catálogo vigente.",
+"en": "I can help you choose. Will you play Quest standalone or PCVR? Then we can compare tracker count, sensors and the current catalog."
+},
+"alias": [
+"Todavía no compro, ¿qué kit me recomiendan?",
+"Hola, todavía no compro, ¿qué kit me recomiendan?",
+"Una duda: todavía no compro, ¿qué kit me recomiendan?",
+"I have not ordered yet. Which kit should I get?",
+"Hi, i have not ordered yet. Which kit should I get?",
+"Quick question: i have not ordered yet. Which kit should I get?"
+]
+},
+{
+"id": "UV-125",
+"cat": "Prospección y preventa",
+"q": {
+"es": "¿Qué set recomiendan para bailar en VRChat?",
+"en": "Which kit is best for dancing in VRChat?"
+},
+"a": {
+"es": "Para bailar conviene revisar comodidad, puntos corporales, presupuesto y tendencia al drift. ¿Juegas en PCVR o Quest standalone?",
+"en": "For dancing, we should compare comfort, body tracking points, budget and drift behavior. Are you using PCVR or Quest standalone?"
+},
+"alias": [
+"¿Qué set recomiendan para bailar en VRChat?",
+"Hola, ¿Qué set recomiendan para bailar en VRChat?",
+"Una duda: ¿Qué set recomiendan para bailar en VRChat?",
+"Which kit is best for dancing in VRChat?",
+"Hi, which kit is best for dancing in VRChat?",
+"Quick question: which kit is best for dancing in VRChat?"
+]
+},
+{
+"id": "UV-126",
+"cat": "Prospección y preventa",
+"q": {
+"es": "¿Cómo sé qué modelo estoy viendo en el anuncio?",
+"en": "How can I tell which model this listing is for?"
+},
+"a": {
+"es": "Comparte el enlace o nombre exacto de la variante. Identificaré sensor, cantidad y conexión antes de explicarte compatibilidad o contenido.",
+"en": "Please share the listing link or exact variation name. I will identify its sensor, quantity and connection method before describing compatibility or contents."
+},
+"alias": [
+"¿Cómo sé qué modelo estoy viendo en el anuncio?",
+"Hola, ¿Cómo sé qué modelo estoy viendo en el anuncio?",
+"Una duda: ¿Cómo sé qué modelo estoy viendo en el anuncio?",
+"How can I tell which model this listing is for?",
+"Hi, how can I tell which model this listing is for?",
+"Quick question: how can I tell which model this listing is for?"
+]
+},
+{
+"id": "UV-127",
+"cat": "Prospección y preventa",
+"q": {
+"es": "¿Necesito comprar el dongle por separado para este kit?",
+"en": "Do I have to buy a dongle separately for this set?"
+},
+"a": {
+"es": "Depende del SKU: los kits con receptor y los Budget Wi-Fi no comparten los mismos accesorios. Envíame el anuncio y confirmaré lo incluido.",
+"en": "That depends on the SKU: receiver kits and Wi-Fi Budget models have different requirements. Share the listing so we can check included accessories."
+},
+"alias": [
+"¿Necesito comprar el dongle por separado para este kit?",
+"Hola, ¿Necesito comprar el dongle por separado para este kit?",
+"Una duda: ¿Necesito comprar el dongle por separado para este kit?",
+"Do I have to buy a dongle separately for this set?",
+"Hi, do I have to buy a dongle separately for this set?",
+"Quick question: do I have to buy a dongle separately for this set?"
+]
+},
+{
+"id": "UV-128",
+"cat": "Prospección y preventa",
+"q": {
+"es": "¿Cuál tiene menos drift para sesiones largas?",
+"en": "Which trackers drift less for long play sessions?"
+},
+"a": {
+"es": "No existe garantía de drift cero. Podemos comparar sensores, tipo de enlace, uso y presupuesto usando datos publicados del SKU.",
+"en": "No kit should be guaranteed zero drift. We can compare sensor options, connection type, use case and budget using verified SKU specifications."
+},
+"alias": [
+"¿Cuál tiene menos drift para sesiones largas?",
+"Hola, ¿Cuál tiene menos drift para sesiones largas?",
+"Una duda: ¿Cuál tiene menos drift para sesiones largas?",
+"Which trackers drift less for long play sessions?",
+"Hi, which trackers drift less for long play sessions?",
+"Quick question: which trackers drift less for long play sessions?"
+]
+},
+{
+"id": "UV-129",
+"cat": "Prospección y preventa",
+"q": {
+"es": "¿Puedo comprar un solo tracker en vez de un set?",
+"en": "Can I buy just one tracker instead of a bundle?"
+},
+"a": {
+"es": "Depende del inventario y las variantes actuales. Comparte el modelo o sensor que necesitas y consultaremos la tienda.",
+"en": "That depends on current inventory and variations. Tell us the required model or sensor so we can check the store."
+},
+"alias": [
+"¿Puedo comprar un solo tracker en vez de un set?",
+"Hola, ¿Puedo comprar un solo tracker en vez de un set?",
+"Una duda: ¿Puedo comprar un solo tracker en vez de un set?",
+"Can I buy just one tracker instead of a bundle?",
+"Hi, can I buy just one tracker instead of a bundle?",
+"Quick question: can I buy just one tracker instead of a bundle?"
+]
+},
+{
+"id": "UV-130",
+"cat": "Prospección y preventa",
+"q": {
+"es": "¿Se pueden usar para streaming o captura de movimiento?",
+"en": "Can I use these for streaming or motion capture?"
+},
+"a": {
+"es": "Pueden formar parte de flujos compatibles de seguimiento corporal, pero depende de la aplicación y el software puente. ¿Qué programa deseas usar?",
+"en": "They can support compatible body-tracking workflows, depending on your software and integration. Which app do you plan to use?"
+},
+"alias": [
+"¿Se pueden usar para streaming o captura de movimiento?",
+"Hola, ¿Se pueden usar para streaming o captura de movimiento?",
+"Una duda: ¿Se pueden usar para streaming o captura de movimiento?",
+"Can I use these for streaming or motion capture?",
+"Hi, can I use these for streaming or motion capture?",
+"Quick question: can I use these for streaming or motion capture?"
+]
+},
+{
+"id": "UV-131",
+"cat": "Prospección y preventa",
+"q": {
+"es": "¿Qué diferencia hay entre la conexión inalámbrica con dongle y Wi-Fi?",
+"en": "What is the difference between dongle and Wi-Fi versions?"
+},
+"a": {
+"es": "Los Budget Wi-Fi se conectan directamente por red 2.4 GHz; ciertos kits de gama alta usan receptor USB para conectar trackers al servidor. La red de Quest al servidor es otro enlace.",
+"en": "Budget Wi-Fi trackers connect over 2.4 GHz Wi-Fi; some higher-end kits use a USB receiver between trackers and server. Quest-to-server networking is a separate link."
+},
+"alias": [
+"¿Qué diferencia hay entre la conexión inalámbrica con dongle y Wi-Fi?",
+"Hola, ¿Qué diferencia hay entre la conexión inalámbrica con dongle y Wi-Fi?",
+"Una duda: ¿Qué diferencia hay entre la conexión inalámbrica con dongle y Wi-Fi?",
+"What is the difference between dongle and Wi-Fi versions?",
+"Hi, what is the difference between dongle and Wi-Fi versions?",
+"Quick question: what is the difference between dongle and Wi-Fi versions?"
+]
+},
+{
+"id": "UV-132",
+"cat": "Prospección y preventa",
+"q": {
+"es": "¿Es plug and play o necesito configurarlos?",
+"en": "Is it plug-and-play or do I have to set it up?"
+},
+"a": {
+"es": "Aunque algunos kits llegan presincronizados, debes instalar SlimeVR, asignar trackers y calibrar. La complejidad depende del equipo y modo VR.",
+"en": "Some kits ship pre-paired, but you still need SlimeVR software, body assignments and calibration. Complexity depends on your setup."
+},
+"alias": [
+"¿Es plug and play o necesito configurarlos?",
+"Hola, ¿Es plug and play o necesito configurarlos?",
+"Una duda: ¿Es plug and play o necesito configurarlos?",
+"Is it plug-and-play or do I have to set it up?",
+"Hi, is it plug-and-play or do I have to set it up?",
+"Quick question: is it plug-and-play or do I have to set it up?"
+]
+},
+{
+"id": "UV-133",
+"cat": "Prospección y preventa",
+"q": {
+"es": "¿Me pueden mandar un tutorial antes de comprar?",
+"en": "Can you send a tutorial before I order?"
+},
+"a": {
+"es": "Claro. Primero confirmemos qué producto te interesa y si usas PCVR o standalone para compartir la guía correcta.",
+"en": "Certainly. Let us first confirm the product and whether you use PCVR or standalone so we share the correct instructions."
+},
+"alias": [
+"¿Me pueden mandar un tutorial antes de comprar?",
+"Hola, ¿Me pueden mandar un tutorial antes de comprar?",
+"Una duda: ¿Me pueden mandar un tutorial antes de comprar?",
+"Can you send a tutorial before I order?",
+"Hi, can you send a tutorial before I order?",
+"Quick question: can you send a tutorial before I order?"
+]
+},
+{
+"id": "UV-134",
+"cat": "Prospección y preventa",
+"q": {
+"es": "¿Puedo tener una llamada antes de hacer la compra?",
+"en": "Can I book a support call before buying?"
+},
+"a": {
+"es": "Podemos resolver dudas de compatibilidad por mensaje. Las sesiones 1:1 personalizadas están orientadas principalmente a compradores; cualquier llamada previa necesita disponibilidad y confirmación humana.",
+"en": "We can answer compatibility questions by message. Personalized 1:1 setup is primarily for customers, and any pre-sale call needs staff approval and availability."
+},
+"alias": [
+"¿Puedo tener una llamada antes de hacer la compra?",
+"Hola, ¿Puedo tener una llamada antes de hacer la compra?",
+"Una duda: ¿Puedo tener una llamada antes de hacer la compra?",
+"Can I book a support call before buying?",
+"Hi, can I book a support call before buying?",
+"Quick question: can I book a support call before buying?"
+]
+},
+{
+"id": "UV-135",
+"cat": "Prospección y preventa",
+"q": {
+"es": "¿Son nuevos, hechos a mano o reacondicionados?",
+"en": "Are these new, handmade, or refurbished?"
+},
+"a": {
+"es": "Algunos anuncios históricos describen unidades armadas y probadas manualmente. La condición real (nuevo, usado u open box) es la indicada en la publicación específica.",
+"en": "Some historical listings describe hand-assembled and tested units. The actual item condition is the one shown in the exact listing."
+},
+"alias": [
+"¿Son nuevos, hechos a mano o reacondicionados?",
+"Hola, ¿Son nuevos, hechos a mano o reacondicionados?",
+"Una duda: ¿Son nuevos, hechos a mano o reacondicionados?",
+"Are these new, handmade, or refurbished?",
+"Hi, are these new, handmade, or refurbished?",
+"Quick question: are these new, handmade, or refurbished?"
+]
+},
+{
+"id": "UV-136",
+"cat": "Prospección y preventa",
+"q": {
+"es": "¿Tienen demostración de movimiento antes de comprar?",
+"en": "Do you have tracking demos before purchase?"
+},
+"a": {
+"es": "Podemos indicarte qué demostraciones están disponibles para el SKU específico. No prometeré resultados idénticos en todos los equipos.",
+"en": "We can direct you to demos available for the specific model. Results can vary by setup and should not be promised as identical everywhere."
+},
+"alias": [
+"¿Tienen demostración de movimiento antes de comprar?",
+"Hola, ¿Tienen demostración de movimiento antes de comprar?",
+"Una duda: ¿Tienen demostración de movimiento antes de comprar?",
+"Do you have tracking demos before purchase?",
+"Hi, do you have tracking demos before purchase?",
+"Quick question: do you have tracking demos before purchase?"
+]
+},
+{
+"id": "UV-137",
+"cat": "Prospección y preventa",
+"q": {
+"es": "¿En qué tienda oficial debo pagar?",
+"en": "Where should I pay for my order?"
+},
+"a": {
+"es": "Utiliza únicamente el checkout del anuncio o tienda oficial verificable; no envíes dinero a cuentas externas no verificadas.",
+"en": "Use the verified listing or official store checkout. Do not transfer money to unverified third-party accounts."
+},
+"alias": [
+"¿En qué tienda oficial debo pagar?",
+"Hola, ¿En qué tienda oficial debo pagar?",
+"Una duda: ¿En qué tienda oficial debo pagar?",
+"Where should I pay for my order?",
+"Hi, where should I pay for my order?",
+"Quick question: where should I pay for my order?"
+]
+},
+{
+"id": "UV-138",
+"cat": "Prospección y preventa",
+"q": {
+"es": "¿Cuánto costaría enviar a mi país?",
+"en": "How much is shipping to my country?"
+},
+"a": {
+"es": "Para cotizar correctamente necesito país y variante del producto. El precio definitivo y aduanas se verifican en checkout o con un agente humano.",
+"en": "For a quote, I need the destination country and product variation. Final checkout prices and import charges require verification."
+},
+"alias": [
+"¿Cuánto costaría enviar a mi país?",
+"Hola, ¿Cuánto costaría enviar a mi país?",
+"Una duda: ¿Cuánto costaría enviar a mi país?",
+"How much is shipping to my country?",
+"Hi, how much is shipping to my country?",
+"Quick question: how much is shipping to my country?"
+]
+},
+{
+"id": "UV-139",
+"cat": "Prospección y preventa",
+"q": {
+"es": "¿Qué pasa si mi Quest no acepta standalone?",
+"en": "What if my Quest setup cannot do standalone FBT?"
+},
+"a": {
+"es": "Antes de comprar, revisamos tu visor, dispositivo Android/PC y conexión del kit para evitar prometer un flujo incompatible. ¿Qué dispositivos tienes?",
+"en": "Before ordering, we should check your headset, Android/PC server device and tracker connection method. Which devices do you have?"
+},
+"alias": [
+"¿Qué pasa si mi Quest no acepta standalone?",
+"Hola, ¿Qué pasa si mi Quest no acepta standalone?",
+"Una duda: ¿Qué pasa si mi Quest no acepta standalone?",
+"What if my Quest setup cannot do standalone FBT?",
+"Hi, what if my Quest setup cannot do standalone FBT?",
+"Quick question: what if my Quest setup cannot do standalone FBT?"
+]
+},
+{
+"id": "UV-140",
+"cat": "Prospección y preventa",
+"q": {
+"es": "¿Puedo comprar ahora y recibir soporte después?",
+"en": "Can I get setup help after purchase?"
+},
+"a": {
+"es": "Los compradores de UsagiVR pueden solicitar asistencia de configuración según el producto y disponibilidad. Conserva tu número de pedido para verificar el servicio.",
+"en": "UsagiVR purchasers can request product-specific setup help subject to availability. Keep your order reference for verification."
+},
+"alias": [
+"¿Puedo comprar ahora y recibir soporte después?",
+"Hola, ¿Puedo comprar ahora y recibir soporte después?",
+"Una duda: ¿Puedo comprar ahora y recibir soporte después?",
+"Can I get setup help after purchase?",
+"Hi, can I get setup help after purchase?",
+"Quick question: can I get setup help after purchase?"
+]
+},
+{
+"id": "UV-141",
+"cat": "Prospección y preventa",
+"q": {
+"es": "¿Necesito un router cerca para jugar con los Budget?",
+"en": "Do I need a nearby router for Budget trackers?"
+},
+"a": {
+"es": "Los Budget Wi-Fi 2.4 GHz se benefician de señal estable y router cercano. Para Quest standalone, primero verifica si tu SKU y flujo lo soportan.",
+"en": "Budget 2.4 GHz Wi-Fi trackers benefit from a stable signal and nearby router. Quest standalone suitability must be checked per SKU."
+},
+"alias": [
+"¿Necesito un router cerca para jugar con los Budget?",
+"Hola, ¿Necesito un router cerca para jugar con los Budget?",
+"Una duda: ¿Necesito un router cerca para jugar con los Budget?",
+"Do I need a nearby router for Budget trackers?",
+"Hi, do I need a nearby router for Budget trackers?",
+"Quick question: do I need a nearby router for Budget trackers?"
+]
+},
+{
+"id": "UV-142",
+"cat": "Prospección y preventa",
+"q": {
+"es": "¿Por qué tienen diferentes precios los sets con igual cantidad?",
+"en": "Why do two six-packs have different prices?"
+},
+"a": {
+"es": "El número de trackers no determina todo el costo: sensor, conectividad, accesorios y versión pueden ser distintos. Compárteme los enlaces para compararlos.",
+"en": "Tracker count is not the only factor: sensor, connection method, accessories and revision can differ. Share both listing links to compare them."
+},
+"alias": [
+"¿Por qué tienen diferentes precios los sets con igual cantidad?",
+"Hola, ¿Por qué tienen diferentes precios los sets con igual cantidad?",
+"Una duda: ¿Por qué tienen diferentes precios los sets con igual cantidad?",
+"Why do two six-packs have different prices?",
+"Hi, why do two six-packs have different prices?",
+"Quick question: why do two six-packs have different prices?"
+]
+},
+{
+"id": "UV-143",
+"cat": "Prospección y preventa",
+"q": {
+"es": "¿El Super Dock sirve para mis trackers actuales?",
+"en": "Will the Super Dock work with my current trackers?"
+},
+"a": {
+"es": "Necesito modelo, tipo de conector y fotos del accesorio, si es posible. El Dock carga equipos compatibles pero no contiene trackers.",
+"en": "Please share your tracker model and connector type. The dock charges compatible units but does not include trackers."
+},
+"alias": [
+"¿El Super Dock sirve para mis trackers actuales?",
+"Hola, ¿El Super Dock sirve para mis trackers actuales?",
+"Una duda: ¿El Super Dock sirve para mis trackers actuales?",
+"Will the Super Dock work with my current trackers?",
+"Hi, will the Super Dock work with my current trackers?",
+"Quick question: will the Super Dock work with my current trackers?"
+]
+},
+{
+"id": "UV-144",
+"cat": "Reclamación e incidencias",
+"q": {
+"es": "Me enviaron el sensor o modelo equivocado.",
+"en": "You sent me the wrong sensor or model."
+},
+"a": {
+"es": "Lamentamos la discrepancia. Comparte tu número de pedido, la variante adquirida y fotos del producto recibido. Un agente humano revisará el anuncio y la solución aplicable.",
+"en": "Sorry about the discrepancy. Please share the order ID, purchased variation and photos of what arrived. A human agent will review the listing and next steps."
+},
+"alias": [
+"Me enviaron el sensor o modelo equivocado.",
+"Hola, me enviaron el sensor o modelo equivocado.",
+"Una duda: me enviaron el sensor o modelo equivocado.",
+"You sent me the wrong sensor or model.",
+"Hi, you sent me the wrong sensor or model.",
+"Quick question: you sent me the wrong sensor or model."
+]
+},
+{
+"id": "UV-145",
+"cat": "Reclamación e incidencias",
+"q": {
+"es": "Recibí menos trackers de los que pagué.",
+"en": "I received fewer trackers than I ordered."
+},
+"a": {
+"es": "Por favor indica el pedido, cantidad comprada, cantidad recibida y una foto del contenido y empaque. Lo escalaremos a una persona.",
+"en": "Please provide the order ID, quantity purchased, quantity received and a photo of the contents and packaging. We will escalate this to staff."
+},
+"alias": [
+"Recibí menos trackers de los que pagué.",
+"Hola, recibí menos trackers de los que pagué.",
+"Una duda: recibí menos trackers de los que pagué.",
+"I received fewer trackers than I ordered.",
+"Hi, i received fewer trackers than I ordered.",
+"Quick question: i received fewer trackers than I ordered."
+]
+},
+{
+"id": "UV-146",
+"cat": "Reclamación e incidencias",
+"q": {
+"es": "Me faltan straps o cables en el paquete.",
+"en": "The box is missing straps or charging cables."
+},
+"a": {
+"es": "Revisemos qué incluye exactamente tu variante. Envíanos número de pedido y foto del contenido. Un humano verificará faltantes y resolución.",
+"en": "We will compare your item against the purchased variation. Share your order ID and a contents photo; a person will review missing accessories."
+},
+"alias": [
+"Me faltan straps o cables en el paquete.",
+"Hola, me faltan straps o cables en el paquete.",
+"Una duda: me faltan straps o cables en el paquete.",
+"The box is missing straps or charging cables.",
+"Hi, the box is missing straps or charging cables.",
+"Quick question: the box is missing straps or charging cables."
+]
+},
+{
+"id": "UV-147",
+"cat": "Reclamación e incidencias",
+"q": {
+"es": "Un tracker llegó con la carcasa rota.",
+"en": "One tracker arrived with a cracked case."
+},
+"a": {
+"es": "Lamentamos que haya llegado dañado. Conserva empaque y etiqueta, y envía fotos del daño junto con tu pedido para que soporte lo evalúe.",
+"en": "Sorry it arrived damaged. Keep the packaging and label, and send photos of the damage with your order ID for review."
+},
+"alias": [
+"Un tracker llegó con la carcasa rota.",
+"Hola, un tracker llegó con la carcasa rota.",
+"Una duda: un tracker llegó con la carcasa rota.",
+"One tracker arrived with a cracked case.",
+"Hi, one tracker arrived with a cracked case.",
+"Quick question: one tracker arrived with a cracked case."
+]
+},
+{
+"id": "UV-148",
+"cat": "Reclamación e incidencias",
+"q": {
+"es": "El pedido llegó, pero un tracker no enciende.",
+"en": "My order arrived but one tracker will not turn on."
+},
+"a": {
+"es": "Gracias por informarlo. Comparte número de pedido y una breve evidencia del indicador de carga/encendido. No desmontes el producto; un técnico continuará el caso.",
+"en": "Thanks for reporting it. Share your order ID and a brief video of the charging/power indicator. Please do not disassemble it; a technician will follow up."
+},
+"alias": [
+"El pedido llegó, pero un tracker no enciende.",
+"Hola, el pedido llegó, pero un tracker no enciende.",
+"Una duda: el pedido llegó, pero un tracker no enciende.",
+"My order arrived but one tracker will not turn on.",
+"Hi, my order arrived but one tracker will not turn on.",
+"Quick question: my order arrived but one tracker will not turn on."
+]
+},
+{
+"id": "UV-149",
+"cat": "Reclamación e incidencias",
+"q": {
+"es": "Los trackers se dañaron después de unas semanas, ¿qué hacemos?",
+"en": "My trackers failed after a few weeks. What can you do?"
+},
+"a": {
+"es": "Abriremos una revisión con fecha de entrega, modelo, síntomas y evidencia. La cobertura y resolución dependen de los términos del pedido y de diagnóstico humano.",
+"en": "We will document the delivery date, model, symptoms and evidence. Coverage and remedy need a human review of the order terms and findings."
+},
+"alias": [
+"Los trackers se dañaron después de unas semanas, ¿qué hacemos?",
+"Hola, los trackers se dañaron después de unas semanas, ¿qué hacemos?",
+"Una duda: los trackers se dañaron después de unas semanas, ¿qué hacemos?",
+"My trackers failed after a few weeks. What can you do?",
+"Hi, my trackers failed after a few weeks. What can you do?",
+"Quick question: my trackers failed after a few weeks. What can you do?"
+]
+},
+{
+"id": "UV-152",
+"cat": "Reclamación e incidencias",
+"q": {
+"es": "Me llegó el producto usado o abierto y compré nuevo.",
+"en": "I ordered new but received an opened item."
+},
+"a": {
+"es": "Comparte pedido, fotos de sellos/empaque y el estado anunciado. Una persona revisará la discrepancia y los derechos de compra aplicables.",
+"en": "Please share the order ID, photos of packaging/seals and the listed condition. A person will review the discrepancy and applicable purchase rights."
+},
+"alias": [
+"Me llegó el producto usado o abierto y compré nuevo.",
+"Hola, me llegó el producto usado o abierto y compré nuevo.",
+"Una duda: me llegó el producto usado o abierto y compré nuevo.",
+"I ordered new but received an opened item.",
+"Hi, i ordered new but received an opened item.",
+"Quick question: i ordered new but received an opened item."
+]
+},
+{
+"id": "UV-153",
+"cat": "Reclamación e incidencias",
+"q": {
+"es": "El paquete llegó mojado o aplastado.",
+"en": "My package arrived wet or crushed."
+},
+"a": {
+"es": "No conectes componentes que parezcan mojados o dañados. Guarda empaque, haz fotos y comparte pedido y tracking para revisión humana.",
+"en": "Do not power visibly wet or damaged components. Keep the packaging and take photos, then share the order ID and tracking for human review."
+},
+"alias": [
+"El paquete llegó mojado o aplastado.",
+"Hola, el paquete llegó mojado o aplastado.",
+"Una duda: el paquete llegó mojado o aplastado.",
+"My package arrived wet or crushed.",
+"Hi, my package arrived wet or crushed.",
+"Quick question: my package arrived wet or crushed."
+]
+},
+{
+"id": "UV-155",
+"cat": "Reclamación e incidencias",
+"q": {
+"es": "Me cobraron dos veces en la plataforma.",
+"en": "I was charged twice on the marketplace."
+},
+"a": {
+"es": "No compartas tarjeta ni datos bancarios. Revisa el historial del marketplace y facilita únicamente el identificador del pedido; un humano te orientará al canal de pagos correspondiente.",
+"en": "Please do not send banking or card details. Check the marketplace order history and provide only the order reference; staff can direct you to the payment team."
+},
+"alias": [
+"Me cobraron dos veces en la plataforma.",
+"Hola, me cobraron dos veces en la plataforma.",
+"Una duda: me cobraron dos veces en la plataforma.",
+"I was charged twice on the marketplace.",
+"Hi, i was charged twice on the marketplace.",
+"Quick question: i was charged twice on the marketplace."
+]
+},
+{
+"id": "UV-156",
+"cat": "Reclamación e incidencias",
+"q": {
+"es": "Abrí una disputa y necesito seguimiento.",
+"en": "I opened a dispute and need an update."
+},
+"a": {
+"es": "Respeta los plazos y mensajes oficiales del marketplace. Comparte el identificador del pedido/caso en el canal correspondiente; una persona revisará el estado.",
+"en": "Please follow marketplace deadlines and official messages. Share the order/case reference through the appropriate channel for human follow-up."
+},
+"alias": [
+"Abrí una disputa y necesito seguimiento.",
+"Hola, abrí una disputa y necesito seguimiento.",
+"Una duda: abrí una disputa y necesito seguimiento.",
+"I opened a dispute and need an update.",
+"Hi, i opened a dispute and need an update.",
+"Quick question: i opened a dispute and need an update."
+]
+},
+{
+"id": "UV-157",
+"cat": "Reclamación e incidencias",
+"q": {
+"es": "La paquetería dice entregado y la foto no es mi casa.",
+"en": "The delivery photo is not my house."
+},
+"a": {
+"es": "Guarda la imagen o referencia de entrega, verifica el tracking y envía el caso por tu canal de compra. Requiere investigación humana y del transportista.",
+"en": "Keep the delivery evidence, check your tracking and report it through your order channel. A human and carrier will need to investigate."
+},
+"alias": [
+"La paquetería dice entregado y la foto no es mi casa.",
+"Hola, la paquetería dice entregado y la foto no es mi casa.",
+"Una duda: la paquetería dice entregado y la foto no es mi casa.",
+"The delivery photo is not my house.",
+"Hi, the delivery photo is not my house.",
+"Quick question: the delivery photo is not my house."
+]
+},
+{
+"id": "UV-158",
+"cat": "Reclamación e incidencias",
+"q": {
+"es": "Mi paquete está atorado en aduana.",
+"en": "My package is held at customs."
+},
+"a": {
+"es": "Para revisar la situación necesitaremos país, pedido y estado oficial del transportista. Los aranceles y gestiones dependen de destino y términos de compra.",
+"en": "Please share the destination country, order ID and official carrier status. Duties and procedures depend on destination and purchase terms."
+},
+"alias": [
+"Mi paquete está atorado en aduana.",
+"Hola, mi paquete está atorado en aduana.",
+"Una duda: mi paquete está atorado en aduana.",
+"My package is held at customs.",
+"Hi, my package is held at customs.",
+"Quick question: my package is held at customs."
+]
+},
+{
+"id": "UV-159",
+"cat": "Reclamación e incidencias",
+"q": {
+"es": "Necesito cambiar la dirección después del pago.",
+"en": "I need to change my address after paying."
+},
+"a": {
+"es": "Por seguridad, solicita el cambio por el marketplace. Un humano comprobará si el pedido aún se puede modificar; no garantizamos cambios tras el envío.",
+"en": "For security, request the change through the marketplace. Staff will check whether the order can still be edited; post-shipment changes cannot be guaranteed."
+},
+"alias": [
+"Necesito cambiar la dirección después del pago.",
+"Hola, necesito cambiar la dirección después del pago.",
+"Una duda: necesito cambiar la dirección después del pago.",
+"I need to change my address after paying.",
+"Hi, i need to change my address after paying.",
+"Quick question: i need to change my address after paying."
+]
+},
+{
+"id": "UV-162",
+"cat": "Reclamación e incidencias",
+"q": {
+"es": "Mi producto presentó daño por agua, ¿hay garantía?",
+"en": "Is water damage covered by warranty?"
+},
+"a": {
+"es": "El daño por líquidos está excluido en algunos términos históricos, pero no emitiré una denegación definitiva. Un humano revisará el anuncio, causa y derechos aplicables.",
+"en": "Some historical terms excluded liquid damage, but we cannot automatically deny coverage. Staff must review the listing, circumstances and applicable rights."
+},
+"alias": [
+"Mi producto presentó daño por agua, ¿hay garantía?",
+"Hola, mi producto presentó daño por agua, ¿hay garantía?",
+"Una duda: mi producto presentó daño por agua, ¿hay garantía?",
+"Is water damage covered by warranty?",
+"Hi, is water damage covered by warranty?",
+"Quick question: is water damage covered by warranty?"
+]
+},
+{
+"id": "UV-163",
+"cat": "Reclamación e incidencias",
+"q": {
+"es": "Un cliente quiere cancelar un pedido personalizado.",
+"en": "Can I cancel a custom-made order?"
+},
+"a": {
+"es": "Registrar ID y estado de producción; las condiciones de pedidos personalizados dependen del listing y del marketplace. Escalar antes de aprobar o rechazar.",
+"en": "We need to check the order ID and production status. Custom-order terms depend on the listing and marketplace; staff must decide."
+},
+"alias": [
+"Un cliente quiere cancelar un pedido personalizado.",
+"Hola, un cliente quiere cancelar un pedido personalizado.",
+"Una duda: un cliente quiere cancelar un pedido personalizado.",
+"Can I cancel a custom-made order?",
+"Hi, can I cancel a custom-made order?",
+"Quick question: can I cancel a custom-made order?"
+]
+},
+{
+"id": "UV-164",
+"cat": "Pre-soporte y diagnóstico",
+"q": {
+"es": "¿Qué datos envío si ya hablé con soporte técnico?",
+"en": "What details should I send if I already talked to tech support?"
+},
+"a": {
+"es": "Indica el número de pedido por un canal privado, modelo y cantidad, sensor, visor, forma de conexión, síntoma y pasos que ya hiciste. Si ya existe un ticket, el bot debe retomarlo sin hacerte repetir el diagnóstico. Un contacto de chat externo solo puede compartirse en canales permitidos y nunca es necesario para reclamar en eBay.",
+"en": "Please give your order ID privately, model and count, sensor, headset, connection method, symptoms and steps already tried. If you already have a ticket, the bot must continue it without repeating tests. An external chat contact may only be shared where permitted, and it is never necessary to make an eBay claim."
+},
+"alias": [
+"¿Qué datos envío si ya hablé con soporte técnico?",
+"Ya agregué al soporte en Discord, ¿qué datos mando?",
+"Hola, ya agregué al soporte en Discord, ¿qué datos mando?",
+"Una duda: ya agregué al soporte en Discord, ¿qué datos mando?",
+"What details should I send if I already talked to tech support?",
+"I added Discord support. What information should I send?",
+"Hi, i added Discord support. What information should I send?",
+"Quick question: i added Discord support. What information should I send?"
+]
+},
+{
+"id": "UV-165",
+"cat": "Pre-soporte y diagnóstico",
+"q": {
+"es": "No puedo grabar video, ¿cómo sigo?",
+"en": "I cannot record a video. Can I still get support?"
+},
+"a": {
+"es": "El video ayuda, pero podemos empezar con fotos, capturas y una descripción de qué sucede, cuándo comenzó y qué pruebas hiciste. Una persona decidirá si falta evidencia.",
+"en": "A video helps, but we can start with screenshots, photos and a description of when the issue happens and which tests you already tried."
+},
+"alias": [
+"No puedo grabar video, ¿cómo sigo?",
+"Hola, no puedo grabar video, ¿cómo sigo?",
+"Una duda: no puedo grabar video, ¿cómo sigo?",
+"I cannot record a video. Can I still get support?",
+"Hi, i cannot record a video. Can I still get support?",
+"Quick question: i cannot record a video. Can I still get support?"
+]
+},
+{
+"id": "UV-166",
+"cat": "Pre-soporte y diagnóstico",
+"q": {
+"es": "Ya hice la calibración y sigue mal.",
+"en": "I already calibrated and it still looks wrong."
+},
+"a": {
+"es": "Gracias. No repetiremos las instrucciones sin motivo. Registraré el tipo de calibración, resultado y video para que un técnico continúe desde ahí.",
+"en": "Thanks. We will not needlessly restart the instructions. I will record the calibration method, outcome and any video for a technician."
+},
+"alias": [
+"Ya hice la calibración y sigue mal.",
+"Hola, ya hice la calibración y sigue mal.",
+"Una duda: ya hice la calibración y sigue mal.",
+"I already calibrated and it still looks wrong.",
+"Hi, i already calibrated and it still looks wrong.",
+"Quick question: i already calibrated and it still looks wrong."
+]
+},
+{
+"id": "UV-167",
+"cat": "Pre-soporte y diagnóstico",
+"q": {
+"es": "El dongle no lo reconoce ninguna computadora.",
+"en": "No computer recognizes the dongle."
+},
+"a": {
+"es": "Prueba solamente un puerto USB alternativo seguro, sin desarmar el receptor. Indica qué sistema usas y si aparece algún dispositivo. Lo remitiremos a soporte técnico.",
+"en": "You can try one other safe USB port without opening the receiver. Tell us your operating system and whether any device appears; a technician will continue."
+},
+"alias": [
+"El dongle no lo reconoce ninguna computadora.",
+"Hola, el dongle no lo reconoce ninguna computadora.",
+"Una duda: el dongle no lo reconoce ninguna computadora.",
+"No computer recognizes the dongle.",
+"Hi, no computer recognizes the dongle.",
+"Quick question: no computer recognizes the dongle."
+]
+},
+{
+"id": "UV-168",
+"cat": "Pre-soporte y diagnóstico",
+"q": {
+"es": "El tracker se conecta pero se apaga al moverlo.",
+"en": "The tracker connects but shuts off when I move."
+},
+"a": {
+"es": "Indica modelo, estado de carga y cuándo ocurre, sin abrir el dispositivo. Si hay calor, olor o daño de batería, deja de usarlo y lo escalamos de inmediato.",
+"en": "Please share the model, charge status and when it happens. Do not open it. If there is heat, odor or battery damage, stop use immediately."
+},
+"alias": [
+"El tracker se conecta pero se apaga al moverlo.",
+"Hola, el tracker se conecta pero se apaga al moverlo.",
+"Una duda: el tracker se conecta pero se apaga al moverlo.",
+"The tracker connects but shuts off when I move.",
+"Hi, the tracker connects but shuts off when I move.",
+"Quick question: the tracker connects but shuts off when I move."
+]
+},
+{
+"id": "UV-169",
+"cat": "Pre-soporte y diagnóstico",
+"q": {
+"es": "Solo falla el tobillo izquierdo.",
+"en": "Only my left ankle tracker is wrong."
+},
+"a": {
+"es": "Gracias. Confirma si el problema sigue al tracker cuando intercambias únicamente su posición asignada en el software, sin manipular cables internos; registra el resultado.",
+"en": "Please note whether the issue follows the tracker when you change only its assigned body location in software, without opening hardware, and record the result."
+},
+"alias": [
+"Solo falla el tobillo izquierdo.",
+"Hola, solo falla el tobillo izquierdo.",
+"Una duda: solo falla el tobillo izquierdo.",
+"Only my left ankle tracker is wrong.",
+"Hi, only my left ankle tracker is wrong.",
+"Quick question: only my left ankle tracker is wrong."
+]
+},
+{
+"id": "UV-170",
+"cat": "Pre-soporte y diagnóstico",
+"q": {
+"es": "¿Cómo sé si el dongle o el tracker es el problema?",
+"en": "How can I tell whether the dongle or tracker is broken?"
+},
+"a": {
+"es": "Primero determina si afecta a uno o todos los trackers y si SlimeVR detecta el receptor. Con esos datos un técnico elegirá la siguiente prueba sin reflashear por defecto.",
+"en": "First identify whether one or every tracker is affected and whether the receiver is detected. A technician can then choose the next safe test."
+},
+"alias": [
+"¿Cómo sé si el dongle o el tracker es el problema?",
+"Hola, ¿Cómo sé si el dongle o el tracker es el problema?",
+"Una duda: ¿Cómo sé si el dongle o el tracker es el problema?",
+"How can I tell whether the dongle or tracker is broken?",
+"Hi, how can I tell whether the dongle or tracker is broken?",
+"Quick question: how can I tell whether the dongle or tracker is broken?"
+]
+},
+{
+"id": "UV-171",
+"cat": "Pre-soporte y diagnóstico",
+"q": {
+"es": "El tracking se pierde cuando me alejo del escritorio.",
+"en": "My tracking drops when I move away from the desk."
+},
+"a": {
+"es": "Indica modelo y conexión Wi-Fi/dongle, distancia aproximada y obstáculos. La siguiente revisión será cobertura/interferencias, sin concluir que el hardware esté roto.",
+"en": "Please share the tracker type and Wi-Fi/dongle connection, approximate distance and obstacles. We can check coverage before assuming a defect."
+},
+"alias": [
+"El tracking se pierde cuando me alejo del escritorio.",
+"Hola, el tracking se pierde cuando me alejo del escritorio.",
+"Una duda: el tracking se pierde cuando me alejo del escritorio.",
+"My tracking drops when I move away from the desk.",
+"Hi, my tracking drops when I move away from the desk.",
+"Quick question: my tracking drops when I move away from the desk."
+]
+},
+{
+"id": "UV-172",
+"cat": "Pre-soporte y diagnóstico",
+"q": {
+"es": "La app muestra batería cero, pero el tracker funciona.",
+"en": "The app shows 0% battery but the tracker still works."
+},
+"a": {
+"es": "Puede deberse a la versión de firmware o reporte de batería. Envía modelo, versión y captura de pantalla sin compartir claves; el técnico verificará.",
+"en": "Battery reporting may depend on firmware. Share model, version and a screenshot without private credentials for technician review."
+},
+"alias": [
+"La app muestra batería cero, pero el tracker funciona.",
+"Hola, la app muestra batería cero, pero el tracker funciona.",
+"Una duda: la app muestra batería cero, pero el tracker funciona.",
+"The app shows 0% battery but the tracker still works.",
+"Hi, the app shows 0% battery but the tracker still works.",
+"Quick question: the app shows 0% battery but the tracker still works."
+]
+},
+{
+"id": "UV-173",
+"cat": "Pre-soporte y diagnóstico",
+"q": {
+"es": "¿Debo actualizar el firmware para arreglarlo?",
+"en": "Should I flash new firmware to fix it?"
+},
+"a": {
+"es": "No actualices ni reflashees hasta confirmar versión, placa y guía oficial del modelo. Es mejor que un técnico determine si es necesario.",
+"en": "Do not flash or update until the board model, firmware version and correct instructions are confirmed. A technician should decide if it is needed."
+},
+"alias": [
+"¿Debo actualizar el firmware para arreglarlo?",
+"Hola, ¿Debo actualizar el firmware para arreglarlo?",
+"Una duda: ¿Debo actualizar el firmware para arreglarlo?",
+"Should I flash new firmware to fix it?",
+"Hi, should I flash new firmware to fix it?",
+"Quick question: should I flash new firmware to fix it?"
+]
+},
+{
+"id": "UV-174",
+"cat": "Pre-soporte y diagnóstico",
+"q": {
+"es": "Uso Quest standalone y no aparece en VRChat.",
+"en": "My Quest standalone setup will not show FBT in VRChat."
+},
+"a": {
+"es": "Primero verifica que SlimeVR vea los trackers y distingue conexión por dongle frente a Wi-Fi Budget. Después se comprobará OSC/FBT en Quest con soporte.",
+"en": "First confirm that SlimeVR detects the trackers and identify dongle versus Wi-Fi Budget hardware. Support can then check the Quest FBT/OSC path."
+},
+"alias": [
+"Uso Quest standalone y no aparece en VRChat.",
+"Hola, uso Quest standalone y no aparece en VRChat.",
+"Una duda: uso Quest standalone y no aparece en VRChat.",
+"My Quest standalone setup will not show FBT in VRChat.",
+"Hi, my Quest standalone setup will not show FBT in VRChat.",
+"Quick question: my Quest standalone setup will not show FBT in VRChat."
+]
+},
+{
+"id": "UV-175",
+"cat": "Pre-soporte y diagnóstico",
+"q": {
+"es": "No sé qué sensores compré.",
+"en": "I do not know which tracker sensors I own."
+},
+"a": {
+"es": "Comparte el número de pedido, título de la variante o foto de la etiqueta. No hace falta abrir la carcasa para identificar el producto.",
+"en": "Share the order ID, listing variation title or label photo. There is no need to open the case to identify the kit."
+},
+"alias": [
+"No sé qué sensores compré.",
+"Hola, no sé qué sensores compré.",
+"Una duda: no sé qué sensores compré.",
+"I do not know which tracker sensors I own.",
+"Hi, i do not know which tracker sensors I own.",
+"Quick question: i do not know which tracker sensors I own."
+]
+},
+{
+"id": "UV-176",
+"cat": "Pre-soporte y diagnóstico",
+"q": {
+"es": "¿Pueden revisar mi pantalla en una llamada?",
+"en": "Can a human look at my screen on a call?"
+},
+"a": {
+"es": "El soporte humano 1:1 puede coordinar una sesión si está disponible. No concedas acceso remoto ni compartas contraseñas o códigos con el bot.",
+"en": "One-on-one support can be coordinated when available. Do not grant remote access or share passwords or security codes with this bot."
+},
+"alias": [
+"¿Pueden revisar mi pantalla en una llamada?",
+"Hola, ¿Pueden revisar mi pantalla en una llamada?",
+"Una duda: ¿Pueden revisar mi pantalla en una llamada?",
+"Can a human look at my screen on a call?",
+"Hi, can a human look at my screen on a call?",
+"Quick question: can a human look at my screen on a call?"
+]
+},
+{
+"id": "UV-177",
+"cat": "Pre-soporte y diagnóstico",
+"q": {
+"es": "¿Qué formato de video necesitan para el fallo?",
+"en": "What should I show in the troubleshooting video?"
+},
+"a": {
+"es": "Basta una grabación corta donde se vea la aplicación, el tracker afectado y el comportamiento. Oculta nombres reales, claves, direcciones y datos privados.",
+"en": "A short clip showing the app, affected tracker and behavior is useful. Hide real names, passwords, addresses and private data."
+},
+"alias": [
+"¿Qué formato de video necesitan para el fallo?",
+"Hola, ¿Qué formato de video necesitan para el fallo?",
+"Una duda: ¿Qué formato de video necesitan para el fallo?",
+"What should I show in the troubleshooting video?",
+"Hi, what should I show in the troubleshooting video?",
+"Quick question: what should I show in the troubleshooting video?"
+]
+},
+{
+"id": "UV-178",
+"cat": "Pre-soporte y diagnóstico",
+"q": {
+"es": "¿Cuántas pruebas va a pedir el bot antes de pasarme con alguien?",
+"en": "How many bot checks before I talk to a person?"
+},
+"a": {
+"es": "El bot hace una clasificación breve y como máximo dos comprobaciones seguras. Si el cliente pide humano, no puede realizar la prueba o sigue sin resolverse, se transfiere el resumen.",
+"en": "The bot collects basic facts and performs at most two safe checks. If you request a person, cannot perform the check or still need help, it hands off a summary."
+},
+"alias": [
+"¿Cuántas pruebas va a pedir el bot antes de pasarme con alguien?",
+"Hola, ¿Cuántas pruebas va a pedir el bot antes de pasarme con alguien?",
+"Una duda: ¿Cuántas pruebas va a pedir el bot antes de pasarme con alguien?",
+"How many bot checks before I talk to a person?",
+"Hi, how many bot checks before I talk to a person?",
+"Quick question: how many bot checks before I talk to a person?"
+]
+},
+{
+"id": "UV-179",
+"cat": "Pre-soporte y diagnóstico",
+"q": {
+"es": "Ya expliqué todo ayer, ¿tengo que volver a hacerlo?",
+"en": "I explained this yesterday. Do I have to start again?"
+},
+"a": {
+"es": "No deberías repetirlo. Si el sistema tiene acceso autorizado al hilo, conservará lo aportado y preguntará solo lo que falta; si no, te pedirá el resumen mínimo.",
+"en": "You should not have to repeat it. If the system can securely access the existing thread, it will reuse that context and ask only for missing information."
+},
+"alias": [
+"Ya expliqué todo ayer, ¿tengo que volver a hacerlo?",
+"Hola, ya expliqué todo ayer, ¿tengo que volver a hacerlo?",
+"Una duda: ya expliqué todo ayer, ¿tengo que volver a hacerlo?",
+"I explained this yesterday. Do I have to start again?",
+"Hi, i explained this yesterday. Do I have to start again?",
+"Quick question: i explained this yesterday. Do I have to start again?"
+]
+},
+{
+"id": "UV-180",
+"cat": "Pre-soporte y diagnóstico",
+"q": {
+"es": "¿Puedo mandar logs o capturas de SlimeVR?",
+"en": "Can I send SlimeVR logs or screenshots?"
+},
+"a": {
+"es": "Sí, elimina datos sensibles antes de enviar y adjunta versiones relevantes. Un técnico indicará qué registro necesita si el resumen no basta.",
+"en": "Yes, after removing sensitive information. Please include relevant version details; a technician can request specific logs if needed."
+},
+"alias": [
+"¿Puedo mandar logs o capturas de SlimeVR?",
+"Hola, ¿Puedo mandar logs o capturas de SlimeVR?",
+"Una duda: ¿Puedo mandar logs o capturas de SlimeVR?",
+"Can I send SlimeVR logs or screenshots?",
+"Hi, can I send SlimeVR logs or screenshots?",
+"Quick question: can I send SlimeVR logs or screenshots?"
+]
+},
+{
+"id": "UV-181",
+"cat": "Pre-soporte y diagnóstico",
+"q": {
+"es": "El sensor se queda congelado después de diez minutos.",
+"en": "A sensor freezes after ten minutes."
+},
+"a": {
+"es": "Registremos modelo, tiempo aproximado, cuántos trackers afecta y si se desconecta o deja de actualizarse. No equivale todavía a un fallo de hardware confirmado.",
+"en": "Let us record the model, approximate timing, number affected, and whether it disconnects or simply stops updating. A defect has not been established yet."
+},
+"alias": [
+"El sensor se queda congelado después de diez minutos.",
+"Hola, el sensor se queda congelado después de diez minutos.",
+"Una duda: el sensor se queda congelado después de diez minutos.",
+"A sensor freezes after ten minutes.",
+"Hi, a sensor freezes after ten minutes.",
+"Quick question: a sensor freezes after ten minutes."
+]
+},
+{
+"id": "UV-182",
+"cat": "Pre-soporte y diagnóstico",
+"q": {
+"es": "Ya cambié USB y cargador y sigue sin encender.",
+"en": "I tried a different USB cable and charger; it is still dead."
+},
+"a": {
+"es": "Registraré que ya se probaron cable, fuente y puerto. No repetiré esas pruebas; el siguiente paso es revisión por una persona.",
+"en": "I will record the tests already completed and will not make you repeat them. The next step is human review."
+},
+"alias": [
+"Ya cambié USB y cargador y sigue sin encender.",
+"Hola, ya cambié USB y cargador y sigue sin encender.",
+"Una duda: ya cambié USB y cargador y sigue sin encender.",
+"I tried a different USB cable and charger; it is still dead.",
+"Hi, i tried a different USB cable and charger; it is still dead.",
+"Quick question: i tried a different USB cable and charger; it is still dead."
+]
+},
+{
+"id": "UV-183",
+"cat": "Pre-soporte y diagnóstico",
+"q": {
+"es": "El problema ocurre solo dentro de VRChat.",
+"en": "The problem only happens inside VRChat."
+},
+"a": {
+"es": "Si SlimeVR recibe datos correctamente, conviene revisar primero la integración OSC/SteamVR y la calibración en VRChat. Registraré el comportamiento para la sesión 1:1.",
+"en": "If SlimeVR receives the data, the next area to check is OSC/SteamVR integration and in-game calibration. I will record the findings for 1:1 support."
+},
+"alias": [
+"El problema ocurre solo dentro de VRChat.",
+"Hola, el problema ocurre solo dentro de VRChat.",
+"Una duda: el problema ocurre solo dentro de VRChat.",
+"The problem only happens inside VRChat.",
+"Hi, the problem only happens inside VRChat.",
+"Quick question: the problem only happens inside VRChat."
+]
+},
+{
+"id": "UV-185",
+"cat": "Contexto y resolución de intención",
+"q": {
+"es": "¿Por qué mis trackers tendrían drift?",
+"en": "Why would my trackers drift?"
+},
+"a": {
+"es": "¿Preguntas antes de comprar o tus trackers ya presentan drift? Esto define si corresponde comparar sensores o abrir diagnóstico de un pedido.",
+"en": "Are you asking before purchase, or are your trackers currently drifting? That determines whether we compare models or open a support case."
+},
+"alias": [
+"¿Por qué mis trackers tendrían drift?",
+"Hola, ¿Por qué mis trackers tendrían drift?",
+"Una duda: ¿Por qué mis trackers tendrían drift?",
+"Why would my trackers drift?",
+"Hi, why would my trackers drift?",
+"Quick question: why would my trackers drift?"
+]
+},
+{
+"id": "UV-186",
+"cat": "Contexto y resolución de intención",
+"q": {
+"es": "¿Dónde reporto que el dongle viene incluido?",
+"en": "Where do I ask about an included dongle?"
+},
+"a": {
+"es": "¿Quieres confirmar qué incluye el anuncio antes de comprar o reportar un dongle faltante en un pedido ya recibido? Te dirigiré al flujo correcto.",
+"en": "Do you want to confirm what comes with a listing before ordering, or report a missing receiver from a delivered purchase? I can route you correctly."
+},
+"alias": [
+"¿Dónde reporto que el dongle viene incluido?",
+"Hola, ¿Dónde reporto que el dongle viene incluido?",
+"Una duda: ¿Dónde reporto que el dongle viene incluido?",
+"Where do I ask about an included dongle?",
+"Hi, where do I ask about an included dongle?",
+"Quick question: where do I ask about an included dongle?"
+]
+},
+{
+"id": "UV-187",
+"cat": "Contexto y resolución de intención",
+"q": {
+"es": "¿Cuándo llega el paquete?",
+"en": "When will the package arrive?"
+},
+"a": {
+"es": "¿Ya tienes un pedido y tracking o deseas estimar el envío antes de comprar? Con eso distinguimos una cotización de una consulta sobre entrega pendiente.",
+"en": "Do you already have an order and tracking number, or do you want a pre-purchase delivery estimate?"
+},
+"alias": [
+"¿Cuándo llega el paquete?",
+"Hola, ¿Cuándo llega el paquete?",
+"Una duda: ¿Cuándo llega el paquete?",
+"When will the package arrive?",
+"Hi, when will the package arrive?",
+"Quick question: when will the package arrive?"
+]
+},
+{
+"id": "UV-188",
+"cat": "Contexto y resolución de intención",
+"q": {
+"es": "¿Puedo hablar con soporte aunque solo esté comparando precios?",
+"en": "Can I talk to support while just comparing prices?"
+},
+"a": {
+"es": "Sí puedo responder preguntas generales aquí. El soporte técnico 1:1 normalmente se coordina para clientes verificados; si necesitas asistencia especial, lo revisaré con el equipo.",
+"en": "I can answer general questions here. Personalized technical support is mainly coordinated for verified customers; special requests can be reviewed."
+},
+"alias": [
+"¿Puedo hablar con soporte aunque solo esté comparando precios?",
+"Hola, ¿Puedo hablar con soporte aunque solo esté comparando precios?",
+"Una duda: ¿Puedo hablar con soporte aunque solo esté comparando precios?",
+"Can I talk to support while just comparing prices?",
+"Hi, can I talk to support while just comparing prices?",
+"Quick question: can I talk to support while just comparing prices?"
+]
+},
+{
+"id": "UV-189",
+"cat": "Contexto y resolución de intención",
+"q": {
+"es": "¿Es la garantía igual en eBay y Shopify?",
+"en": "Is the warranty the same on eBay and Shopify?"
+},
+"a": {
+"es": "La política comercial confirmada de UsagiVR otorga 180 días a todos nuestros trackers y 90 días al Super Dock. El anuncio, la fecha, las condiciones del canal y los derechos obligatorios pueden añadir detalles; para otros artículos la garantía comercial se consulta en su publicación.",
+"en": "UsagiVR’s confirmed seller policy is 180 days for all trackers and 90 days for the Super Dock. The listing, dates, channel rules and mandatory rights may add details. For other items, seller warranty terms must be checked on the specific listing."
+},
+"alias": [
+"¿Es la garantía igual en eBay y Shopify?",
+"¿Están disponibles las mismas condiciones de garantía en eBay y Shopify?",
+"Hola, ¿Están disponibles las mismas condiciones de garantía en eBay y Shopify?",
+"Una duda: ¿Están disponibles las mismas condiciones de garantía en eBay y Shopify?",
+"Is the warranty the same on eBay and Shopify?",
+"Are eBay and Shopify warranty terms identical?",
+"Hi, are eBay and Shopify warranty terms identical?",
+"Quick question: are eBay and Shopify warranty terms identical?"
+]
+},
+{
+"id": "UV-190",
+"cat": "Contexto y resolución de intención",
+"q": {
+"es": "¿Son compatibles con el nuevo firmware de SlimeVR?",
+"en": "Are they compatible with the newest SlimeVR firmware?"
+},
+"a": {
+"es": "La compatibilidad depende del hardware vendido, la versión del firmware y el software. No confundiremos el diseño experimental ASTRA con productos actualmente comercializados.",
+"en": "That depends on the shipped hardware, firmware build and software version. We will not confuse experimental ASTRA development hardware with products being sold."
+},
+"alias": [
+"¿Son compatibles con el nuevo firmware de SlimeVR?",
+"Hola, ¿Son compatibles con el nuevo firmware de SlimeVR?",
+"Una duda: ¿Son compatibles con el nuevo firmware de SlimeVR?",
+"Are they compatible with the newest SlimeVR firmware?",
+"Hi, are they compatible with the newest SlimeVR firmware?",
+"Quick question: are they compatible with the newest SlimeVR firmware?"
+]
+},
+{
+"id": "UV-191",
+"cat": "Contexto y resolución de intención",
+"q": {
+"es": "¿Qué hago si ya hablé con una persona y vuelve a responderme el bot?",
+"en": "What if a bot replies after I have already spoken to a person?"
+},
+"a": {
+"es": "Indica el número o referencia del ticket. Si existe un agente humano asignado, el bot no debe reiniciar ni cerrar ese hilo; añadirá información sin duplicar la conversación.",
+"en": "Please reference your ticket. When a human owns the case, the bot should not restart or close it; it can only append useful context."
+},
+"alias": [
+"¿Qué hago si ya hablé con una persona y vuelve a responderme el bot?",
+"Hola, ¿Qué hago si ya hablé con una persona y vuelve a responderme el bot?",
+"Una duda: ¿Qué hago si ya hablé con una persona y vuelve a responderme el bot?",
+"What if a bot replies after I have already spoken to a person?",
+"Hi, what if a bot replies after I have already spoken to a person?",
+"Quick question: what if a bot replies after I have already spoken to a person?"
+]
+},
+{
+"id": "UV-192",
+"cat": "Contexto y resolución de intención",
+"q": {
+"es": "Me están pidiendo transferir dinero fuera de eBay, ¿es correcto?",
+"en": "Someone asked me to transfer payment outside eBay. Is that real?"
+},
+"a": {
+"es": "No hagas transferencias ni compartas datos financieros basándote solo en un mensaje. Verifica el canal oficial de la compra; si parece suplantación, escálalo de inmediato.",
+"en": "Do not transfer money or share financial details based solely on a message. Verify the official order channel and escalate a possible impersonation attempt."
+},
+"alias": [
+"Me están pidiendo transferir dinero fuera de eBay, ¿es correcto?",
+"Hola, me están pidiendo transferir dinero fuera de eBay, ¿es correcto?",
+"Una duda: me están pidiendo transferir dinero fuera de eBay, ¿es correcto?",
+"Someone asked me to transfer payment outside eBay. Is that real?",
+"Hi, someone asked me to transfer payment outside eBay. Is that real?",
+"Quick question: someone asked me to transfer payment outside eBay. Is that real?"
+]
+},
+{
+"id": "UV-193",
+"cat": "Contexto y resolución de intención",
+"q": {
+"es": "¿Cómo sé si mi ticket está en manos de una persona?",
+"en": "How do I know my ticket reached a human?"
+},
+"a": {
+"es": "Un ticket debe mostrar estado, responsable si fue asignado y siguiente paso. No afirmaremos que una persona lo está atendiendo si el sistema no confirma la asignación.",
+"en": "A ticket should show its status, assigned owner if any, and next action. We will not claim a human is handling it without confirmation."
+},
+"alias": [
+"¿Cómo sé si mi ticket está en manos de una persona?",
+"Hola, ¿Cómo sé si mi ticket está en manos de una persona?",
+"Una duda: ¿Cómo sé si mi ticket está en manos de una persona?",
+"How do I know my ticket reached a human?",
+"Hi, how do I know my ticket reached a human?",
+"Quick question: how do I know my ticket reached a human?"
+]
+},
+{
+"id": "UV-201",
+"cat": "Confianza y reputación pública",
+"q": {
+"es": "¿UsagiVR es legítimo o parece una estafa?",
+"en": "Is UsagiVR legit or a scam?"
+},
+"a": {
+"es": "Entendemos que quieras comprar con confianza. Somos un equipo unido, como una gran familia, trabajando en lo que nos encanta. Nuestra tienda DIY SlimeVR Trackers muestra 99.8 % de valoraciones positivas y miles de comentarios de compradores; puedes revisarlos directamente en el perfil público de eBay. Somos vendedores independientes compatibles con SlimeVR, no fabricantes oficiales de SlimeVR. También podemos aclarar cualquier duda antes de comprar.",
+"en": "It makes sense to check before buying. We are a close-knit team, like a big family, working on what we love. Our DIY SlimeVR Trackers eBay store shows 99.8% positive feedback and thousands of buyer reviews; you can verify them on eBay. We sell independent SlimeVR-compatible products, not official SlimeVR-manufactured trackers. We are happy to answer your questions before you order."
+},
+"alias": [
+"¿UsagiVR es legítimo o parece una estafa?",
+"Son scam?",
+"Su tienda es real?",
+"Tienen malas reviews?",
+"Parece fake",
+"Hola, ¿usagivr es legítimo o parece una estafa?",
+"Is UsagiVR legit or a scam?",
+"Are you scammers?",
+"Does this look fake?",
+"Is your store real?",
+"Are you legit?",
+"Hi, is UsagiVR legit or a scam?"
+]
+},
+{
+"id": "UV-202",
+"cat": "Confianza y reputación pública",
+"q": {
+"es": "¿Qué dicen los compradores en las opiniones de eBay?",
+"en": "What do your eBay buyer reviews say?"
+},
+"a": {
+"es": "Los comentarios positivos visibles mencionan soporte 1:1, respuesta rápida, empaque cuidado, envío eficiente y calidad percibida de los trackers. En la consulta de octubre de 2026, eBay mostraba 99.8 % positivo y miles de valoraciones. No todas las experiencias son iguales; puedes revisar los comentarios positivos, neutrales y negativos en eBay.",
+"en": "Visible positive buyer feedback mentions 1-on-1 support, quick replies, careful packaging, shipping and perceived tracker quality. Our October 2026 eBay snapshot showed 99.8% positive feedback and thousands of reviews. Not every experience is identical; you can read positive, neutral and negative feedback directly on eBay."
+},
+"alias": [
+"¿Qué dicen los compradores en las opiniones de eBay?",
+"Qué reviews tienen?",
+"Qué dicen sus clientes?",
+"Hola, ¿qué dicen los compradores en las opiniones de ebay?",
+"What do your eBay buyer reviews say?",
+"What do buyers say about your support?",
+"Show me your store ratings",
+"Hi, what do your eBay buyer reviews say?"
+]
+},
+{
+"id": "UV-203",
+"cat": "Confianza y reputación pública",
+"q": {
+"es": "¿Son una tienda grande o una familia que fabrica trackers?",
+"en": "Are you a large company or a family-like team?"
+},
+"a": {
+"es": "Somos un equipo cercano, como una gran familia, que trabaja en productos de realidad virtual porque nos apasiona. La reputación de nuestra tienda y las experiencias verificadas de compradores se pueden consultar públicamente en eBay. No afirmamos un tamaño de equipo ni una estructura legal que no hayamos documentado.",
+"en": "We are a close-knit team, like a family, building VR products because we enjoy the work. Our store reputation and verified buyer experiences can be checked publicly on eBay. We do not make unsupported claims about our headcount or legal structure."
+},
+"alias": [
+"¿Son una tienda grande o una familia que fabrica trackers?",
+"Son una familia?",
+"Quién está detrás de UsagiVR?",
+"Hola, ¿son una tienda grande o una familia que fabrica trackers?",
+"Are you a large company or a family-like team?",
+"Who is behind UsagiVR?",
+"Are you family owned?",
+"Hi, are you a large company or a family-like team?"
+]
+},
+{
+"id": "UV-209",
+"cat": "Identidad comercial",
+"q": {
+"es": "¿Los trackers de la tienda son fabricados por SlimeVR oficial?",
+"en": "Are your trackers manufactured by official SlimeVR?"
+},
+"a": {
+"es": "No. Somos un vendedor independiente de trackers compatibles con el ecosistema abierto SlimeVR. Nuestro soporte y garantía son los de UsagiVR, no el servicio de garantía de la organización oficial SlimeVR.",
+"en": "No. We are an independent seller of trackers compatible with the open-source SlimeVR ecosystem. Your support and seller warranty are provided by UsagiVR, not the official SlimeVR organization."
+},
+"alias": [
+"¿Los trackers de la tienda son fabricados por SlimeVR oficial?",
+"Son slimevr originales?",
+"Están afiliados oficialmente?",
+"Hola, ¿los trackers de la tienda son fabricados por slimevr oficial?",
+"Are your trackers manufactured by official SlimeVR?",
+"Are these official SlimeVR?",
+"Is this the official SlimeVR company?",
+"Hi, are your trackers manufactured by official SlimeVR?"
+]
+}
+]

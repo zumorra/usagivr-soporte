@@ -22,6 +22,7 @@ const {
 const { TEMAS, buscarTemas, resumenParaIA } = require("./kb");
 const { responder } = require("./ia");
 const { T } = require("./textos");
+const { notasFaq } = require("./faq");
 
 const CFG = JSON.parse(fs.readFileSync(path.join(__dirname, "..", "config.json"), "utf8"));
 const ASSETS = path.join(__dirname, "..", "assets");
@@ -327,6 +328,9 @@ async function respuestaIA(canal, d, extraUsuario) {
       }
     }
     if (extraUsuario && !mensajes.some((x) => x.role === "user" && x.content.includes(extraUsuario.split("\n").pop()))) mensajes.push({ role: "user", content: extraUsuario });
+    // FAQ de la tienda: las preguntas más parecidas a lo último que escribió el cliente.
+    const ultimoCliente = [...mensajes].reverse().find((x) => x.role === "user");
+    if (ultimoCliente) mensajes[0].content += notasFaq(ultimoCliente.content, d.lang);
     const { texto, backend } = await responder(CFG.ia, mensajes).finally(() => limpiar());
     console.log(`IA (${backend}) en ${canal.name}`);
     // La IA a veces pone [HUMANO] sin que nadie lo pida: solo vale si el cliente insinuo persona/equipo/devolucion.
@@ -590,6 +594,13 @@ client.once("clientReady", async () => {
       }
     }
   }
+});
+
+// Al invitarlo a un servidor nuevo: monta lo suyo sin esperar a un reinicio.
+client.on("guildCreate", async (guild) => {
+  console.log(`Añadido a ${guild.name} (${guild.id})`);
+  await montarServidor(guild).catch((e) => console.warn("montar:", e.message));
+  await asegurarPanel(guild).catch(() => {});
 });
 
 process.on("unhandledRejection", (e) => console.error("sin capturar:", e));
