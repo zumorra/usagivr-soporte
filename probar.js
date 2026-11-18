@@ -52,6 +52,29 @@ assert.strictEqual(idiomaDe(m("English")), "en");
 assert.strictEqual(idiomaDe(m("Spanish")), "es");
 assert.strictEqual(idiomaDe(m(), "mis trackers no se conectan"), "es");
 assert.strictEqual(idiomaDe(m(), "my trackers won't connect"), "en");
+// Rol + como escribe: si escribe claro en el otro idioma, gana el texto; si no, el rol.
+assert.strictEqual(idiomaDe(m("English"), "hola, mis trackers no se conectan"), "es");
+assert.strictEqual(idiomaDe(m("Spanish"), "hi, my trackers won't connect"), "en");
+assert.strictEqual(idiomaDe(m("English"), "slimevr"), "en");
+assert.strictEqual(idiomaDe(m("Spanish"), "ok"), "es");
+assert.strictEqual(idiomaDe(m("English"), "en español porfa"), "es");
+{
+  const { decidirIdioma: dI, analizarIdioma: aI } = require("./src/idioma");
+  const ac = (t, e) => dI(t, e).accion;
+  assert.strictEqual(ac("el tracker no prende", { lang: "en" }), "cambiar");
+  assert.strictEqual(ac("the tracker doesnt turn on", { lang: "es" }), "cambiar");
+  assert.strictEqual(ac("no funciona", { lang: "es" }), "seguir");
+  assert.strictEqual(ac("drift", { lang: "en", dudas: 0 }), "seguir");    // 1a vez sin idioma: sigue
+  assert.strictEqual(ac("drift", { lang: "en", dudas: 1 }), "preguntar"); // 2a vez seguida: pregunta
+  assert.strictEqual(ac("ok", { lang: "en", dudas: 1 }), "seguir");       // "ok" no es duda
+  assert.strictEqual(ac("dongle", { lang: "es", dudas: 1, preguntado: true }), "seguir"); // solo pregunta una vez
+  assert.strictEqual(ac("meu tracker não conecta", { lang: "es" }), "preguntar");          // otro idioma
+  assert.strictEqual(ac("мой трекер не работает", { lang: "en" }), "preguntar");
+  assert.strictEqual(ac("can you speak spanish", { lang: "en" }), "cambiar");
+  assert.ok(aI("👍").neutro && aI("si").neutro && !aI("firmware").lang);
+  const { PREGUNTA_IDIOMA } = require("./src/index");
+  assert.ok(PREGUNTA_IDIOMA.length >= 3 && PREGUNTA_IDIOMA.every((x) => /espa/i.test(x) && /english/i.test(x)));
+}
 const humano = [["quiero hablar con un técnico", true], ["pásame con alguien del equipo", true], ["I want to talk to a human", true],
   ["creo que es un problema técnico", false], ["necesito ayuda con wifi", false], ["my tracker wont turn on", false]];
 for (const [txt, esp] of humano) assert.strictEqual(pideHumano(txt), esp, `pideHumano("${txt}")`);
@@ -96,4 +119,4 @@ const { variantes, pedirRepetir } = require("./src/repetir");
 for (const l of ["es", "en"]) { const v = variantes(l); assert.ok(new Set(v).size >= 100, `${l}: ${v.length} variantes`); assert.ok(v.includes(pedirRepetir(l))); }
 const { saberAuditor } = require("./src/index");
 assert.ok(/Ice Cube/.test(saberAuditor([{ role: "user", content: "puedo actualizar mis ice cube" }], "No se puede [GUIA:sin_firmware]", "es")));
-console.log(`OK: ${ok} temas + 4 idiomas + ${humano.length} pedir-humano + ${dev.length} devolucion + ${compra.length} compra + seguimiento/fotos/enojo/horario/panel/ya-quedo`);
+console.log(`OK: ${ok} temas + 21 idiomas + ${humano.length} pedir-humano + ${dev.length} devolucion + ${compra.length} compra + seguimiento/fotos/enojo/horario/panel/ya-quedo`);

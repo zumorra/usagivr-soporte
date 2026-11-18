@@ -21,6 +21,7 @@ const {
 } = require("discord.js");
 const { TEMAS, buscarTemas, resumenParaIA } = require("./kb");
 const { responder } = require("./ia");
+const { analizarIdioma, idiomaRol, decidirIdioma } = require("./idioma");
 const { auditar } = require("./auditor");
 const { pedirRepetir, variantes } = require("./repetir");
 const { enHorario, proximaApertura } = require("./horario");
@@ -48,27 +49,31 @@ const rolPorNombre = (guild, nombre) => {
 
 const idiomaTicket = new Map(); // canal -> idioma que el cliente esta usando en esta sesion
 
-function idiomaDe(member, texto = "", previo = null) {
+// Idioma: lo que pide el cliente > como escribe (si es claro) > su rol English/Spanish > lo que se intuye.
+function rolIdioma(member) {
   const tiene = (n) => member && member.roles && member.roles.cache.some((r) => r.name.toLowerCase() === nombreRol(member.guild, n).toLowerCase());
-  const t = ` ${texto.toLowerCase().replace(/[?!.,¿¡]/g, (c) => ` ${c} `)} `;
-  // Lo que pide el cliente manda sobre todo.
-  if (/(en|in) (espanol|español|espaniol|spanish)|habla(me)? (en )?espa/.test(t)) return "es";
-  if (/(en|in) (ingles|inglés|english)|speak english/.test(t)) return "en";
-  const en = tiene(CFG.roles.ingles);
-  const es = tiene(CFG.roles.espanol);
-  if (es && !en) return "es";
-  if (en && !es) return "en";
-  // Sin rol (o con los dos): se adivina por el texto comparando pistas de cada idioma.
-  const fuertes = [" hola ", "gracias", "ñ", "¿", "¡", " ayuda", " oye ", " porfa"];
-  if (fuertes.some((p) => t.includes(p))) return "es";
-  const pistasEs = [" el ", " la ", " no ", " mi ", " mis ", " los ", " las ", " que ", " qué ", " se ", " me ", " y ", " de ", " como ", " cómo ", " cuanto ", " cuánto ", " por ", " para ", " con ", " es ", " una ", " un ", " tengo ", " quiero ", " pero ", " ya ", " deberia", " debería", " gustaria", " gustaría", " correa", " funciona", " conecta", " enciende", " prende", "á", "é", "ó"];
-  const pistasEn = [" the ", " my ", " is ", " it ", " i ", " i'm ", " how ", " what ", " not ", " don't ", " doesn't ", " won't ", " can ", " please ", " with ", " and ", " to ", " on ", " of ", " help ", " why ", " does ", " should "];
-  const nEs = pistasEs.filter((p) => t.includes(p)).length;
-  const nEn = pistasEn.filter((p) => t.includes(p)).length;
-  if (nEs > nEn) return "es";
-  if (nEn > nEs) return "en";
-  return previo || (nEs ? "es" : "en");
+  return idiomaRol(tiene(CFG.roles.ingles), tiene(CFG.roles.espanol));
 }
+function idiomaDe(member, texto = "", previo = null) {
+  const a = analizarIdioma(texto);
+  if (a.pedido) return a.pedido;
+  const rol = rolIdioma(member);
+  if (a.lang && (a.seguro || !rol)) return a.lang;
+  return rol || a.lang || previo || "en";
+}
+const estadoIdioma = new Map(); // canal -> { dudas, preguntado, pendiente }
+
+function botonesIdioma() {
+  return new ActionRowBuilder().addComponents(
+    new ButtonBuilder().setCustomId("lang:es").setLabel("Español").setStyle(ButtonStyle.Primary).setEmoji("🇲🇽"),
+    new ButtonBuilder().setCustomId("lang:en").setLabel("English").setStyle(ButtonStyle.Primary).setEmoji("🇺🇸")
+  );
+}
+const PREGUNTA_IDIOMA = [
+  "Perdón, no me quedó claro en qué idioma prefieres que te ayude. ¿Español o inglés?\nSorry, I'm not sure which language you'd like me to use. Spanish or English?",
+  "Para ayudarte mejor, ¿seguimos en español o en inglés?\nTo help you better, should we continue in Spanish or English?",
+  "Solo puedo ayudarte en español o en inglés. ¿Cuál prefieres?\nI can only help in Spanish or English. Which one do you prefer?",
+];
 
 function esEquipo(member) {
   if (!member) return false;
@@ -683,6 +688,11 @@ async function abrirTicket(inter) {
     permissionOverwrites: permisos,
   });
   await inter.editReply(T[lang].creado(`<#${canal.id}>`));
+  idiomaTicket.set(canal.id, lang);
+  { // Si el problema del formulario no deja claro el idioma, ya cuenta como la primera duda.
+    const a = analizarIdioma(problema);
+    estadoIdioma.set(canal.id, { dudas: !a.lang && !a.neutro && !a.pedido ? 1 : 0, preguntado: false, pendiente: null });
+  }
 
   const ficha = new EmbedBuilder()
     .setColor(COLOR)
@@ -748,6 +758,20 @@ client.on("interactionCreate", async (inter) => {
       if (helper && helper.id !== inter.user.id) await helper.send(`✅ El cliente marcó como resuelto ${inter.channel.name}; ya no hace falta que entres.`).catch(() => {});
       return cerrarCanal(inter.channel, d);
     }
+    if (inter.isButton() && inter.customId.startsWith("lang:")) {
+      if (!dueno && !equipo) return inter.reply({ content: T[d.lang].soloDueno, ephemeral: true });
+      const lang = inter.customId === "lang:es" ? "es" : "en";
+      idiomaTicket.set(inter.channel.id, lang);
+      const ei = estadoIdioma.get(inter.channel.id) || {};
+      estadoIdioma.set(inter.channel.id, { dudas: 0, preguntado: true, pendiente: null });
+      await inter.update({ content: lang === "es" ? "Va, seguimos en español." : "Got it, we'll continue in English.", components: [] });
+      // Contesta el mensaje que dejo pendiente, ya en el idioma elegido.
+      if (ei.pendiente && d.estado !== "cerrado") {
+        const p = ei.pendiente;
+        return void (await atender(inter.channel, { ...d, lang }, p.member, p.texto, p.fotos, true));
+      }
+      return;
+    }
     if (inter.isButton() && inter.customId === "t:ayuda") {
       if (!dueno && !equipo) return inter.reply({ content: T[d.lang].soloDueno, ephemeral: true });
       await inter.deferUpdate();
@@ -785,9 +809,20 @@ async function casoDevolucion(canal, d, texto) {
 }
 
 // Atiende un mensaje del cliente en su ticket: siempre hay respuesta.
-async function atender(canal, d, member, texto, fotos = []) {
-  const lang = idiomaDe(member, texto, idiomaTicket.get(canal.id) || d.lang);
+async function atender(canal, d, member, texto, fotos = [], idiomaElegido = false) {
+  // Idioma: si escribe claro en el otro idioma se cambia; si por segunda vez no se sabe, se le pregunta.
+  const ei = estadoIdioma.get(canal.id) || { dudas: 0, preguntado: false };
+  const actual = idiomaTicket.get(canal.id) || d.lang || idiomaDe(member, texto);
+  const dec = idiomaElegido || (fotos.length && !texto.trim()) ? { accion: "seguir", lang: actual, dudas: ei.dudas } : decidirIdioma(texto, { lang: actual, ...ei });
+  const lang = dec.lang;
   idiomaTicket.set(canal.id, lang);
+  estadoIdioma.set(canal.id, { ...ei, dudas: dec.dudas, pendiente: null });
+  if (dec.accion === "cambiar") console.log(`idioma de ${canal.name}: ${actual} -> ${lang}`);
+  if (dec.accion === "preguntar") {
+    estadoIdioma.set(canal.id, { dudas: 0, preguntado: true, pendiente: { texto, member, fotos } });
+    console.log(`idioma dudoso en ${canal.name}, pregunto`);
+    return void (await canal.send({ content: azar(PREGUNTA_IDIOMA), components: [botonesIdioma()] }));
+  }
   console.log(`msg en ${canal.name} (${d.estado}, ${lang}): ${texto.slice(0, 80)}${fotos.length ? ` +${fotos.length} foto(s)` : ""}`);
   const dm = { ...d, lang };
   if (fotos.length) {
@@ -1022,4 +1057,4 @@ if (require.main === module) {
   client.login(token);
 }
 
-module.exports = { saberAuditor, pideDevolucion, pideCompra, promptSistema, pideHumano, idiomaDe, leerTicket, temaCanal, esImagen, estaEnojado, mensajePanel, yaQuedo };
+module.exports = { PREGUNTA_IDIOMA, saberAuditor, pideDevolucion, pideCompra, promptSistema, pideHumano, idiomaDe, leerTicket, temaCanal, esImagen, estaEnojado, mensajePanel, yaQuedo };
