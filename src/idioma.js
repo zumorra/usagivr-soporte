@@ -27,8 +27,8 @@ function analizarIdioma(texto) {
   // "no hablo inglés, por favor..." pide español, no inglés (y al revés)
   if (/no (hablo|entiendo|se|sé|leo)( bien| mucho)? (el )?(ingles|inglés)|(don.?t|do not|can.?t|cannot) (speak|understand|read)( much)? english/.test(t)) return { ...r, lang: "es", seguro: true, pedido: "es" };
   if (/no (hablo|entiendo|se|sé|leo)( bien| mucho)? (el )?(espanol|español)|(don.?t|do not|can.?t|cannot) (speak|understand|read)( much)? spanish/.test(t)) return { ...r, lang: "en", seguro: true, pedido: "en" };
-  if (/(en|in) (espanol|español|espaniol|spanish)|habla(me|s)? (en )?espa|en castellano|speak spanish|(espanol|español|spanish)[ ,!.]*(por favor|porfa|plis|pls|plz|please)|^ *(espanol|español|spanish)[ ?!.]*$|prefiero (el )?espa/.test(t)) return { ...r, lang: "es", seguro: true, pedido: "es" };
-  if (/(en|in) (ingles|inglés|english)|speak english|habla(me|s)? (en )?ingl|(ingles|inglés|english)[ ,!.]*(por favor|porfa|plis|pls|plz|please)|^ *(ingles|inglés|english)[ ?!.]*$|prefiero (el )?ingl/.test(t)) return { ...r, lang: "en", seguro: true, pedido: "en" };
+  if (/(en|in) (espanol|español|espaniol|spanish)|habla(me|s)? (en )?espa|en castellano|speak spanish|(espanol|español|spanish)[ ,!.]*(por favor|porfa|plis|pls|plz|please)|^ *(espanol|español|spanish)[ ?!.]*$|prefiero (hablar |escribir )?(en )?(el )?espa/.test(t)) return { ...r, lang: "es", seguro: true, pedido: "es" };
+  if (/(en|in) (ingles|inglés|english)|speak english|habla(me|s)? (en )?ingl|(ingles|inglés|english)[ ,!.]*(por favor|porfa|plis|pls|plz|please)|^ *(ingles|inglés|english)[ ?!.]*$|prefiero (hablar |escribir )?(en )?(el )?ingl/.test(t)) return { ...r, lang: "en", seguro: true, pedido: "en" };
   if (NEUTRO.test(String(texto || "").trim())) return { ...r, neutro: true };
   const nOtro = OTROS.reduce((n, re) => n + (t.match(new RegExp(re.source, "g")) || []).length, 0);
   const fEs = FUERTES_ES.filter((p) => t.includes(p)).length;

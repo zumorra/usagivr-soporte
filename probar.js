@@ -126,8 +126,8 @@ const { variantes, pedirRepetir } = require("./src/repetir");
 for (const l of ["es", "en"]) { const v = variantes(l); assert.ok(new Set(v).size >= 100, `${l}: ${v.length} variantes`); assert.ok(v.includes(pedirRepetir(l))); }
 // Pedir idioma con solo el nombre, y negaciones ("no hablo inglés" pide español).
 { const { analizarIdioma: ai } = require("./src/idioma");
-  for (const [t, p] of [["inglés por favor","en"],["English, please","en"],["ingles porfa","en"],["english?","en"],["español por favor","es"],["prefiero el inglés","en"],["no hablo inglés, por favor ayuda","es"],["I don't speak english","es"],["I dont speak spanish please help","en"],["mi tracker no prende por favor",null],["english tracker manual please",null]])
+  for (const [t, p] of [["inglés por favor","en"],["English, please","en"],["ingles porfa","en"],["english?","en"],["español por favor","es"],["prefiero el inglés","en"],["prefiero hablar inglés","en"],["¿Puedes hablar en español por favor?","es"],["No hablo de eso",null],["no hablo inglés, por favor ayuda","es"],["I don't speak english","es"],["I dont speak spanish please help","en"],["mi tracker no prende por favor",null],["english tracker manual please",null]])
     assert.strictEqual(ai(t).pedido, p, t); }
 const { saberAuditor } = require("./src/index");
 assert.ok(/Ice Cube/.test(saberAuditor([{ role: "user", content: "puedo actualizar mis ice cube" }], "No se puede [GUIA:sin_firmware]", "es")));
-console.log(`OK: ${ok} temas + 36 idiomas + ${humano.length} pedir-humano + ${dev.length} devolucion + ${compra.length} compra + seguimiento/fotos/enojo/horario/panel/ya-quedo`);
+console.log(`OK: ${ok} temas + 39 idiomas + ${humano.length} pedir-humano + ${dev.length} devolucion + ${compra.length} compra + seguimiento/fotos/enojo/horario/panel/ya-quedo`);
