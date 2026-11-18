@@ -35,6 +35,8 @@ const casos = [
   ["que debo configurar dentro de vr", "ajustes_vrchat"],
   ["como calibro en vrchat", "calibracion"],
   ["vrchat fbt settings", "ajustes_vrchat"],
+  ["como instalo slimevr en mi celular android", "android"],
+  ["como pongo el reset en el boton b de mi control", "botones_reset"],
   ["como asigno los trackers a cada parte del cuerpo", "asignar_trackers"],
   ["se me pusieron las piernas al reves izquierda o derecha", "asignar_trackers"],
   ["mis piernas se cruzan en vrchat", "calibracion"],
