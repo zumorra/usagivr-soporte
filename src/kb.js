@@ -415,14 +415,14 @@ const TEMAS = [
     pasos: {
       es: [
         "**Apagar un SMOL**: mantén pulsado el botón del frente hasta que el LED rojo se apague.",
-        "**Si se queda siempre en rojo**: haz un **reset rápido** con el botón (se alcanza sin sacarlo de la correa, no hace falta quitarlo).",
+        "**Si se queda siempre en rojo**: haz un **reset rápido** con el **botón de reset, que está en la parte de atrás del tracker** (se alcanza sin sacarlo de la correa, no hace falta quitarlo).",
         "Antes de jugar: cárgalos, enciéndelos, déjalos **planos y quietos 1-2 min** → **Full Reset** → póntelos → **Automatic Mounting** → en VRChat calibra FBT de pie y quieto.",
         "Si usas **Virtual Desktop**: apaga **Emulate SteamVR Vive Trackers**, o te salen los trackers **duplicados**.",
         "Cuerpo girado → **Yaw Reset**; todo raro → **Full Reset**.",
       ],
       en: [
         "**Turning a SMOL off**: hold the front button until the red LED goes off.",
-        "**If it stays red all the time**: do a **quick reset** with the button (you can reach it without taking it out of the strap, no need to remove it).",
+        "**If it stays red all the time**: do a **quick reset** with the **reset button on the back of the tracker** (you can reach it without taking it out of the strap, no need to remove it).",
         "Before playing: charge, turn on, leave them **flat and still for 1-2 min** → **Full Reset** → put them on → **Automatic Mounting** → in VRChat calibrate FBT standing still.",
         "If you use **Virtual Desktop**: turn off **Emulate SteamVR Vive Trackers**, otherwise trackers show up **duplicated**.",
         "Body rotated → **Yaw Reset**; everything off → **Full Reset**.",
