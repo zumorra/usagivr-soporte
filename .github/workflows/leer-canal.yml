@@ -1,0 +1,30 @@
+name: Leer canal (solo lectura)
+
+# Baja los mensajes de los canales cuyo nombre coincide con el patron y los deja como artefacto.
+on:
+  workflow_dispatch:
+    inputs:
+      patron:
+        description: "Expresion regular del nombre del canal"
+        default: "trackers.*info|know"
+
+jobs:
+  leer:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Leer
+        env:
+          DISCORD_TOKEN: ${{ secrets.DISCORD_TOKEN }}
+          PATRON: ${{ inputs.patron }}
+        run: node herramientas/leer-canal.js
+      - uses: actions/upload-artifact@v4
+        with:
+          name: canal
+          path: |
+            canal.md
+            canal.json
