@@ -35,6 +35,8 @@ const casos = [
   ["que debo configurar dentro de vr", "ajustes_vrchat"],
   ["como calibro en vrchat", "calibracion"],
   ["vrchat fbt settings", "ajustes_vrchat"],
+  ["como asigno los trackers a cada parte del cuerpo", "asignar_trackers"],
+  ["se me pusieron las piernas al reves izquierda o derecha", "asignar_trackers"],
   ["mis piernas se cruzan en vrchat", "calibracion"],
   ["como actualizo el firmware de mis bmi160", "sin_firmware"],
   ["puedo actualizar mis ice cube?", "sin_firmware"],

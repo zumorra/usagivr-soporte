@@ -247,6 +247,7 @@ const TEMAS = [
     titulo: { es: "Calibración en cada sesión", en: "Calibrating every session" },
     pasos: {
       es: [
+        "**Antes que nada**: si todavía no asignaste tus trackers a cada parte del cuerpo en SlimeVR, hazlo primero (guía «Asignar trackers»).",
         "Sigue siempre las **guías de calibración que te muestra SlimeVR** dentro del programa, paso por paso.",
         "Trackers quietos en el suelo 2 minutos al encenderlos.",
         "Póntelos, de pie y recto, pies separados ~10 cm.",
@@ -256,6 +257,7 @@ const TEMAS = [
         "Si las piernas se cruzan: tobillos al costado, muslos justo encima de la rodilla, y revisa Manual Mounting.",
       ],
       en: [
+        "**First of all**: if you haven't assigned your trackers to each body part in SlimeVR yet, do that first (\"Assign trackers\" guide).",
         "Always follow the **calibration guides SlimeVR shows you** inside the program, step by step.",
         "Trackers still on the floor for 2 minutes after turning them on.",
         "Put them on, stand straight, feet ~10 cm apart.",
@@ -462,11 +464,40 @@ const TEMAS = [
     imagenes: ["uso-diario.png"],
   },
   {
+    id: "asignar_trackers",
+    claves: ["asignar", "asigna", "asigno", "asignados", "assign", "assigned", "assign trackers", "asignar trackers", "parte del cuerpo", "body part", "unassigned", "sin asignar", "izquierda o derecha", "left or right", "pierna equivocada", "wrong leg", "lados invertidos", "piernas al reves", "legs swapped", "marco morado", "marco purpura", "cuantos trackers asigno", "numero de trackers", "tengo 11 trackers", "i assigned all the trackers"],
+    fuertes: ["asignar trackers", "assign trackers", "sin asignar", "unassigned", "piernas al reves", "legs swapped"],
+    titulo: { es: "Asignar cada tracker a su parte del cuerpo (va antes de todo)", en: "Assign each tracker to its body part (do this first)" },
+    pasos: {
+      es: [
+        "Esto se hace **antes de cualquier otra cosa**: antes de calibrar, de Stay Aligned o de configurar VRChat. Si ya los tienes todos asignados, sáltate esta guía.",
+        "En SlimeVR, en **Assign trackers**, primero elige **al costado** cuántos trackers tienes: **5, 6, 8, 10 o 20**. Si tu número no aparece, elige el **siguiente más grande** (por ejemplo, con **11** elige **20**).",
+        "Luego haz **clic en la parte del cuerpo** que quieres asignar.",
+        "**Mueve o agita el tracker** que va ahí: el que se mueve aparece con un **marco morado**.",
+        "A veces se asigna solo al agitarlo; si no, **haz clic en el que tiene el marco morado**. Si ninguno se marca al moverlo, revisa que el tracker esté encendido y conectado en SlimeVR.",
+        "Repite con cada tracker y al final pícale a **I Assigned all the trackers**.",
+        "**Ojo con las piernas**: el dibujo está **espejado** (como si te vieras de frente), así que fíjate en el **nombre** que dice SlimeVR: **Left** = izquierda, **Right** = derecha, de **tu** cuerpo.",
+      ],
+      en: [
+        "Do this **before anything else**: before calibrating, Stay Aligned or configuring VRChat. If they're all assigned already, skip this guide.",
+        "In SlimeVR, under **Assign trackers**, first pick **on the side** how many trackers you have: **5, 6, 8, 10 or 20**. If your number isn't there, pick the **next bigger one** (e.g. with **11** pick **20**).",
+        "Then **click the body part** you want to assign.",
+        "**Move or shake the tracker** that goes there: the one moving shows a **purple frame**.",
+        "Sometimes it assigns itself when shaken; if not, **click the one with the purple frame**. If none lights up when you move it, check the tracker is on and connected in SlimeVR.",
+        "Repeat for each tracker and finish with **I Assigned all the trackers**.",
+        "**Watch the legs**: the figure is **mirrored** (as if facing you), so check the **name** SlimeVR shows: **Left** / **Right** refer to **your** body.",
+      ],
+    },
+    videos: [],
+    imagenes: ["asignar-trackers.png"],
+  },
+  {
     id: "ajustes_slimevr",
     claves: ["ajustes de slimevr", "settings de slimevr", "slimevr settings", "configurar el programa", "que tengo que tocar", "que debo tocar", "que opciones", "what settings", "which settings", "best settings", "mejor configuracion", "suavizado", "smoothing", "filtering", "tracker mechanics", "mecanicas", "gesture control", "control de gestos", "stay aligned", "body proportions", "proporciones", "que se vea mejor", "ande mejor", "track better"],
     titulo: { es: "Ajustes recomendados de SlimeVR (Settings)", en: "Recommended SlimeVR settings" },
     pasos: {
       es: [
+        "**Antes que nada**: si todavía no asignaste tus trackers a cada parte del cuerpo en SlimeVR, hazlo primero (guía «Asignar trackers»).",
         "Antes: ten **todos los trackers puestos** y el **visor a la mano**. En SlimeVR abre **Settings** (engrane abajo a la izquierda) y ve bajando por el menú de la derecha.",
         "**Tracker mechanics** → *Filtering type*: elige **Smoothing** (suavizado). En **Amount** pon **20%**.",
         "Más abajo, **Yaw reset smooth time**: pícale al **+ una sola vez**, para que quede en **0.05s**.",
@@ -476,6 +507,7 @@ const TEMAS = [
         "Por último, con los **trackers y el visor puestos**, vuelve a **Settings → Stay Aligned** y pícale al **botón morado grande (Setup)**. Sigue los pasos y listo, SlimeVR queda configurado.",
       ],
       en: [
+        "**First of all**: if you haven't assigned your trackers to each body part in SlimeVR yet, do that first (\"Assign trackers\" guide).",
         "Before you start: have **all trackers on** and your **headset at hand**. In SlimeVR open **Settings** (gear, bottom left) and go down the right-hand menu.",
         "**Tracker mechanics** → *Filtering type*: pick **Smoothing**. Set **Amount** to **20%**.",
         "Below, **Yaw reset smooth time**: press **+ only once**, so it ends up at **0.05s**.",
@@ -495,6 +527,7 @@ const TEMAS = [
     titulo: { es: "Ajustes recomendados de VRChat para SlimeVR", en: "Recommended VRChat settings for SlimeVR" },
     pasos: {
       es: [
+        "**Antes que nada**: si todavía no asignaste tus trackers a cada parte del cuerpo en SlimeVR, hazlo primero (guía «Asignar trackers»).",
         "Dentro de VRChat abre el **menú grande de Settings** → **Tracking & IK**.",
         "**User Real Height**: pon **tu altura real** (la misma que pusiste en SlimeVR).",
         "**Use Legacy IK Solving**: **apagado (Off)**.",
@@ -504,6 +537,7 @@ const TEMAS = [
         "Si SlimeVR te muestra la página **VRChat configuration warnings**, corrige todo lo que tenga **triángulo amarillo** hasta que quede en verde. Después calibra como siempre (Calibrate FBT y Full Reset).",
       ],
       en: [
+        "**First of all**: if you haven't assigned your trackers to each body part in SlimeVR yet, do that first (\"Assign trackers\" guide).",
         "Inside VRChat open the **big Settings menu** → **Tracking & IK**.",
         "**User Real Height**: set **your real height** (same as in SlimeVR).",
         "**Use Legacy IK Solving**: **Off**.",
