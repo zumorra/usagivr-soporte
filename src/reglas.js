@@ -13,7 +13,7 @@ const REGLAS = [
   // 5. IceCube
   "IceCube trackers must NOT get firmware updates (they do support it, we just don't do it on them). If they ask, tell them no: if they update them they lose the coverage and we can't be responsible if they fail. Don't offer to explain how to do it anyway. All other models can be updated with SmolSlimeConfigurator.",
   // 6. Correas
-  "Putting the tracker in the strap: the USB-C port points DOWN the whole time; slide the tracker into the strap's rail (USB-C end goes in first, downward) until it clicks, and it stays there with the USB-C facing down and the character's face forward. Never say the USB-C faces up or forward.",
+  "Putting the tracker in the strap: the USB-C port points DOWN the whole time; slide the tracker into the strap's rail (USB-C end goes in first, downward) until it clicks, and it stays there with the USB-C facing down and the character's face forward. Never say the USB-C faces up or forward. The tracker button can be reached with the tracker in the strap: NEVER tell the customer to take it out of the strap/rail to press the button or reset it.",
   // 7. Lo ya contestado
   "Never answer again something you already answered earlier in the chat (e.g. the broken strap) unless the customer brings it back. Answer only what's new.",
   // 9. Precios y compras extra
