@@ -104,6 +104,44 @@ async function opencode(cfg, mensajes) {
   throw new Error(`opencode: ${ultimo.slice(0, 120)}`);
 }
 
+
+// Mira las fotos del cliente con un modelo gratis con vision (OpenCode) y dice si se ve algo roto o mojado.
+// Devuelve true / false, o null si ninguna IA pudo verla (entonces decide el texto del cliente).
+const fs = require("node:fs");
+const path = require("node:path");
+const PROMPT_FOTO = "Look at the attached photo from a customer of a shop that sells VR body trackers (small plastic boxes with a USB-C port, straps, USB antennas, cables). Is anything in it broken, cracked, torn, snapped, burnt, melted, or wet / liquid-damaged? Answer ONLY one word: DANIO or NORMAL.";
+async function verFotos(cfg, urls) {
+  const modelos = String(cfg.vision_modelo || "opencode/nemotron-3.5-super-vl-free,opencode/mimo-v2.6-flash-free").split(",").map((x) => x.trim()).filter(Boolean);
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), "foto-"));
+  try {
+    let vistas = 0;
+    for (const [i, url] of urls.slice(0, 3).entries()) {
+      const r = await fetch(url).catch(() => null);
+      if (!r || !r.ok) continue;
+      const tipo = r.headers.get("content-type") || "";
+      if (!/^image\//.test(tipo)) continue;
+      const archivo = path.join(dir, `foto${i}.${(tipo.split("/")[1] || "jpg").split(";")[0]}`);
+      fs.writeFileSync(archivo, Buffer.from(await r.arrayBuffer()));
+      for (const modelo of modelos) {
+        const salida = await new Promise((resolve) => {
+          const h = cp.spawn("opencode", ["run", "--model", modelo, "-f", archivo, PROMPT_FOTO], { cwd: dir, stdio: ["ignore", "pipe", "pipe"] });
+          let out = "";
+          h.stdout.on("data", (b) => { out += b; });
+          const t = setTimeout(() => h.kill("SIGKILL"), 60000);
+          h.on("error", () => { clearTimeout(t); resolve(""); });
+          h.on("close", () => { clearTimeout(t); resolve(out.replace(/\x1b\[[0-9;]*m/g, "")); });
+        });
+        const ult = salida.trim().split("\n").pop() || "";
+        if (/\bDANIO\b/i.test(ult)) return true;
+        if (/\bNORMAL\b/i.test(ult)) { vistas++; break; }
+      }
+    }
+    return vistas ? false : null;
+  } finally {
+    fs.rmSync(dir, { recursive: true, force: true });
+  }
+}
+
 const BACKENDS = { pollinations, opencode, groq };
 
 async function responder(cfg, mensajes) {
@@ -124,4 +162,4 @@ async function responder(cfg, mensajes) {
   throw new Error(`ninguna IA respondio (${fallos.join(" | ")})`);
 }
 
-module.exports = { responder };
+module.exports = { responder, verFotos };

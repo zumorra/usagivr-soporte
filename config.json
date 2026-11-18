@@ -21,7 +21,8 @@
     "pollinations_modelo": "openai-fast",
     "opencode_modelo": "opencode/deepseek-v4.1-flash-free,opencode/minimax-m3.1-flash-free,opencode/nemotron-3.5-lightning-free",
     "groq_modelo": "qwen/qwen3.8-27b",
-    "max_tokens": 600
+    "max_tokens": 600,
+    "vision_modelo": "opencode/nemotron-3.5-super-vl-free,opencode/mimo-v2.6-flash-free"
   },
   "auditor": {
     "nota": "Segunda IA online que revisa cada respuesta antes de mandarla; usa otra IA distinta de la que escribio el borrador.",
@@ -55,7 +56,8 @@
     }
   },
   "seguimiento": {
-    "revisarCadaMin": 10,
+    "revisarCadaMin": 5,
+    "segundoHelperMin": 15,
     "recordarHelperMin": 120,
     "reasignarHelperMin": 240,
     "maxReasignaciones": 3,

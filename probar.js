@@ -91,6 +91,25 @@ for (const [txt, esp] of dev) assert.strictEqual(pideDevolucion(txt), esp, `pide
 const compra = [["cuánto cuesta un tracker extra?", true], ["puedo comprar otra correa?", true], ["quiero comprar 2 trackers mas", true], ["how much is an extra tracker", true], ["can I buy another strap?", true],
   ["me compré otra antena porque la mía no jalaba", false], ["mi tracker no enciende", false], ["como pongo la correa", false]];
 for (const [txt, esp] of compra) assert.strictEqual(pideCompra(txt), esp, `pideCompra("${txt}")`);
+// Cancelaciones, cambios y recambios tambien van con un compañero; cambiar cosas de SlimeVR no.
+for (const [txt, esp] of [["quiero cancelar mi pedido", true], ["can I cancel my order", true], ["necesito un repuesto de la correa", true], ["quiero un cambio de talla de correa", true], ["quiero cambiar mi kit por uno de 8", true],
+  ["cancelé la calibración y no se mueve", false], ["puedo cambiarlo de puerto usb?", false], ["como cambio la rotacion del tracker", false], ["cancel calibration doesnt work", false]])
+  assert.strictEqual(pideDevolucion(txt), esp, `pideDevolucion("${txt}")`);
+for (const [txt, esp] of [["cuanto me sale un kit de 8?", true], ["que precio tienen las correas", true], ["what's the pricing for extra trackers", true], ["tienen alguna oferta?", true], ["mi tracker no prende", false]])
+  assert.strictEqual(pideCompra(txt), esp, `pideCompra("${txt}")`);
+// Frases para pasar con un compañero: 40 de precios por idioma, todas mencionan al compañero y ninguna da precios.
+{ const { FRASES } = require("./src/frases"); const { T } = require("./src/textos"); const { PROHIBIDO: P } = require("./src/reglas");
+  for (const l of ["es", "en"]) {
+    assert.strictEqual(new Set(FRASES[l].compra).size, 40, `${l}: 40 frases de precio`);
+    for (const k of ["compra", "devolucion", "foto", "enojo", "segundo"]) for (const f of FRASES[l][k]) {
+      assert.ok(f.includes("{r}"), `${l}.${k} sin compañero: ${f}`);
+      assert.ok(!P.test(f) && !/\d/.test(f), `${l}.${k} con precio o palabra prohibida: ${f}`);
+    }
+    for (const f of [...FRASES[l].compraYa]) assert.ok(!P.test(f) && !/\d/.test(f), f);
+    assert.ok(T[l].compra("<@1>").includes("<@1>") && T[l].segundo("<@2>").includes("<@2>") && T[l].compraYa().length > 10);
+    for (const f of FRASES[l].compra) assert.ok(/compra|comprar|buy|purchase|sell|order/i.test(f), `${l}: la frase no dice que si puede comprar: ${f}`);
+    for (const f of FRASES[l].enojo) assert.ok(/se una|sume|join/i.test(f), `${l}: enojo sin ofrecer otro compañero: ${f}`);
+  } }
 const { PROHIBIDO } = require("./src/reglas");
 assert.ok(PROHIBIDO.test("cuesta $45") && PROHIBIDO.test("son 900 pesos") && !PROHIBIDO.test("tienes 7 trackers"));
 // El tema del canal guarda el estado del seguimiento aunque el problema sea larguisimo.
@@ -130,4 +149,4 @@ for (const l of ["es", "en"]) { const v = variantes(l); assert.ok(new Set(v).siz
     assert.strictEqual(ai(t).pedido, p, t); }
 const { saberAuditor } = require("./src/index");
 assert.ok(/Ice Cube/.test(saberAuditor([{ role: "user", content: "puedo actualizar mis ice cube" }], "No se puede [GUIA:sin_firmware]", "es")));
-console.log(`OK: ${ok} temas + 39 idiomas + ${humano.length} pedir-humano + ${dev.length} devolucion + ${compra.length} compra + seguimiento/fotos/enojo/horario/panel/ya-quedo`);
+console.log(`OK: ${ok} temas + 39 idiomas + ${humano.length} pedir-humano + ${dev.length} devolucion + ${compra.length} compra + frases(40 precio)/cancelar/seguimiento/fotos/enojo/horario/panel/ya-quedo`);

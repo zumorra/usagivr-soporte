@@ -20,7 +20,7 @@ const {
   AttachmentBuilder, SlashCommandBuilder,
 } = require("discord.js");
 const { TEMAS, buscarTemas, resumenParaIA } = require("./kb");
-const { responder } = require("./ia");
+const { responder, verFotos } = require("./ia");
 const { analizarIdioma, idiomaRol, decidirIdioma } = require("./idioma");
 const { auditar } = require("./auditor");
 const { pedirRepetir, variantes } = require("./repetir");
@@ -388,7 +388,7 @@ function promptSistema(lang) {
     lang === "es" && "Spanish variant: neutral Latin American leaning Mexican, NEVER Spain Spanish. Use \"¿ya intentaste…?\" (not \"¿has probado a…?\"), \"dale clic / presiona\" (not \"pulsa/pincha\"), \"llenar\" (not \"rellenar\"), \"computadora o PC\" (not \"ordenador\"), \"celular\" (not \"móvil\"), \"ustedes\" (never \"vosotros\", \"os\", \"vale\", \"coger\"), \"mantenlo\" without accent. Prefer simple past (\"ya lo cargaste\") over \"has cargado\". No modern internet slang or anglicisms (\"random\", \"literal\", \"crack\", \"bro\").",
     "Keep the slang light: at most one casual word per message (in Spanish, Mexican-style like \"va\", \"sale\", \"tranqui\", \"no te preocupes\", \"ahorita\"). Never use \"wey\", \"carnal\", \"bro\", \"compa\", \"neta\" or regional slang from other countries, never pile up exclamations or emojis (max one emoji, usually none), never talk like a cartoon. It must sound like a real person from a small shop answering a customer.",
     "Be very understanding: first show you get the problem and how annoying it is, ask one short question if something is unclear, then suggest what to try (max 5 short numbered steps). Use only the knowledge below; it comes from the official manual and overrides anything else you know.",
-    "Never invent prices, shipping dates or policies; for those, or if it really looks like a broken tracker, say a teammate from the tech team can look at it whenever they want and that they just have to ask for it or press the button.",
+    "Never give prices (not even an estimate), shipping dates or policies: a teammate handles prices (see TEAM RULES). If it really looks like a broken tracker, ask for a photo; a teammate checks it.",
     "You never hand the ticket to a human yourself. Only if the customer clearly asks to talk to a human / the technical team, end with the exact tag [HUMANO].",
     "If the customer says it is solved, be happy for them and thank them.",
     "Tracker won't turn on: first ask if they tried the small reset button on the back of the tracker; then ask if, with the USB cable plugged in, it turns on and shows up in SlimeVR (if yes, it's the battery).",
@@ -508,7 +508,7 @@ async function respuestaIA(canal, d, extraUsuario) {
     console.log(`IA (${backend}) en ${canal.name}`);
     // La IA a veces pone [HUMANO] sin que nadie lo pida: solo vale si el cliente insinuo persona/equipo/devolucion.
     const ultimos = mensajes.filter((x) => x.role === "user").slice(-1).map((x) => x.content).join(" ");
-    const insinua = /human|persona|alguien|equipo|tecnico|técnico|soporte|agente|real|team|someone|staff|support|devol|regres|reembol|reempla|remplaz|cambi|garant|refund|return|replace|warrant|exchange/i.test(ultimos);
+    const insinua = /human|persona|alguien|equipo|tecnico|técnico|soporte|agente|real|team|someone|staff|support|devol|regres|reembol|reempla|remplaz|cambi|garant|refund|return|replace|warrant|exchange|cancel|precio|cuesta|cuanto|cuánto|compr|price|cost|how much|buy/i.test(ultimos);
     const escalar = /\[HUMANO\]/i.test(texto) && insinua && !d.soloConsejos;
     const guias = [...texto.matchAll(/\[GUIA:\s*([a-z_]+)\]/gi)].map((m) => TEMAS.find((t) => t.id === m[1].toLowerCase())).filter(Boolean).slice(0, 1);
     const limpio = texto.replace(/\[(HUMANO|ESCALATE|GUIA:[^\]]*)\]/gi, "").trim().slice(0, 1900);
@@ -539,8 +539,8 @@ function pideDevolucion(texto) {
   const t = ` ${String(texto).toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "")} `;
   return [
     "devolucion", "devolver", "regresarlo", "regresarla", "regresarlos", "regresar el", "regresar los", "reembolso", "rembolso", "reembolsar", "mi dinero",
-    "reemplazo", "remplazo", "reemplazar", "remplazar", "cambio por otro", "cambiarlo por", "me lo cambien", "me los cambien", "cambien por", "uno nuevo", "otro nuevo", "garantia", "reclamo", "cancelar mi pedido", "cancelar el pedido",
-    "refund", "return it", "return them", "return the", "send it back", "send them back", "money back", "replacement", "replace it", "replace my", "warranty", "rma", "exchange",
+    "reemplazo", "remplazo", "reemplazar", "remplazar", "cambio por otro", "cambiarlo por", "me lo cambien", "me los cambien", "cambien por", "uno nuevo", "otro nuevo", "garantia", "reclamo", "cancelar mi", "cancelar la compra", "cancelar la orden", "cancelar el pedido", "cancelarlo", "quiero cancelar", "cancelacion", "recambio", "repuesto", "quiero un cambio", "pedir un cambio", "hacer un cambio de", "cambiar mi pedido", "cambiar mi kit", "cambiar el kit", "cambiar mi orden", "cambiar el producto", "cambiar mis trackers por", "cambiar el tracker por",
+    "refund", "return it", "return them", "return the", "send it back", "send them back", "money back", "replacement", "replace it", "replace my", "warranty", "rma", "exchange", "cancel my", "cancel the order", "cancel the purchase", "cancel it", "cancellation", "spare part", "change my order", "change my kit",
   ].some((p) => t.includes(p));
 }
 // Precios o comprar algo extra: el bot no da precios, lo atiende un Helpper asignado.
@@ -548,9 +548,9 @@ function pideCompra(texto) {
   const t = ` ${String(texto).toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "")} `;
   if (COMPRA_FUERA.test(texto)) return false; // "me compre otra antena" es otra regla
   return [
-    "precio", "cuanto cuesta", "cuanto cuestan", "cuanto sale", "cuanto salen", "cuanto vale", "cuanto valen", "cuanto cobran", "cuanto costaria", "cotiza", "descuento",
+    "precio", "costo", "cuanto cuesta", "cuanto cuestan", "cuanto sale", "cuanto salen", "cuanto vale", "cuanto valen", "cuanto cobran", "cuanto costaria", "cuanto me sale", "cuanto me cuesta", "cuanto es ", "en cuanto", "cotiza", "descuento", "oferta", "promocion",
     "comprar otro", "comprar otra", "comprar uno", "comprar una", "comprar mas", "quiero comprar", "puedo comprar", "se puede comprar", "venden ", "tracker extra", "trackers extra", "correa extra", "correas extra", "antena extra", "adicional",
-    "price", "how much", "cost ", "costs ", "discount", "buy another", "buy more", "buy extra", "buy an extra", "buy a ", "want to buy", "can i buy", "do you sell", "extra tracker", "extra strap",
+    "price", "pricing", "how much", "cost ", "costs ", "cost?", "discount", "promo", "sale?", "for sale", "sell ", "buy another", "buy more", "buy extra", "buy an extra", "buy a ", "want to buy", "can i buy", "do you sell", "extra tracker", "extra strap",
   ].some((p) => t.includes(p));
 }
 // Reparte los tickets escalados entre los Helpper, por turnos. Sin lista de miembros, se menciona el rol.
@@ -563,7 +563,8 @@ async function elegirHelper(guild, rol, excluir) {
     if (lista) miembros = [...lista.values()].filter((m) => m.roles.cache.has(rol.id));
   }
   miembros = miembros.filter((m) => !m.user.bot).sort((a, b) => a.id.localeCompare(b.id));
-  if (excluir && miembros.length > 1) miembros = miembros.filter((m) => m.id !== excluir);
+  const fuera = [].concat(excluir || []).filter(Boolean);
+  if (fuera.length) miembros = miembros.filter((m) => !fuera.includes(m.id));
   if (!miembros.length) return null;
   const i = ((turnoHelper.get(guild.id) ?? -1) + 1) % miembros.length;
   turnoHelper.set(guild.id, i);
@@ -829,7 +830,7 @@ async function atender(canal, d, member, texto, fotos = [], idiomaElegido = fals
   if (fotos.length) {
     await guardarFotos(canal, dm, fotos);
     // Algo roto o mojado: la foto es lo que pedia el bot, asi que la revisa un compañero.
-    if (await esCasoDanio(canal, dm, texto)) {
+    if (await esCasoDanio(canal, dm, texto, fotos)) {
       if (dm.estado === "escalado") {
         await canal.send(T[lang].fotoYa);
         const helper = dm.aid && (await canal.guild.members.fetch(dm.aid).catch(() => null));
@@ -850,10 +851,10 @@ async function atender(canal, d, member, texto, fotos = [], idiomaElegido = fals
   if (d.estado !== "escalado") {
     const enojo = estaEnojado(texto);
     const insiste = !enojo && (await mensajesDelCliente(canal, d.uid)) >= ((CFG.seguimiento || {}).insisteMensajes || 12);
-    if (enojo || insiste) return escalarTicket(canal, dm, enojo ? "Cliente molesto" : "Muchos mensajes sin resolver", T[lang].enojo);
+    if (enojo || insiste) return escalarTicket(canal, dm, enojo ? "Cliente molesto" : "Muchos mensajes sin resolver", enojo ? T[lang].enojo : undefined);
   }
   if (pideCompra(texto)) {
-    if (d.estado === "escalado") return void (await canal.send(T[lang].devolucionYa));
+    if (d.estado === "escalado") return void (await canal.send(T[lang].compraYa()));
     return escalarTicket(canal, dm, "Precio / compra extra", T[lang].compra);
   }
   // La IA lee toda la conversacion (sabe en que paso va el cliente) y elige ella la guia con video/dibujo.
@@ -884,11 +885,17 @@ async function guardarFotos(canal, d, fotos) {
     console.warn("fotos:", e.message);
   }
 }
-async function esCasoDanio(canal, d, texto) {
+// Roto o mojado: si el cliente lo dice (en este mensaje o antes) o si la IA con vision lo ve en la foto.
+async function esCasoDanio(canal, d, texto, fotos = []) {
   const ultimos = await canal.messages.fetch({ limit: 20 }).catch(() => null);
   const delCliente = ultimos ? [...ultimos.values()].filter((m) => m.author.id === d.uid).map((m) => m.content) : [];
   const todo = [d.problema, texto, ...delCliente].join("\n");
-  return DANIO.test(todo) || LIQUIDO.test(todo);
+  if (DANIO.test(todo) || LIQUIDO.test(todo)) return true;
+  if (!fotos.length) return false;
+  canal.sendTyping().catch(() => {});
+  const visto = await verFotos(CFG.ia, fotos.map((f) => f.url)).catch((e) => { console.warn("vision:", e.message); return null; });
+  console.log(`vision en ${canal.name}: ${visto === true ? "roto/mojado" : visto === false ? "normal" : "sin ver"}`);
+  return visto === true;
 }
 
 const esperas = new Map(); // canal -> temporizador de la rafaga de mensajes
@@ -975,8 +982,20 @@ async function revisarTicket(c) {
     const espera = ahora - esc;
     const reas = Number(d.reas || 0);
     const rol = rolPorNombre(c.guild, CFG.roles.soporte);
+    // Unos minutos sin respuesta del primero: se suma otro Helpper y el ticket queda con los dos.
+    if (d.aid && !d.aid2 && espera > (S.segundoHelperMin ?? 15) * MIN && rol) {
+      const otro = await elegirHelper(c.guild, rol, d.aid);
+      if (otro) {
+        Object.assign(d, { aid2: otro.id, asignado2: otro.user.username });
+        await guardarTicket(c, d);
+        await c.send({ content: T[d.lang].segundo(`<@${otro.id}>`), allowedMentions: { users: [otro.id] } });
+        const resumen = await resumenCaso(c, d);
+        await avisarHelper(otro, c, d, `${d.motivo || "Escalado"} (te sumo: ${d.asignado || "el primero"} no contestó en ${Math.round(espera / MIN)} min)`, resumen);
+        return console.log(`${c.name}: se suma ${otro.user.username} (${d.asignado} sin respuesta)`);
+      }
+    }
     if (espera > (S.reasignarHelperMin || 240) * MIN && reas < (S.maxReasignaciones || 3) && rol) {
-      const nuevo = await elegirHelper(c.guild, rol, d.aid);
+      const nuevo = await elegirHelper(c.guild, rol, [d.aid, d.aid2]);
       if (nuevo && nuevo.id !== d.aid) {
         const antes = d.asignado;
         Object.assign(d, { asignado: nuevo.user.username, aid: nuevo.id, esc: ahora, reas: reas + 1, rec: "" });
@@ -990,11 +1009,14 @@ async function revisarTicket(c) {
     if (espera > (S.recordarHelperMin || 120) * MIN && !d.rec) {
       d.rec = 1;
       await guardarTicket(c, d);
-      const quien = d.aid ? `<@${d.aid}>` : rol ? `<@&${rol.id}>` : `@${CFG.roles.soporte}`;
+      const ids = [d.aid, d.aid2].filter(Boolean);
+      const quien = ids.length ? ids.map((x) => `<@${x}>`).join(" ") : rol ? `<@&${rol.id}>` : `@${CFG.roles.soporte}`;
       const horas = Math.round(espera / (60 * MIN));
-      await c.send({ content: `⏰ ${quien} este ticket sigue esperando respuesta (hace ${horas} h).`, allowedMentions: d.aid ? { users: [d.aid] } : { roles: rol ? [rol.id] : [] } });
-      const helper = d.aid && (await c.guild.members.fetch(d.aid).catch(() => null));
-      if (helper) await helper.send(`⏰ Recordatorio: ${c.url} lleva ${horas} h esperando respuesta.`).catch(() => {});
+      await c.send({ content: `⏰ ${quien} este ticket sigue esperando respuesta (hace ${horas} h).`, allowedMentions: ids.length ? { users: ids } : { roles: rol ? [rol.id] : [] } });
+      for (const id of ids) {
+        const helper = await c.guild.members.fetch(id).catch(() => null);
+        if (helper) await helper.send(`⏰ Recordatorio: ${c.url} lleva ${horas} h esperando respuesta.`).catch(() => {});
+      }
       return console.log(`${c.name}: recordatorio a ${d.asignado || "rol"}`);
     }
     return; // esperando al compañero: no se cierra por inactividad
@@ -1058,4 +1080,4 @@ if (require.main === module) {
   client.login(token);
 }
 
-module.exports = { PREGUNTA_IDIOMA, saberAuditor, pideDevolucion, pideCompra, promptSistema, pideHumano, idiomaDe, leerTicket, temaCanal, esImagen, estaEnojado, mensajePanel, yaQuedo };
+module.exports = { revisarTicket, PREGUNTA_IDIOMA, saberAuditor, pideDevolucion, pideCompra, promptSistema, pideHumano, idiomaDe, leerTicket, temaCanal, esImagen, estaEnojado, mensajePanel, yaQuedo };
