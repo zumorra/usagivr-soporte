@@ -303,17 +303,17 @@ const TEMAS = [
       es: [
         "Bájalo de GitHub (Releases): hay versión para Windows, Linux, macOS y Android.",
         "**Emparejar**: conecta la antena (receptor) por USB → **↻** → elige el puerto → **Connect** → pestaña del receptor → **Pairing mode** → enciende los trackers uno por uno hasta que aparezcan → sal del modo pairing.",
-        "**SMOL Ice Cube (los que usan antena/receptor): NO se les actualiza el firmware** y en el configurador **no pulses Firmware, DFU, Remove ni Clear Data**. Si lo actualizan, pierden la cobertura y ya no nos hacemos responsables si fallan. (Los **Ice Cube WiFi con BMI160** son otra cosa: esos se actualizan desde SlimeVR con el video oficial; mira el tema de firmware WiFi.)",
+        "**Ice Cube: no se les puede actualizar el firmware.** **Clear Data** sí se puede usar, pero borra el emparejamiento y luego hay que volver a emparejar.",
         "Emparejar **en PC** paso a paso: instala SlimeVR Server y SmolSlime Configurator → receptor por USB → su puerto COM → **Connect** → pestaña **Receiver** → **Pairing Mode** → luego cada tracker por USB, uno por uno: su COM → **Connect** → pestaña **Tracker** → **Pairing Mode**.",
-        "**Firmware** (todos menos IceCube): conecta el tracker o el receptor por USB y aprieta reset dos veces → **↻**, puerto, **Connect** → elige el firmware en *Select Firmware* → **⬇ Firmware** y espera ~20 s. Tracker y receptor deben quedar en la misma versión.",
+        "**Firmware** (todos menos Ice Cube y BMI160): conecta el tracker o el receptor por USB y aprieta reset dos veces → **↻**, puerto, **Connect** → elige el firmware en *Select Firmware* → **⬇ Firmware** y espera ~20 s. Tracker y receptor deben quedar en la misma versión.",
         "**Calibrar el sensor**: botón **Calibrate** con el tracker quieto ~5 s, o la calibración de **6 caras** siguiendo lo que pide en pantalla.",
       ],
       en: [
         "Download it from GitHub (Releases): there are builds for Windows, Linux, macOS and Android.",
         "**Pairing**: plug the antenna (receiver) into USB → **↻** → pick the port → **Connect** → receiver tab → **Pairing mode** → turn the trackers on one by one until they show up → leave pairing mode.",
-        "**SMOL Ice Cubes (the ones that use the antenna/receiver): do NOT update their firmware**, and in the configurator **don't press Firmware, DFU, Remove or Clear Data**. Updating voids their coverage and we can't be responsible if they fail afterwards. (**WiFi Ice Cubes with BMI160** are different: those are updated from SlimeVR with the official video; see the WiFi firmware topic.)",
+        "**Ice Cubes: their firmware can't be updated.** **Clear Data** is fine to use, but it erases the pairing and you'll have to pair them again.",
         "Pairing **on PC** step by step: install SlimeVR Server and SmolSlime Configurator → receiver on USB → its COM port → **Connect** → **Receiver** tab → **Pairing Mode** → then each tracker on USB, one at a time: its COM → **Connect** → **Tracker** tab → **Pairing Mode**.",
-        "**Firmware** (all except IceCube): plug the tracker or receiver into USB and press reset twice → **↻**, port, **Connect** → pick the firmware in *Select Firmware* → **⬇ Firmware** and wait ~20 s. Tracker and receiver must be on the same version.",
+        "**Firmware** (all except Ice Cube and BMI160): plug the tracker or receiver into USB and press reset twice → **↻**, port, **Connect** → pick the firmware in *Select Firmware* → **⬇ Firmware** and wait ~20 s. Tracker and receiver must be on the same version.",
         "**Sensor calibration**: **Calibrate** button with the tracker still for ~5 s, or the **6-side** calibration following the on-screen steps.",
       ],
     },
@@ -329,35 +329,52 @@ const TEMAS = [
     imagenes: [],
   },
   {
-    id: "firmware_wifi",
-    // Nombres de placa: pesan mas que "firmware" a secas (que es del configurador SMOL).
-    fuertes: ["bmi160", "bmi 160", "icm42", "icm 42", "icm42688", "icm45", "icm 45", "icm45686", "bno085", "bno 085", "bno", "ultimate", "ultimates", "wemos", "ice cube wifi", "ice cubes wifi"],
-    claves: [ "d1 mini", "firmware wifi", "wifi firmware", "diy firmware", "firmware tool", "v0.7.2", "0.7.2", "7.2", "que placa", "which board", "imu type", "rotacion del imu", "imu rotation"],
-    titulo: { es: "Actualizar el firmware de los trackers WiFi (BMI160 / ICM42 / ICM45 / BNO085)", en: "Updating WiFi tracker firmware (BMI160 / ICM42 / ICM45 / BNO085)" },
+    id: "sin_firmware",
+    // Solo cuenta si preguntan por actualizar/firmware: "mi bmi160 no conecta" no debe caer aqui.
+    requiere: ["firmware", "actualizar", "actualizo", "actualizarlo", "actualizarlos", "actualizacion", "update", "updating", "upgrade", "flashear", "flash", "version", "v0.7.2", "7.2"],
+    fuertes: ["ice cube", "ice cubes", "icecube", "icecubes", "bmi160", "bmi 160"],
+    claves: [],
+    titulo: { es: "Ice Cube y BMI160: no se actualizan", en: "Ice Cube and BMI160: no firmware updates" },
     pasos: {
       es: [
-        "Esto es **solo para trackers WiFi**. Los SMOL con antena **no** se actualizan así (ni con el configurador). Asegúrate de qué placa tienes: si eliges otro IMU, el tracker no funciona.",
-        "Ten el **launcher de SlimeVR actualizado**, el tracker **encendido** y conectado por USB con cable de datos (en **BMI160/Ice Cube** el cable va en el **puerto del costado**).",
-        "SlimeVR → **Settings → Utilities → DIY firmware tool** → Board type **Wemos D1 Mini** → fuente **SlimeVR-Tracker-ESP (oficial)** → la versión más nueva (**v0.7.2** hoy).",
-        "**IMU type y rotación** (los dos IMU iguales): **BMI160 → IMU_BMI160, DEG_0** · **ICM42 → ICM42688, DEG_180** · **ICM45 → ICM45686, DEG_180** · **BNO085 → BNO085, DEG_180**. No toques nada más del sensor.",
-        "Batería: en **BMI160** se deja como viene (BAT_EXTERNAL, shield 180, R1 100, R2 220). En **ICM42, ICM45 y BNO085** pon BAT_EXTERNAL, *Battery Shield Resistor* **0**, **R1 10**, **R2 47**, Battery Pin **A0**, LED pin **2** y activa **Led inverted**.",
-        "**Looks good** → espera a que compile → método **USB** → escribe tu red **2.4 GHz** y clave **exactas** → elige el puerto *USB Serial* → **Next** y espera 30-60 s hasta *Update complete*.",
-        "De **uno en uno**: **Flash more trackers** para el siguiente. Al final, en Home, revisa que cada tracker diga la versión nueva y que se mueva.",
-        "En los BMI160 con la versión nueva ya no hace falta calibrar ejes a mano: déjalos **encendidos y quietos ~5 min** y se calibran solos.",
+        "A los **Ice Cube** y a los **BMI160** (también los WiFi) **no se les puede actualizar el firmware**.",
+        "**Clear Data** en el configurador sí se puede, pero borra el emparejamiento y tendrías que volver a emparejarlos.",
       ],
       en: [
-        "This is **only for WiFi trackers**. SMOL trackers with an antenna are **not** updated this way (nor with the configurator). Make sure you know your board: picking the wrong IMU makes the tracker stop working.",
-        "Have the **SlimeVR launcher up to date**, the tracker **turned on** and plugged in with a data cable (on **BMI160/Ice Cubes** the cable goes in the **side port**).",
+        "**Ice Cube** and **BMI160** trackers (WiFi ones too) **can't have their firmware updated**.",
+        "**Clear Data** in the configurator is fine, but it erases the pairing and you'd have to pair them again.",
+      ],
+    },
+    videos: [{ t: "Emparejar SMOL con la antena en PC (USAGIVR Discord)", u: DC.smolEmparejarPC }],
+    imagenes: [],
+  },
+  {
+    id: "firmware_wifi",
+    // Nombres de placa: pesan mas que "firmware" a secas (que es del configurador SMOL).
+    fuertes: ["icm42", "icm 42", "icm42688", "icm45", "icm 45", "icm45686", "bno085", "bno 085", "bno", "ultimate", "ultimates", "wemos"],
+    claves: [ "d1 mini", "firmware wifi", "wifi firmware", "diy firmware", "firmware tool", "v0.7.2", "0.7.2", "7.2", "que placa", "which board", "imu type", "rotacion del imu", "imu rotation"],
+    titulo: { es: "Actualizar el firmware de los trackers WiFi (ICM42 / ICM45 / BNO085)", en: "Updating WiFi tracker firmware (ICM42 / ICM45 / BNO085)" },
+    pasos: {
+      es: [
+        "Solo para trackers WiFi **ICM42, ICM45 y BNO085**. Los **Ice Cube y BMI160 no se pueden actualizar**. Asegúrate de qué placa tienes: si eliges otro IMU, el tracker no funciona.",
+        "Ten el **launcher de SlimeVR actualizado**, el tracker **encendido** y conectado por USB con cable de datos.",
+        "SlimeVR → **Settings → Utilities → DIY firmware tool** → Board type **Wemos D1 Mini** → fuente **SlimeVR-Tracker-ESP (oficial)** → la versión más nueva (**v0.7.2** hoy).",
+        "**IMU type y rotación** (los dos IMU iguales): **ICM42 → ICM42688, DEG_180** · **ICM45 → ICM45686, DEG_180** · **BNO085 → BNO085, DEG_180**. No toques nada más del sensor.",
+        "Batería: pon BAT_EXTERNAL, *Battery Shield Resistor* **0**, **R1 10**, **R2 47**, Battery Pin **A0**, LED pin **2** y activa **Led inverted**.",
+        "**Looks good** → espera a que compile → método **USB** → escribe tu red **2.4 GHz** y clave **exactas** → elige el puerto *USB Serial* → **Next** y espera 30-60 s hasta *Update complete*.",
+        "De **uno en uno**: **Flash more trackers** para el siguiente. Al final, en Home, revisa que cada tracker diga la versión nueva y que se mueva.",
+      ],
+      en: [
+        "Only for **ICM42, ICM45 and BNO085** WiFi trackers. **Ice Cubes and BMI160 can't be updated**. Make sure you know your board: picking the wrong IMU makes the tracker stop working.",
+        "Have the **SlimeVR launcher up to date**, the tracker **turned on** and plugged in with a data cable.",
         "SlimeVR → **Settings → Utilities → DIY firmware tool** → Board type **Wemos D1 Mini** → source **SlimeVR-Tracker-ESP (official)** → the newest version (**v0.7.2** right now).",
-        "**IMU type and rotation** (both IMUs the same): **BMI160 → IMU_BMI160, DEG_0** · **ICM42 → ICM42688, DEG_180** · **ICM45 → ICM45686, DEG_180** · **BNO085 → BNO085, DEG_180**. Don't change anything else on the sensor.",
-        "Battery: on **BMI160** leave the defaults (BAT_EXTERNAL, shield 180, R1 100, R2 220). On **ICM42, ICM45 and BNO085** set BAT_EXTERNAL, *Battery Shield Resistor* **0**, **R1 10**, **R2 47**, Battery Pin **A0**, LED pin **2** and enable **Led inverted**.",
+        "**IMU type and rotation** (both IMUs the same): **ICM42 → ICM42688, DEG_180** · **ICM45 → ICM45686, DEG_180** · **BNO085 → BNO085, DEG_180**. Don't change anything else on the sensor.",
+        "Battery: set BAT_EXTERNAL, *Battery Shield Resistor* **0**, **R1 10**, **R2 47**, Battery Pin **A0**, LED pin **2** and enable **Led inverted**.",
         "**Looks good** → wait for the build → **USB** method → type your **2.4 GHz** network and password **exactly** → pick the *USB Serial* port → **Next** and wait 30-60 s for *Update complete*.",
         "**One at a time**: **Flash more trackers** for the next one. Finally, on Home, check each tracker shows the new version and moves.",
-        "On BMI160 with the new version you no longer need to calibrate axes by hand: leave them **on and still for ~5 min** and they calibrate themselves.",
       ],
     },
     videos: [
-      { t: "Firmware BMI160 / Ice Cubes (USAGIVR Discord)", u: DC.bmi160 },
       { t: "Firmware ICM42 (USAGIVR Discord)", u: DC.icm42 },
       { t: "Firmware ICM45 (USAGIVR Discord)", u: DC.icm45 },
       { t: "Firmware BNO085 Ultimates (USAGIVR Discord)", u: DC.bno085 },
@@ -562,6 +579,7 @@ function buscarTemas(texto, max = 2) {
   const puntos = [];
   for (const tema of TEMAS) {
     let p = 0;
+    if (tema.requiere && !tema.requiere.some((c) => new RegExp(`(^|[^a-z0-9])${c.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}`).test(t))) continue;
     const pesa = (c) => new RegExp(`(^|[^a-z0-9])${c.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}([^a-z0-9]|$)`).test(t);
     for (const c of tema.claves) if (pesa(c)) p += c.includes(" ") ? 2 : 1;
     for (const c of tema.fuertes || []) if (pesa(c)) p += 2;

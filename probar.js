@@ -29,7 +29,10 @@ const casos = [
   ["formatee la pc, en que orden instalo todo", "configurar_slimevr"],
   ["como uso el smol configurator", "smol_configurator"],
   ["como instalo slimevr por primera vez", "configurar_slimevr"],
-  ["como actualizo el firmware de mis bmi160", "firmware_wifi"],
+  ["como actualizo el firmware de mis bmi160", "sin_firmware"],
+  ["puedo actualizar mis ice cube?", "sin_firmware"],
+  ["how do I update the firmware on my icecubes", "sin_firmware"],
+  ["mis bmi160 no se conectan al wifi", "no_conecta"],
   ["how do I update my icm45 trackers to 7.2", "firmware_wifi"],
   ["que rotacion pongo para los bno085", "firmware_wifi"],
   ["mi smol se queda en rojo", "smol_rojo"],
@@ -82,4 +85,15 @@ assert.strictEqual(new Date(proximaApertura(domingo)).toISOString(), "2026-10-26
 assert.ok(enHorario(new Date("2026-10-20T03:15:00Z")) && !enHorario(new Date("2026-10-20T03:30:00Z"))); // 8:15 pm si, 8:30 pm ya no
 assert.strictEqual(new Date(proximaApertura(new Date("2026-10-20T03:30:00Z"))).toISOString(), "2026-10-20T17:00:00.000Z"); // martes 10:00
 assert.strictEqual(mensajePanel(["correas", "nada", "colocacion"]).embeds[0].toJSON().fields.length, 3);
+// Auditor: lee el veredicto aunque venga con texto alrededor; si no hay JSON, deja pasar.
+const { leerVeredicto, ordenAuditor } = require("./src/auditor");
+assert.strictEqual(leerVeredicto('Sure: {"verdict":"redo","reason":"adds firmware steps"}').veredicto, "rehacer");
+assert.strictEqual(leerVeredicto('{"verdict":"unclear","reason":"gibberish"}').veredicto, "aclarar");
+assert.strictEqual(leerVeredicto('{"verdict":"ok"}').veredicto, "ok");
+assert.strictEqual(leerVeredicto("no se").veredicto, "ok");
+assert.deepStrictEqual(ordenAuditor({ orden: ["groq", "opencode", "pollinations"] }, "groq"), ["opencode", "pollinations", "groq"]);
+const { variantes, pedirRepetir } = require("./src/repetir");
+for (const l of ["es", "en"]) { const v = variantes(l); assert.ok(new Set(v).size >= 100, `${l}: ${v.length} variantes`); assert.ok(v.includes(pedirRepetir(l))); }
+const { saberAuditor } = require("./src/index");
+assert.ok(/Ice Cube/.test(saberAuditor([{ role: "user", content: "puedo actualizar mis ice cube" }], "No se puede [GUIA:sin_firmware]", "es")));
 console.log(`OK: ${ok} temas + 4 idiomas + ${humano.length} pedir-humano + ${dev.length} devolucion + ${compra.length} compra + seguimiento/fotos/enojo/horario/panel/ya-quedo`);

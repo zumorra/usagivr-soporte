@@ -23,6 +23,21 @@
     "groq_modelo": "qwen/qwen3.8-27b",
     "max_tokens": 600
   },
+  "auditor": {
+    "nota": "Segunda IA online que revisa cada respuesta antes de mandarla; usa otra IA distinta de la que escribio el borrador.",
+    "activo": true,
+    "maxRehacer": 2,
+    "orden": [
+      "groq",
+      "opencode",
+      "pollinations"
+    ],
+    "groq_modelo": "qwen/qwen3.8-27b",
+    "opencode_modelo": "opencode/minimax-m3.1-flash-free,opencode/nemotron-3.5-lightning-free,opencode/deepseek-v4.1-flash-free",
+    "pollinations_modelo": "openai",
+    "max_tokens": 200,
+    "presupuesto_ms": 45000
+  },
   "borrarTicketCerradoTrasMin": 10,
   "montarEnServidores": [
     "1540174644311756832"

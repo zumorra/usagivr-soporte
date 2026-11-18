@@ -21,6 +21,8 @@ const {
 } = require("discord.js");
 const { TEMAS, buscarTemas, resumenParaIA } = require("./kb");
 const { responder } = require("./ia");
+const { auditar } = require("./auditor");
+const { pedirRepetir, variantes } = require("./repetir");
 const { enHorario, proximaApertura } = require("./horario");
 const { T } = require("./textos");
 const { notasFaq } = require("./faq");
@@ -374,7 +376,9 @@ function promptSistema(lang) {
     "Kit contents: instruction manual, a bundle of USB to USB-C cables, and straps: 2 thick anti-slip straps for the thighs, 2 or 3 long straps (depending on the kit) for waist, chest and hip, and regular straps for the rest. " +
     "Every tracker has our character's face printed on it: that face must always face forward. For calibration, always tell them to follow the calibration guides SlimeVR shows inside the program. " +
     "Devices: not available for iPhone or Mac yet; we recommend an Android phone with the SlimeVR app from the official website; on PC, SlimeVR is downloaded from Steam. Install order (also after formatting the PC): SteamVR first and open it once, then SlimeVR so its plugins/driver apply. " +
-    "If the little button came off: usually not needed, don't worry, only matters if it causes problems. If WiFi trackers still won't connect after every step: internet providers often block some connections on their routers, which affects WiFi trackers only; a cheap extra router just for the trackers fixes it.",
+    "If the little button came off: usually not needed, don't worry, only matters if it causes problems. If WiFi trackers still won't connect after every step: internet providers often block some connections on their routers, which affects WiFi trackers only; a cheap extra router just for the trackers fixes it. " +
+    "Ice Cube and BMI160 trackers (WiFi ones too) can NOT have their firmware updated: if asked, just say it can't be done (no versions, no steps). Clear Data in the configurator is allowed, but it erases the pairing and they have to pair again.",
+    "Less is more: answer exactly what the customer asked, nothing extra. Don't add side notes, other products or details they didn't ask about; extra info confuses them.",
     `Always answer in ${idioma}. Talk like a chill, friendly person from the team, not a robot: relaxed and warm, tuteo, short messages, no headings, no corporate phrases.`,
     lang === "es" && "Spanish variant: neutral Latin American leaning Mexican, NEVER Spain Spanish. Use \"¿ya intentaste…?\" (not \"¿has probado a…?\"), \"dale clic / presiona\" (not \"pulsa/pincha\"), \"llenar\" (not \"rellenar\"), \"computadora o PC\" (not \"ordenador\"), \"celular\" (not \"móvil\"), \"ustedes\" (never \"vosotros\", \"os\", \"vale\", \"coger\"), \"mantenlo\" without accent. Prefer simple past (\"ya lo cargaste\") over \"has cargado\". No modern internet slang or anglicisms (\"random\", \"literal\", \"crack\", \"bro\").",
     "Keep the slang light: at most one casual word per message (in Spanish, Mexican-style like \"va\", \"sale\", \"tranqui\", \"no te preocupes\", \"ahorita\"). Never use \"wey\", \"carnal\", \"bro\", \"compa\", \"neta\" or regional slang from other countries, never pile up exclamations or emojis (max one emoji, usually none), never talk like a cartoon. It must sound like a real person from a small shop answering a customer.",
@@ -396,6 +400,16 @@ function promptSistema(lang) {
     "KNOWLEDGE:",
     resumenParaIA(lang),
   ].filter((x) => x !== false).join("\n");
+}
+
+/** Lo que el auditor necesita saber: las guias que tocan la pregunta y la que el borrador quiere mandar. */
+function saberAuditor(charla, borrador, lang) {
+  const ult = [...charla].reverse().find((m) => m.role === "user");
+  const ids = new Set([...borrador.matchAll(/\[GUIA:\s*([a-z_]+)\]/gi)].map((m) => m[1].toLowerCase()));
+  const temas = [...(ult ? buscarTemas(ult.content, 3) : []), ...TEMAS.filter((t) => ids.has(t.id))];
+  const unicos = [...new Map(temas.map((t) => [t.id, t])).values()];
+  const fijo = "Fixed facts: Ice Cube and BMI160 trackers (WiFi ones too) can never have their firmware updated; the reply must just say it can't be done. Clear Data in the configurator is allowed but erases the pairing, so they must pair again. The bot never talks about refunds, replacements, warranty or prices.";
+  return [fijo, ...unicos.map((t) => `## ${t.titulo[lang]}\n- ${t.pasos[lang].join("\n- ")}`)].join("\n\n");
 }
 
 const ocupados = new Set();
@@ -459,6 +473,30 @@ async function respuestaIA(canal, d, extraUsuario) {
         if (d.estado === "escalado") await canal.send(T[d.lang].devolucionYa);
         else await escalarTicket(canal, d, "La IA iba a hablar de cambios/garantía", T[d.lang].devolucion);
         return;
+      }
+    }
+    // Segunda IA online: revisa que conteste justo lo que preguntaron, sin info de mas ni confusa.
+    // Si la ve mal, se reescribe (hasta maxRehacer veces); si no se entiende el problema, se pide que lo cuente otra vez.
+    const AUD = CFG.auditor;
+    if (AUD && AUD.activo !== false) {
+      const charla = mensajes.slice(1);
+      const max = AUD.maxRehacer ?? 2;
+      for (let vuelta = 0; vuelta <= max; vuelta++) {
+        const r = await auditar(AUD, { charla, saber: saberAuditor(charla, texto, d.lang), borrador: texto, backend }).catch((e) => { console.warn("auditor:", e.message); return null; });
+        if (!r || r.veredicto === "ok") break;
+        console.log(`Auditor (${r.backend}) en ${canal.name}: ${r.veredicto} - ${r.motivo}`);
+        // Si ya le pedimos que lo repitiera y sigue sin entenderse, no se lo volvemos a pedir: mandamos el borrador.
+        const yaPedido = charla.filter((m) => m.role === "assistant").slice(-1).some((m) => variantes(d.lang).some((v) => m.content.startsWith(v)));
+        if (r.veredicto === "aclarar" && yaPedido) break;
+        if (r.veredicto === "aclarar") {
+          limpiar();
+          await canal.send({ content: pedirRepetir(d.lang), components: d.soloConsejos ? [] : [botonesTicket(d.lang)] });
+          return;
+        }
+        if (vuelta === max) break;
+        const otra = await responder(CFG.ia, [...mensajes, { role: "assistant", content: texto }, { role: "system", content: `A reviewer flagged that draft: ${r.motivo}. Rewrite it so it answers exactly what the customer asked, short and clear, only with facts from the knowledge, nothing extra. Same language, same casual tone, same tag rules.` }]).catch(() => null);
+        if (!otra || PROHIBIDO.test(otra.texto) || idiomaDe(null, otra.texto.replace(/\[[^\]]*\]/g, "")) !== d.lang) break;
+        ({ texto, backend } = otra);
       }
     }
     limpiar();
@@ -984,4 +1022,4 @@ if (require.main === module) {
   client.login(token);
 }
 
-module.exports = { pideDevolucion, pideCompra, promptSistema, pideHumano, idiomaDe, leerTicket, temaCanal, esImagen, estaEnojado, mensajePanel, yaQuedo };
+module.exports = { saberAuditor, pideDevolucion, pideCompra, promptSistema, pideHumano, idiomaDe, leerTicket, temaCanal, esImagen, estaEnojado, mensajePanel, yaQuedo };

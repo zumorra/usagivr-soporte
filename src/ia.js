@@ -110,7 +110,7 @@ async function responder(cfg, mensajes) {
   const fallos = [];
   const inicio = Date.now();
   for (const nombre of cfg.orden) {
-    if (Date.now() - inicio > PRESUPUESTO_MS) {
+    if (Date.now() - inicio > (cfg.presupuesto_ms || PRESUPUESTO_MS)) {
       fallos.push("sin tiempo");
       break;
     }
