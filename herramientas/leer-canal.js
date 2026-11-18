@@ -46,7 +46,10 @@ function aTexto(m) {
   for (const g of await api("/users/@me/guilds")) {
     const todos = await api(`/guilds/${g.id}/channels`);
     console.log(`== ${g.name} (${g.id}): ${todos.map((c) => `${c.name}[${c.type}]`).join(" | ")}`);
-    const canales = todos.filter((c) => patron.test(c.name.normalize("NFKC")));
+    const coincide = (c) => patron.test(c.name.normalize("NFKC"));
+    // Si coincide una categoría, entran también todos los canales que tiene dentro.
+    const cats = new Set(todos.filter((c) => c.type === 4 && coincide(c)).map((c) => c.id));
+    const canales = todos.filter((c) => coincide(c) || cats.has(c.parent_id));
     for (const c of canales) {
       console.log(`${g.name} / #${c.name} (tipo ${c.type})`);
       const bloque = { servidor: g.name, canal: c.name, id: c.id, tipo: c.type, mensajes: [], hilos: [] };
