@@ -1,0 +1,27 @@
+name: Inspeccionar servidor (solo lectura)
+
+on:
+  workflow_dispatch:
+    inputs:
+      guild:
+        description: "Id del servidor"
+        default: "1318716973072252970"
+
+jobs:
+  ver:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Inspeccionar
+        env:
+          DISCORD_TOKEN: ${{ secrets.DISCORD_TOKEN }}
+          GUILD: ${{ inputs.guild }}
+        run: node herramientas/inspeccionar.js
+      - uses: actions/upload-artifact@v4
+        with:
+          name: servidor
+          path: servidor.md
