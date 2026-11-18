@@ -41,7 +41,7 @@ const TEMAS = [
     pasos: {
       es: [
         "En el kit vienen: **2 correas gruesas con antideslizante** (muslos), **2 o 3 correas largas** (cintura, pecho y cadera, según el kit) y correas normales para el resto.",
-        "Mete el tracker en la correa por el **riel**, con el **puerto USB-C hacia abajo** (esa punta entra primero): empújalo hasta que **escuches un click** y ahí se queda, con el **USB-C mirando hacia abajo** y **la carita de nuestro personaje siempre mirando al frente**.",
+        "Pasa la **correa por los orificios** del soporte, **por debajo** del tracker (nunca por encima de la tapa). El tracker va **acomodado en su lugar en la guía** (donde se acomoda la caja del tracker), con **la tapa/carita de nuestro personaje descubierta y mirando al frente**: la correa nunca la tapa.",
         "Pecho: el arnés va centrado sobre el esternón, ajustado pero sin apretar la respiración.",
         "Muslos (correas gruesas antideslizantes): **justo encima de la rodilla**, al frente del muslo. Si se enrolla, bájala un poco más.",
         "Tobillos: la correa va **justo encima del hueso del tobillo, por el costado de la pierna** (no delante ni en el pie).",
@@ -49,7 +49,7 @@ const TEMAS = [
       ],
       en: [
         "The kit includes: **2 thick anti-slip straps** (thighs), **2 or 3 long straps** (waist, chest and hip, depending on the kit) and regular straps for the rest.",
-        "Slide the tracker into the strap along the **rail**, with the **USB-C port pointing down** (that end goes in first): push until you **hear a click** and it stays there, with the **USB-C port facing down** and **our character's face always facing forward**.",
+        "Thread the **strap through the holes** of the holder, **underneath** the tracker (never over the lid). The tracker **fits into its place on the guide** (where the tracker case fits), with **the lid/our character's face uncovered and facing forward**: the strap never covers it.",
         "Chest: centre the harness on your sternum, snug but not tight enough to restrict breathing.",
         "Thighs (thick anti-slip straps): **just above the knee**, on the front of the thigh. If it rolls, move it a little lower.",
         "Ankles: the strap goes **just above the ankle bone, on the side of the leg** (not in front and not on the foot).",
@@ -70,7 +70,7 @@ const TEMAS = [
     pasos: {
       es: [
         "Mínimo 5 trackers: **pecho, 2 muslos y 2 tobillos** (mira el dibujo).",
-        "En todos: el tracker entra al riel de la correa hasta el click, con el **USB-C mirando hacia abajo**, y **la carita del personaje siempre mirando al frente**.",
+        "En todos: la correa pasa por los orificios **por debajo** del tracker, y el tracker va en su lugar en la guía con **la tapa/carita del personaje descubierta y mirando al frente**.",
         "Pecho y muslos **mirando al frente**. Tobillos **en el costado exterior** de la pierna.",
         "En SlimeVR asigna cada tracker a su parte del cuerpo (en SlimeVR, nunca en SteamVR).",
         "Como los tobillos van de lado, en SlimeVR ajusta su orientación (Mounting) para que la pierna no salga girada: está en la página 12 del manual (segunda imagen).",
@@ -78,7 +78,7 @@ const TEMAS = [
       ],
       en: [
         "Minimum 5 trackers: **chest, 2 thighs and 2 ankles** (see the drawing).",
-        "On all of them: the tracker clicks into the strap rail with the **USB-C port facing down**, and **the character's face always facing forward**.",
+        "On all of them: the strap goes through the holes **underneath** the tracker, and the tracker sits in its place on the guide with **the lid/character's face uncovered and facing forward**.",
         "Chest and thighs **facing forward**. Ankles **on the outer side** of the leg.",
         "Assign each tracker to its body part in SlimeVR (in SlimeVR, never in SteamVR).",
         "Because the ankles sit on the side, fix their orientation in SlimeVR (Mounting) so the leg is not twisted: it is on page 12 of the manual (second image).",
