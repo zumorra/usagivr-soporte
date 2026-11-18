@@ -208,13 +208,29 @@ const segundoEn = [
   "I added {r} to the ticket to give you better support. As soon as one is on, they'll write here.",
 ];
 
+// El cliente vuelve a escribir y hace horas que ningun compañero contesta: el bot solo da la cara, no resuelve.
+const seguimosEs = [
+  "¡Hola de nuevo! Cualquier cosa aquí estamos para ayudarte. Ya le avisé a {r} que escribiste para que te conteste en cuanto pueda.",
+  "Aquí seguimos para ayudarte. Le pasé tu mensaje a {r}, que te responde aquí en cuanto se conecte.",
+  "Gracias por escribir, no te vamos a dejar así. Ya le avisé a {r} y te contesta aquí en cuanto pueda.",
+  "Cualquier cosa estamos para ayudarte. {r} ya sabe que escribiste y te responde en cuanto se conecte.",
+  "Te leímos, tranqui. Ya le avisé a {r} para que siga contigo aquí en cuanto esté disponible.",
+];
+const seguimosEn = [
+  "Hi again! We're here to help with anything you need. I let {r} know you wrote, they'll reply here as soon as they can.",
+  "We're still here to help. I passed your message to {r}, who'll answer here as soon as they're on.",
+  "Thanks for writing, we won't leave you alone with this. I let {r} know and they'll reply here as soon as they can.",
+  "Anything you need, we're here to help. {r} already knows you wrote and will answer as soon as they're on.",
+  "Got your message, no worries. I let {r} know so they can continue with you here as soon as they're available.",
+];
+
 const azar = (l) => l[Math.floor(Math.random() * l.length)];
 const con = (l) => (rol) => azar(l).replace("{r}", rol);
 const fija = (l) => () => azar(l);
 
 const FRASES = {
-  es: { compra: compraEs, compraYa: compraYaEs, devolucion: devolucionEs, foto: fotoEs, enojo: enojoEs, segundo: segundoEs },
-  en: { compra: compraEn, compraYa: compraYaEn, devolucion: devolucionEn, foto: fotoEn, enojo: enojoEn, segundo: segundoEn },
+  es: { compra: compraEs, compraYa: compraYaEs, devolucion: devolucionEs, foto: fotoEs, enojo: enojoEs, segundo: segundoEs, seguimos: seguimosEs },
+  en: { compra: compraEn, compraYa: compraYaEn, devolucion: devolucionEn, foto: fotoEn, enojo: enojoEn, segundo: segundoEn, seguimos: seguimosEn },
 };
 
 module.exports = { FRASES, con, fija };

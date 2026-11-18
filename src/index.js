@@ -35,7 +35,7 @@ const COLOR = 0xff6fb5;
 const MARCA = "usagivr-ticket";
 
 const client = new Client({
-  intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent],
+  intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent, GatewayIntentBits.GuildVoiceStates],
   partials: [Partials.Channel],
 });
 
@@ -48,6 +48,18 @@ const rolPorNombre = (guild, nombre) => {
 };
 
 const idiomaTicket = new Map(); // canal -> idioma que el cliente esta usando en esta sesion
+// Idioma con el que se le habla AHORA al cliente: el de la sesion (si cambio de idioma) o el guardado en el tema.
+const idiomaActual = (canal, d) => (canal && idiomaTicket.get(canal.id)) || (d && d.lang) || "en";
+// Tras un reinicio no hay sesion: se deduce del ultimo mensaje claro del cliente (si no, el del tema).
+function idiomaReciente(lista, d) {
+  for (const m of lista) {
+    if (m.author.id !== d.uid || !m.content) continue;
+    const a = analizarIdioma(m.content);
+    if (a.pedido) return a.pedido;
+    if (a.lang && a.seguro) return a.lang;
+  }
+  return d.lang || "en";
+}
 
 // Idioma: lo que pide el cliente > como escribe (si es claro) > su rol English/Spanish > lo que se intuye.
 function rolIdioma(member) {
@@ -115,7 +127,8 @@ function botonesTicket(lang) {
 // Boton fijo arriba del ticket: el cliente cierra el ticket cuando se resuelva, sin esperar a nadie.
 function botonListo(lang) {
   return new ActionRowBuilder().addComponents(
-    new ButtonBuilder().setCustomId("t:listo").setLabel(T[lang].listo).setStyle(ButtonStyle.Success).setEmoji("✅")
+    new ButtonBuilder().setCustomId("t:listo").setLabel(T[lang].listo).setStyle(ButtonStyle.Success).setEmoji("✅"),
+    new ButtonBuilder().setCustomId("t:voz").setLabel(T[lang].voz).setStyle(ButtonStyle.Secondary).setEmoji("🎙️")
   );
 }
 // "ya quedo", "ya funciona", "it works now"... corto y sin "pero": se le ofrece el boton, no se cierra solo.
@@ -704,7 +717,10 @@ async function abrirTicket(inter) {
       { name: T[lang].campoNombre, value: nombre, inline: true },
       { name: T[lang].campoProblema, value: problema.slice(0, 1024) }
     );
-  const inicio = await canal.send({ content: `<@${inter.user.id}>\n${T[lang].listoNota}`, embeds: [ficha], components: [botonListo(lang)] });
+  // La imagen con el horario del equipo va desde el primer mensaje (asi el cliente sabe cuando le contestan).
+  const img = CFG.imagenBienvenida && path.join(ASSETS, CFG.imagenBienvenida);
+  const files = img && fs.existsSync(img) ? [new AttachmentBuilder(img, { name: CFG.imagenBienvenida })] : [];
+  const inicio = await canal.send({ content: `<@${inter.user.id}>\n${T[lang].listoNota}`, embeds: [ficha], components: [botonListo(lang)], files });
   await inicio.pin().catch((e) => console.warn("fijar:", e.message));
 
   if (pideDevolucion(problema)) await casoDevolucion(canal, d, problema);
@@ -722,6 +738,8 @@ async function abrirTicket(inter) {
 }
 
 async function cerrarCanal(canal, d) {
+  const voz = canalVoz(canal);
+  if (voz) await terminarVoz(voz, canal, d, "ticket cerrado");
   d.estado = "cerrado";
   await guardarTicket(canal, d);
   await canal.permissionOverwrites.edit(d.uid, { SendMessages: false }).catch(() => {});
@@ -743,9 +761,23 @@ client.on("interactionCreate", async (inter) => {
     if (inter.isModalSubmit() && inter.customId === "modal:ticket") return abrirTicket(inter);
 
     const d = leerTicket(inter.channel);
+    if (inter.isChatInputCommand() && (inter.commandName === "voz" || inter.commandName === "helper") && (!d || d.estado === "cerrado"))
+      return inter.reply({ content: T[idiomaDe(inter.member)].soloTicket, ephemeral: true });
     if (!d) return;
+    d.lang = idiomaActual(inter.channel, d);
     const equipo = esEquipo(inter.member);
     const dueno = inter.user.id === d.uid;
+
+    if ((inter.isButton() && inter.customId === "t:voz") || (inter.isChatInputCommand() && inter.commandName === "voz")) {
+      if (!dueno && !equipo) return inter.reply({ content: T[d.lang].soloDueno, ephemeral: true });
+      await inter.deferReply();
+      return inter.editReply(await crearVoz(inter.channel, d, inter.member, dueno));
+    }
+    if (inter.isChatInputCommand() && inter.commandName === "helper") {
+      if (!dueno && !equipo) return inter.reply({ content: T[d.lang].soloDueno, ephemeral: true });
+      await inter.reply({ content: "👋", ephemeral: true });
+      return llamarHelper(inter.channel, d, dueno ? "El cliente usó /helper" : `${inter.user.username} usó /helper`);
+    }
 
     if (inter.isButton() && (inter.customId === "t:ok" || inter.customId === "t:listo")) {
       if (!dueno && !equipo) return inter.reply({ content: T[d.lang].soloDueno, ephemeral: true });
@@ -812,6 +844,19 @@ async function casoDevolucion(canal, d, texto) {
 
 // Atiende un mensaje del cliente en su ticket: siempre hay respuesta.
 async function atender(canal, d, member, texto, fotos = [], idiomaElegido = false) {
+  // Un compañero del equipo ya esta atendiendo: el bot no le contesta al cliente (ni le pregunta el idioma),
+  // solo guarda las fotos. Si hace horas que el compañero no contesta, un "aqui estamos" y se le avisa por privado.
+  const callado = await silencioPorHelper(canal, d);
+  if (callado) {
+    const a = analizarIdioma(texto);
+    const lang = a.pedido || (a.lang && a.seguro ? a.lang : null) || idiomaActual(canal, d);
+    idiomaTicket.set(canal.id, lang);
+    const dm = { ...d, lang };
+    console.log(`msg en ${canal.name} con compañero atendiendo${callado.retomar ? " (callado hace horas)" : ""}: ${texto.slice(0, 60)}`);
+    if (fotos.length) await guardarFotos(canal, dm, fotos);
+    if (callado.retomar) await retomarHelper(canal, dm, callado.helper, texto);
+    return;
+  }
   // Idioma: se detecta solo; se pregunta solo si en 3 mensajes seguidos no se sabe en que idioma escribe.
   const ei = estadoIdioma.get(canal.id) || { dudas: 0, preguntado: false };
   const actual = idiomaTicket.get(canal.id) || d.lang || idiomaDe(member, texto);
@@ -908,10 +953,11 @@ client.on("messageCreate", async (msg) => {
       .then(() => msg.react("📝").catch(() => {}))
       .catch((e) => { console.warn("correccion:", e.message); msg.react("⚠️").catch(() => {}); });
   }
+  if (d && msg.author.id !== d.uid) ultimaAyuda.set(msg.channel.id, msg.createdTimestamp);
   // Solo atiende al dueno del ticket; cerrado = nada.
   if (!d || msg.author.id !== d.uid || (d.estado !== "abierto" && d.estado !== "escalado")) return;
   // Espera unos segundos tras el ultimo mensaje: la gente escribe en rafagas y asi se lee todo junto.
-  msg.channel.sendTyping().catch(() => {});
+  if (!ultimaAyuda.has(msg.channel.id)) msg.channel.sendTyping().catch(() => {});
   const previa = esperas.get(msg.channel.id);
   if (previa) clearTimeout(previa.timer);
   const textos = [...((previa && previa.textos) || []), msg.content].filter(Boolean);
@@ -927,15 +973,16 @@ client.on("messageCreate", async (msg) => {
 
 client.once("clientReady", async () => {
   console.log(`Conectado como ${client.user.tag} en ${client.guilds.cache.size} servidor(es): ${[...client.guilds.cache.values()].map((g) => `${g.name} (${g.id})`).join(", ")}`);
-  const cmd = new SlashCommandBuilder()
-    .setName("panel-soporte")
-    .setDescription("Publica el panel de tickets de soporte en este canal")
-    .setDefaultMemberPermissions(PermissionFlagsBits.ManageGuild)
-    .toJSON();
+  const cmds = [
+    new SlashCommandBuilder().setName("panel-soporte").setDescription("Publica el panel de tickets de soporte en este canal").setDefaultMemberPermissions(PermissionFlagsBits.ManageGuild),
+    new SlashCommandBuilder().setName("voz").setDescription("Crea un canal de voz temporal para este ticket / Voice channel for this ticket"),
+    new SlashCommandBuilder().setName("helper").setDescription("Llama a un compañero del equipo a este ticket / Call a support teammate"),
+  ].map((c) => c.toJSON());
   for (const guild of client.guilds.cache.values()) {
-    await guild.commands.set([cmd]).catch((e) => console.warn("comandos:", e.message));
+    await guild.commands.set(cmds).catch((e) => console.warn("comandos:", e.message));
     await montarServidor(guild);
     await asegurarPanel(guild);
+    await panelesPublicos(guild).catch((e) => console.warn("paneles publicos:", e.message));
     if (catFija(guild)) await canalCorrecciones(guild).catch((e) => console.warn("correcciones:", e.message));
     if (catFija(guild)) await canalAvisos(guild).catch((e) => console.warn("avisos:", e.message));
     // Tickets cerrados en una sesion anterior que no llegaron a borrarse.
@@ -970,6 +1017,9 @@ async function revisarTicket(c) {
   const msgs = await c.messages.fetch({ limit: 50 }).catch(() => null);
   if (!msgs || !msgs.size) return;
   const lista = [...msgs.values()]; // del mas nuevo al mas viejo
+  d.lang = idiomaTicket.get(c.id) || idiomaReciente(lista, d);
+  const voz = canalVoz(c);
+  if (voz) await revisarVoz(voz, c, d);
 
   // 1) Escalado y ningun compañero ha escrito todavia.
   if (d.estado === "escalado" && !d.atendido && d.esc) {
@@ -1022,26 +1072,30 @@ async function revisarTicket(c) {
     return; // esperando al compañero: no se cierra por inactividad
   }
 
-  // 2) Sin movimiento del cliente: aviso y, si sigue sin escribir, se cierra guardando la conversacion.
-  const ultimo = lista[0];
+  // 2) Chat sin movimiento de personas (cliente o equipo): a las ~68 h se avisa ("gracias por recomendarnos,
+  // se cierra en 4 h") y a las ~72 h se cierra, guardando resumen y conversacion en el historial.
+  // Los mensajes del bot no cuentan como movimiento.
+  const humano = lista.find((m) => !m.author.bot);
+  const ultimaVez = humano ? humano.createdTimestamp : c.createdTimestamp;
   if (d.aviso) {
     const aviso = Number(d.aviso);
-    if (lista.some((m) => m.author.id === d.uid && m.createdTimestamp > aviso)) {
+    if (ultimaVez > aviso) {
       d.aviso = "";
       return guardarTicket(c, d);
     }
-    if (ahora - aviso > (S.cerrarTrasAvisoHoras || 24) * 60 * MIN) {
+    if (ahora - aviso > (S.cerrarTrasAvisoHoras ?? 4) * 60 * MIN) {
       await c.send(T[d.lang].cerradoInactivo);
-      await registrar(c, d, "💤 Cerrado por inactividad", "El cliente no volvió a escribir", null);
+      const resumen = await resumenCaso(c, d);
+      await registrar(c, d, "💤 Cerrado por inactividad", `Sin mensajes desde ${new Date(ultimaVez).toISOString().slice(0, 16).replace("T", " ")} UTC`, null, resumen);
       console.log(`${c.name}: cerrado por inactividad`);
       return cerrarCanal(c, d);
     }
     return;
   }
-  if (ultimo.author.id !== d.uid && ahora - ultimo.createdTimestamp > (S.avisoInactivoHoras || 48) * 60 * MIN) {
+  if (ahora - ultimaVez > (S.avisoInactivoHoras ?? 68) * 60 * MIN) {
     d.aviso = ahora;
     await guardarTicket(c, d);
-    await c.send({ content: T[d.lang].avisoInactivo(`<@${d.uid}>`, S.cerrarTrasAvisoHoras || 24), allowedMentions: { users: [d.uid] } });
+    await c.send({ content: T[d.lang].avisoInactivo(`<@${d.uid}>`, S.cerrarTrasAvisoHoras ?? 4), allowedMentions: { users: [d.uid] } });
     console.log(`${c.name}: aviso de inactividad`);
   }
 }
@@ -1051,6 +1105,143 @@ async function revisarTickets() {
       if (c.type !== ChannelType.GuildText || !leerTicket(c)) continue;
       await revisarTicket(c).catch((e) => console.warn(`seguimiento ${c.name}:`, e.message));
     }
+  }
+}
+
+// ------------------------------------------------------------ compañero atendiendo
+// Ultimo mensaje de una persona del equipo (no el cliente, no un bot, no una correccion en negritas).
+const ultimaAyuda = new Map(); // canal -> hora del ultimo mensaje de alguien que no es el cliente
+const esAyuda = (m, uid) => !m.author.bot && m.author.id !== uid && !esCorreccion(m.content);
+async function silencioPorHelper(canal, d) {
+  const msgs = await canal.messages.fetch({ limit: 100 }).catch(() => null);
+  if (!msgs) return null;
+  const lista = [...msgs.values()]; // del mas nuevo al mas viejo
+  const i = lista.findIndex((m) => esAyuda(m, d.uid));
+  if (i < 0) return null;
+  const helper = lista[i];
+  ultimaAyuda.set(canal.id, helper.createdTimestamp);
+  const horas = (Date.now() - helper.createdTimestamp) / (60 * MIN);
+  // "Aqui estamos" una sola vez por silencio del compañero: si el bot ya hablo despues de el, no se repite.
+  const botYa = lista.slice(0, i).some((m) => m.author.id === client.user.id);
+  return { helper, retomar: horas >= (S.helperCalladoHoras ?? 6) && !botYa };
+}
+async function retomarHelper(canal, d, ultimo, texto) {
+  const ids = [...new Set([ultimo.author.id, d.aid, d.aid2].filter(Boolean))];
+  const quien = ids.map((x) => `<@${x}>`).join(" ");
+  await canal.send({ content: T[d.lang].seguimos(quien), allowedMentions: { users: ids } });
+  for (const id of ids) {
+    const m = await canal.guild.members.fetch(id).catch(() => null);
+    if (m && !m.user.bot) await m.send(`💬 El cliente de ${canal.url} volvió a escribir (hace ${Math.round((Date.now() - ultimo.createdTimestamp) / (60 * MIN))} h que el equipo no contesta):\n> ${corta(texto, 300).replace(/\n/g, "\n> ")}`).catch(() => {});
+  }
+  console.log(`${canal.name}: el cliente volvió tras ${S.helperCalladoHoras ?? 6}+ h sin compañero, aviso a ${ids.length}`);
+}
+// /helper o "llama a alguien": escala; si ya estaba escalado, vuelve a llamar a los asignados.
+async function llamarHelper(canal, d, motivo) {
+  if (d.estado !== "escalado") return escalarTicket(canal, d, motivo);
+  const rol = rolPorNombre(canal.guild, CFG.roles.soporte);
+  const ids = [d.aid, d.aid2].filter(Boolean);
+  const quien = ids.length ? ids.map((x) => `<@${x}>`).join(" ") : rol ? `<@&${rol.id}>` : `@${CFG.roles.soporte}`;
+  await canal.send({ content: T[d.lang].helperOtraVez(quien), allowedMentions: ids.length ? { users: ids } : { roles: rol ? [rol.id] : [] } });
+  for (const id of ids) {
+    const m = await canal.guild.members.fetch(id).catch(() => null);
+    if (m) await m.send(`🔔 Te vuelven a llamar en ${canal.url} (${motivo}).`).catch(() => {});
+  }
+}
+
+// ------------------------------------------------------------ voz temporal
+// Un canal de voz por ticket ("voz-<ticket>"), en la misma categoria, solo para el cliente y el equipo.
+// Se borra solo cuando se queda vacio (o si nadie entra), y deja registro en el ticket y en el historial.
+const nombreVoz = (canal) => `voz-${canal.name}`.slice(0, 100);
+const canalVoz = (canal) => canal.guild.channels.cache.find((c) => c.type === ChannelType.GuildVoice && c.name === nombreVoz(canal) && c.parentId === canal.parentId) || null;
+const vozInfo = new Map(); // voz -> { inicio, gente: Map(id -> nombre), vaciaDesde }
+async function crearVoz(canal, d, member, dueno) {
+  const ya = canalVoz(canal);
+  if (ya) return T[d.lang].vozYa(`<#${ya.id}>`);
+  const soporte = rolPorNombre(canal.guild, CFG.roles.soporte);
+  const P = PermissionFlagsBits;
+  const voz = [P.ViewChannel, P.Connect, P.Speak, P.Stream, P.UseVAD];
+  const hacer = (permisos) => canal.guild.channels.create({
+    name: nombreVoz(canal), type: ChannelType.GuildVoice, parent: canal.parentId,
+    permissionOverwrites: [
+      { id: canal.guild.roles.everyone.id, deny: [P.ViewChannel] },
+      { id: client.user.id, allow: [P.ViewChannel, P.Connect, P.ManageChannels] },
+      { id: d.uid, allow: permisos },
+      ...(soporte ? [{ id: soporte.id, allow: permisos }] : []),
+    ],
+  });
+  // Si el bot no tiene algun permiso de voz para repartir, con ver y conectar basta (hablar viene del servidor).
+  const v = await hacer(voz).catch(() => hacer([P.ViewChannel, P.Connect])).catch((e) => { console.warn("voz:", e.message); return null; });
+  if (!v) return T[d.lang].vozError;
+  vozInfo.set(v.id, { inicio: Date.now(), gente: new Map(), vaciaDesde: Date.now() });
+  console.log(`${canal.name}: canal de voz ${v.name} (lo pidió ${member.user.username})`);
+  // El cliente pide voz: hace falta una persona; si nadie atendia aun, se escala.
+  if (dueno && d.estado !== "escalado") {
+    setTimeout(() => escalarTicket(canal, d, "El cliente pidió llamada de voz").catch((e) => console.warn("escalar:", e.message)), 500);
+    return T[d.lang].vozCreada(`<#${v.id}>`, d.lang === "es" ? "Un compañero del equipo" : "A teammate");
+  }
+  const ids = [d.aid, d.aid2].filter(Boolean);
+  return T[d.lang].vozCreada(`<#${v.id}>`, dueno ? (ids.length ? ids.map((x) => `<@${x}>`).join(" ") : d.lang === "es" ? "El equipo" : "The team") : `<@${d.uid}>`);
+}
+client.on("voiceStateUpdate", (antes, ahora) => {
+  for (const [id, entra] of [[ahora.channelId, true], [antes.channelId, false]]) {
+    if (!id || antes.channelId === ahora.channelId) continue;
+    const ch = (ahora.guild || antes.guild).channels.cache.get(id);
+    if (!ch || !ch.name.startsWith("voz-ticket-")) continue;
+    const info = vozInfo.get(id) || { inicio: Date.now(), gente: new Map(), vaciaDesde: null };
+    const m = entra ? ahora.member : antes.member;
+    if (entra && m) info.gente.set(m.id, m.user.username);
+    if (entra && !info.usada) info.usada = Date.now();
+    info.vaciaDesde = ch.members.size ? null : Date.now();
+    vozInfo.set(id, info);
+  }
+});
+async function revisarVoz(voz, canal, d) {
+  if (voz.members.size) return;
+  // Tras un reinicio no se sabe si se uso: se cuenta desde ahora para no borrarla antes de tiempo.
+  const info = vozInfo.get(voz.id) || { inicio: voz.createdTimestamp, gente: new Map(), vaciaDesde: Date.now(), reinicio: true };
+  if (!vozInfo.has(voz.id)) vozInfo.set(voz.id, info);
+  if (!info.vaciaDesde) info.vaciaDesde = Date.now();
+  const limite = (info.usada ? S.vozVaciaMin ?? 15 : S.vozSinUsarMin ?? 30) * MIN;
+  if (Date.now() - info.vaciaDesde > limite) await terminarVoz(voz, canal, d, info.usada ? "vacío" : "nadie entró");
+}
+async function terminarVoz(voz, canal, d, motivo) {
+  const info = vozInfo.get(voz.id) || { inicio: voz.createdTimestamp, gente: new Map() };
+  vozInfo.delete(voz.id);
+  const min = Math.max(1, Math.round(((info.vaciaDesde || Date.now()) - (info.usada || info.inicio)) / MIN));
+  const gente = [...info.gente.values()].join(", ");
+  await voz.delete(`voz del ticket: ${motivo}`).catch((e) => console.warn("borrar voz:", e.message));
+  if (info.usada) await canal.send(T[d.lang].vozFin(min, gente)).catch(() => {});
+  try {
+    const hilo = await hiloDeUsuario(canal.guild, d.uid, d.usuario || d.uid);
+    const e = new EmbedBuilder()
+      .setColor(0x5865f2)
+      .setTitle(`🎙️ Voz del ticket ${canal.name}`)
+      .addFields(
+        { name: "Creada", value: `<t:${Math.floor(info.inicio / 1000)}:f>`, inline: true },
+        { name: "Duración", value: info.usada ? `~${min} min` : info.reinicio ? "sin datos (el bot se reinició)" : "no se usó", inline: true },
+        { name: "Cierre", value: motivo, inline: true },
+        { name: "Participantes", value: gente || (info.usada || info.reinicio ? "(sin datos: el bot se reinició)" : "nadie") },
+      )
+      .setTimestamp();
+    await hilo.send({ embeds: [e] });
+  } catch (err) {
+    console.warn("historial voz:", err.message);
+  }
+  console.log(`${canal.name}: voz cerrada (${motivo})`);
+}
+
+// ------------------------------------------------------------ paneles publicos
+// Servidores con panelesPublicos: el panel del bot va en los canales donde los clientes abrian ticket
+// con el bot anterior (Forms). Se publica una vez y se actualiza igual que el de la categoria.
+async function panelesPublicos(guild) {
+  const ids = (CFG.servidores && CFG.servidores[guild.id] && CFG.servidores[guild.id].panelesPublicos) || [];
+  for (const id of ids) {
+    const canal = guild.channels.cache.get(id);
+    if (!canal || !canal.isTextBased()) { console.warn(`${guild.name}: no encuentro el canal de panel ${id}`); continue; }
+    const msgs = await canal.messages.fetch({ limit: 30 }).catch(() => null);
+    const panel = msgs && msgs.find((m) => m.author.id === client.user.id && m.components.length);
+    if (panel) continue;
+    await canal.send(mensajePanel()).then(() => console.log(`${guild.name}: panel publicado en #${canal.name}`)).catch((e) => console.warn(`panel en #${canal.name}:`, e.message));
   }
 }
 
@@ -1080,4 +1271,4 @@ if (require.main === module) {
   client.login(token);
 }
 
-module.exports = { revisarTicket, PREGUNTA_IDIOMA, saberAuditor, pideDevolucion, pideCompra, promptSistema, pideHumano, idiomaDe, leerTicket, temaCanal, esImagen, estaEnojado, mensajePanel, yaQuedo };
+module.exports = { client, revisarTicket, silencioPorHelper, idiomaReciente, revisarVoz, terminarVoz, canalVoz, botonListo, PREGUNTA_IDIOMA, saberAuditor, pideDevolucion, pideCompra, promptSistema, pideHumano, idiomaDe, leerTicket, temaCanal, esImagen, estaEnojado, mensajePanel, yaQuedo };

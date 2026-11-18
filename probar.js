@@ -127,12 +127,14 @@ for (const t of ["ya funciona pero se desconecta", "¿ya quedó?", "still not wo
 for (const t of ["esto es una estafa", "ya me harté, nadie me contesta", "PORQUE NO FUNCIONA NADA DE ESTO", "funciona???!!!", "worst product ever"]) assert.ok(estaEnojado(t), `enojado: ${t}`);
 for (const t of ["mi tracker no prende", "no se conecta al wifi", "OK", "gracias!"]) assert.ok(!estaEnojado(t), `no enojado: ${t}`);
 const { enHorario, proximaApertura } = require("./src/horario");
-const lunes11 = new Date("2026-10-19T18:00:00Z"); // 11:00 en Tijuana (PDT)
+const lunes11 = new Date("2026-10-19T18:00:00Z"); // 11:00 en Los Angeles (PDT)
 const domingo = new Date("2026-10-25T20:00:00Z");
-assert.ok(enHorario(lunes11) && !enHorario(domingo));
-assert.strictEqual(new Date(proximaApertura(domingo)).toISOString(), "2026-10-26T17:00:00.000Z"); // lunes 10:00 Tijuana
-assert.ok(enHorario(new Date("2026-10-20T03:15:00Z")) && !enHorario(new Date("2026-10-20T03:30:00Z"))); // 8:15 pm si, 8:30 pm ya no
-assert.strictEqual(new Date(proximaApertura(new Date("2026-10-20T03:30:00Z"))).toISOString(), "2026-10-20T17:00:00.000Z"); // martes 10:00
+assert.ok(enHorario(lunes11) && !enHorario(domingo) && !enHorario(new Date("2026-10-19T17:59:00Z")));
+assert.strictEqual(new Date(proximaApertura(domingo)).toISOString(), "2026-10-26T18:00:00.000Z"); // lunes 11:00 LA
+assert.ok(enHorario(new Date("2026-10-20T02:59:00Z")) && !enHorario(new Date("2026-10-20T03:00:00Z"))); // 7:59 pm si, 8:00 pm ya no
+assert.strictEqual(new Date(proximaApertura(new Date("2026-10-20T03:30:00Z"))).toISOString(), "2026-10-20T18:00:00.000Z"); // martes 11:00
+assert.ok(enHorario(new Date("2026-11-23T19:00:00Z")) && !enHorario(new Date("2026-11-23T18:59:00Z"))); // invierno (PST): 11:00 = 19:00Z
+assert.ok(!enHorario(new Date("2026-11-22T20:00:00Z"))); // domingo cerrado
 assert.strictEqual(mensajePanel(["correas", "nada", "colocacion"]).embeds[0].toJSON().fields.length, 3);
 // Auditor: lee el veredicto aunque venga con texto alrededor; si no hay JSON, deja pasar.
 const { leerVeredicto, ordenAuditor } = require("./src/auditor");
