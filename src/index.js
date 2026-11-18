@@ -691,7 +691,8 @@ async function abrirTicket(inter) {
   idiomaTicket.set(canal.id, lang);
   { // Si el problema del formulario no deja claro el idioma, ya cuenta como la primera duda.
     const a = analizarIdioma(problema);
-    estadoIdioma.set(canal.id, { dudas: !a.lang && !a.neutro && !a.pedido ? 1 : 0, preguntado: false, pendiente: null });
+    const duda = !a.neutro && !a.pedido && a.lang !== lang && !(a.lang && a.seguro);
+    estadoIdioma.set(canal.id, { dudas: duda ? 1 : 0, inclina: duda ? a.lang : null, preguntado: false, pendiente: null });
   }
 
   const ficha = new EmbedBuilder()
@@ -810,13 +811,13 @@ async function casoDevolucion(canal, d, texto) {
 
 // Atiende un mensaje del cliente en su ticket: siempre hay respuesta.
 async function atender(canal, d, member, texto, fotos = [], idiomaElegido = false) {
-  // Idioma: si escribe claro en el otro idioma se cambia; si por segunda vez no se sabe, se le pregunta.
+  // Idioma: se detecta solo; se pregunta solo si en 3 mensajes seguidos no se sabe en que idioma escribe.
   const ei = estadoIdioma.get(canal.id) || { dudas: 0, preguntado: false };
   const actual = idiomaTicket.get(canal.id) || d.lang || idiomaDe(member, texto);
-  const dec = idiomaElegido || (fotos.length && !texto.trim()) ? { accion: "seguir", lang: actual, dudas: ei.dudas } : decidirIdioma(texto, { lang: actual, ...ei });
+  const dec = idiomaElegido || (fotos.length && !texto.trim()) ? { accion: "seguir", lang: actual, dudas: ei.dudas, inclina: ei.inclina } : decidirIdioma(texto, { lang: actual, ...ei });
   const lang = dec.lang;
   idiomaTicket.set(canal.id, lang);
-  estadoIdioma.set(canal.id, { ...ei, dudas: dec.dudas, pendiente: null });
+  estadoIdioma.set(canal.id, { ...ei, dudas: dec.dudas, inclina: dec.inclina, pendiente: null });
   if (dec.accion === "cambiar") console.log(`idioma de ${canal.name}: ${actual} -> ${lang}`);
   if (dec.accion === "preguntar") {
     estadoIdioma.set(canal.id, { dudas: 0, preguntado: true, pendiente: { texto, member, fotos } });
