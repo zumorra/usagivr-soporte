@@ -29,6 +29,14 @@ const casos = [
   ["formatee la pc, en que orden instalo todo", "configurar_slimevr"],
   ["como uso el smol configurator", "smol_configurator"],
   ["como instalo slimevr por primera vez", "configurar_slimevr"],
+  ["como actualizo el firmware de mis bmi160", "firmware_wifi"],
+  ["how do I update my icm45 trackers to 7.2", "firmware_wifi"],
+  ["que rotacion pongo para los bno085", "firmware_wifi"],
+  ["mi smol se queda en rojo", "smol_rojo"],
+  ["how do I turn off my smol tracker", "smol_rojo"],
+  ["me salen trackers duplicados con virtual desktop", "smol_rojo"],
+  ["tengo router de at&t y no conectan por wifi", "wifi"],
+  ["dice unable to connect to wifi", "wifi"],
 ];
 let ok = 0;
 for (const [txt, esperado] of casos) {

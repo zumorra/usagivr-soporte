@@ -13,6 +13,25 @@
  */
 
 const yt = (id) => `https://youtu.be/${id}`;
+// Mensajes del propio servidor de soporte (no caducan como los enlaces del CDN).
+const dc = (canal, msg) => `https://discord.com/channels/1318716973072252970/${canal}${msg ? `/${msg}` : ""}`;
+const DC = {
+  wifiErrores: dc("1476745565252489266"),
+  bmi160: dc("1476753589782446202", "1476754459693551730"),
+  icm42: dc("1476745675998756913", "1476786318141821100"),
+  icm45: dc("1476745648903684127", "1476784634023903345"),
+  bno085: dc("1476746273389547741", "1477073561775505481"),
+  smolApagar: dc("1476745722467586118", "1494066206586699988"),
+  smolRojo: dc("1476745722467586118", "1494066454243315753"),
+  smolEmparejarPC: dc("1476745722467586118", "1504551743122571444"),
+  smolGuia: dc("1476745722467586118", "1507555973341122661"),
+  smolAndroid: dc("1476745722467586118", "1508547817868886209"),
+  calib6ejes: dc("1318779480952668180", "1343065395971489825"),
+  standalone: dc("1318779480952668180", "1343065401134809108"),
+  proporcionesEN: dc("1318779480952668180", "1343065666701365393"),
+  medidasES: dc("1318778311421202492", "1343065809378873474"),
+  configES: dc("1318778311421202492", "1343065963255300106"),
+};
 
 const TEMAS = [
   {
@@ -100,7 +119,8 @@ const TEMAS = [
         "**Reinicia los trackers** (apagar, 5 s, encender), quietos en el suelo. Normalmente ya vienen **emparejados de fábrica** y aparecen solos en SlimeVR.",
         "Si alguno no aparece, hay que **emparejarlo con la antena**: sigue el video **«How to sync new Smol trackers»** de abajo, uno por uno.",
         "**Antena:** que no esté tapada (ni detrás de la torre del PC ni en un cajón) y **mirando hacia donde vas a jugar**. Un alargue USB para subirla ayuda mucho.",
-        "Solo si tus trackers son de **WiFi**: conéctalos por USB con un cable **de datos** y mete el WiFi en SlimeVR (red **2.4 GHz**, solo **WPA2**, canal 1-11). SlimeVR te guía, pero aquí tienes el video también.",
+        "Solo si tus trackers son de **WiFi**: conéctalos por USB con un cable **de datos** y mete el WiFi en SlimeVR (red **2.4 GHz**, solo **WPA2**, canal 1-11). SlimeVR te guía, pero aquí tienes el video también. En los **BMI160/Ice Cube WiFi** el cable va en el **puerto del costado**. Si sale «USB Tracker – Unable to connect to Wi-Fi» pero el tracker ya aparece conectado, **no es error**: sigue con el siguiente.",
+        "Si la PC no reconoce el tracker por USB y el Administrador de dispositivos muestra un USB con error: actualiza los drivers USB (primero Windows Update; si no basta, el equipo usa **Driver Booster**) y reinicia.",
         "Si salen en SlimeVR pero no en SteamVR: SteamVR → Startup/Shutdown → activa SlimeVR → reinicia SteamVR.",
       ],
       en: [
@@ -108,12 +128,15 @@ const TEMAS = [
         "**Restart the trackers** (off, 5 s, on) and leave them still on the floor. They normally come **already paired from the factory** and show up in SlimeVR by themselves.",
         "If one doesn't show up, it needs to be **paired to the antenna**: follow the **\"How to sync new Smol trackers\"** video below, one at a time.",
         "**Antenna:** keep it uncovered (not behind the PC tower or in a drawer) and **facing the area where you play**. A USB extension to raise it helps a lot.",
-        "Only if your trackers are **WiFi** ones: plug them in via USB with a **data** cable and enter your WiFi in SlimeVR (**2.4 GHz**, **WPA2 only**, channel 1-11). SlimeVR guides you, but the video is here too.",
+        "Only if your trackers are **WiFi** ones: plug them in via USB with a **data** cable and enter your WiFi in SlimeVR (**2.4 GHz**, **WPA2 only**, channel 1-11). SlimeVR guides you, but the video is here too. On **BMI160/Ice Cube WiFi** trackers the cable goes in the **side port**. If you see \"USB Tracker – Unable to connect to Wi-Fi\" but the tracker already shows as connected, **that's not an error**: move on to the next one.",
+        "If the PC doesn't recognise the tracker over USB and Device Manager shows a USB device with an error: update the USB drivers (Windows Update first; if that is not enough, the team uses **Driver Booster**) and restart.",
         "If they show in SlimeVR but not in SteamVR: SteamVR → Startup/Shutdown → enable SlimeVR → restart SteamVR.",
       ],
     },
     videos: [
       { t: "How to sync new Smol trackers (Usagi VR)", u: yt("HaldUGryrf4") },
+      { t: "Emparejar SMOL con la antena en PC (USAGIVR Discord)", u: DC.smolEmparejarPC },
+      { t: "Trackers info and Know Errors: WiFi (USAGIVR Discord)", u: DC.wifiErrores },
       { t: "SlimeVR setup guide (official)", u: yt("SkfdraicN5s") },
       { t: "Configurar trackers SlimeVR (VRMods, español)", u: yt("GjvZ-U0kcME") },
     ],
@@ -146,7 +169,7 @@ const TEMAS = [
   },
   {
     id: "wifi",
-    claves: ["wifi", "wi-fi", "router", "red", "network", "ssid", "contrasena", "password", "3 parpadeos", "three blinks", "3 blinks", "5ghz", "2.4", "ping", "lag", "se desconecta", "disconnect", "disconnects", "modem", "internet"],
+    claves: ["wifi", "wi-fi", "router", "red", "network", "ssid", "contrasena", "password", "3 parpadeos", "three blinks", "3 blinks", "5ghz", "2.4", "ping", "lag", "se desconecta", "disconnect", "disconnects", "modem", "internet", "at&t", "att", "opal", "gl.inet", "glinet", "network band", "2.4ghz", "2.4 ghz", "unable to connect to wi-fi", "unable to connect to wifi"],
     titulo: { es: "Problemas de WiFi y red", en: "WiFi and network problems" },
     pasos: {
       es: [
@@ -157,6 +180,10 @@ const TEMAS = [
         "Si cambiaste de router, vuelve a meter el WiFi por USB.",
         "PC: perfil de red de Windows en **Privada**, ejecuta `firewall.bat` de SlimeVR como administrador, sin VPN ni red de invitados.",
         "Si ya hiciste todos los pasos y no conectan: muchas veces **el proveedor de internet bloquea algunas conexiones** en su router y eso afecta la comunicación de los trackers (solo pasa con los **WiFi**). Lo que mejor funciona es un **router barato extra solo para los trackers**.",
+        "Errores típicos (canal *Trackers info and Know Errors*): **red y clave escritas exactas** (mayúsculas y números cuentan; mejor un nombre corto tipo `Slime123`); para ver si tu red es 2.4 GHz: Windows → propiedades del WiFi → *Network band*.",
+        "La **PC o el visor deben estar en la misma red/router** que los trackers; si no, no aparecen.",
+        "El router principal de **AT&T** bloquea los puertos de SlimeVR: usa un router aparte (el equipo recomienda el **GL.iNet Opal GL-SFT1200**).",
+        "Los **ICM y BNO** captan peor la señal: pon el router **en la zona donde juegas**.",
       ],
       en: [
         "Restart the router and the trackers.",
@@ -166,9 +193,14 @@ const TEMAS = [
         "If you changed routers, enter the WiFi again over USB.",
         "PC: Windows network profile set to **Private**, run SlimeVR's `firewall.bat` as administrator, no VPN or guest network.",
         "If you did every step and they still won't connect: **internet providers often block some connections** on their routers, which breaks tracker communication (only for **WiFi** trackers). What works best is a **cheap extra router just for the trackers**.",
+        "Common errors (*Trackers info and Know Errors* channel): **type the network name and password exactly** (capitals and numbers matter; a short name like `Slime123` is best); to check your network is 2.4 GHz: Windows → WiFi properties → *Network band*.",
+        "Your **PC or headset must be on the same network/router** as the trackers, otherwise they won't show up.",
+        "The main **AT&T** router blocks SlimeVR's ports: use a separate router (the team recommends the **GL.iNet Opal GL-SFT1200**).",
+        "**ICM and BNO** trackers have weaker reception: keep the router **in your play area**.",
       ],
     },
     videos: [
+      { t: "Trackers info and Know Errors: WiFi (USAGIVR Discord)", u: DC.wifiErrores },
       { t: "SlimeVR setup guide part 2 (official)", u: yt("JrHmNcckpuE") },
       { t: "Best cheap routers for trackers", u: yt("GwSuEpIWDyE") },
       { t: "Tutorial con dudas y errores (VRMods, español)", u: yt("mPhr7zGiWD4") },
@@ -201,6 +233,7 @@ const TEMAS = [
       { t: "Drift isn't what you think (Jacobfov)", u: yt("On8_1hrW7_g") },
       { t: "6-side calibration (Adamant IT)", u: yt("UmgGd9O-rn4") },
       { t: "Smol 6-side calibration", u: yt("wuktCL0t57k") },
+      { t: "6-axis calibration (USAGIVR Discord)", u: DC.calib6ejes },
     ],
     imagenes: ["calibracion-drift.png"],
   },
@@ -232,6 +265,8 @@ const TEMAS = [
       { t: "Calibration guide (ZRock35)", u: yt("SYqfQdVseF4") },
       { t: "Calibration routine (Snitchie)", u: yt("NLy9-gjybtg") },
       { t: "Body proportions (Dean Ravencrest)", u: yt("PTFV9hJa4DE") },
+      { t: "Body proportions (USAGIVR Discord)", u: DC.proporcionesEN },
+      { t: "Medidas en SlimeVR, español (USAGIVR Discord)", u: DC.medidasES },
     ],
     imagenes: ["uso-diario.png"],
   },
@@ -268,23 +303,92 @@ const TEMAS = [
       es: [
         "Bájalo de GitHub (Releases): hay versión para Windows, Linux, macOS y Android.",
         "**Emparejar**: conecta la antena (receptor) por USB → **↻** → elige el puerto → **Connect** → pestaña del receptor → **Pairing mode** → enciende los trackers uno por uno hasta que aparezcan → sal del modo pairing.",
-        "**IceCube: NO se les actualiza el firmware.** Si lo actualizan, pierden la cobertura y ya no nos hacemos responsables si fallan. El resto de los modelos sí se pueden actualizar.",
+        "**SMOL Ice Cube (los que usan antena/receptor): NO se les actualiza el firmware** y en el configurador **no pulses Firmware, DFU, Remove ni Clear Data**. Si lo actualizan, pierden la cobertura y ya no nos hacemos responsables si fallan. (Los **Ice Cube WiFi con BMI160** son otra cosa: esos se actualizan desde SlimeVR con el video oficial; mira el tema de firmware WiFi.)",
+        "Emparejar **en PC** paso a paso: instala SlimeVR Server y SmolSlime Configurator → receptor por USB → su puerto COM → **Connect** → pestaña **Receiver** → **Pairing Mode** → luego cada tracker por USB, uno por uno: su COM → **Connect** → pestaña **Tracker** → **Pairing Mode**.",
         "**Firmware** (todos menos IceCube): conecta el tracker o el receptor por USB y aprieta reset dos veces → **↻**, puerto, **Connect** → elige el firmware en *Select Firmware* → **⬇ Firmware** y espera ~20 s. Tracker y receptor deben quedar en la misma versión.",
         "**Calibrar el sensor**: botón **Calibrate** con el tracker quieto ~5 s, o la calibración de **6 caras** siguiendo lo que pide en pantalla.",
       ],
       en: [
         "Download it from GitHub (Releases): there are builds for Windows, Linux, macOS and Android.",
         "**Pairing**: plug the antenna (receiver) into USB → **↻** → pick the port → **Connect** → receiver tab → **Pairing mode** → turn the trackers on one by one until they show up → leave pairing mode.",
-        "**IceCube: do NOT update their firmware.** Updating it voids their coverage and we can't be responsible if they fail afterwards. All other models can be updated.",
+        "**SMOL Ice Cubes (the ones that use the antenna/receiver): do NOT update their firmware**, and in the configurator **don't press Firmware, DFU, Remove or Clear Data**. Updating voids their coverage and we can't be responsible if they fail afterwards. (**WiFi Ice Cubes with BMI160** are different: those are updated from SlimeVR with the official video; see the WiFi firmware topic.)",
+        "Pairing **on PC** step by step: install SlimeVR Server and SmolSlime Configurator → receiver on USB → its COM port → **Connect** → **Receiver** tab → **Pairing Mode** → then each tracker on USB, one at a time: its COM → **Connect** → **Tracker** tab → **Pairing Mode**.",
         "**Firmware** (all except IceCube): plug the tracker or receiver into USB and press reset twice → **↻**, port, **Connect** → pick the firmware in *Select Firmware* → **⬇ Firmware** and wait ~20 s. Tracker and receiver must be on the same version.",
         "**Sensor calibration**: **Calibrate** button with the tracker still for ~5 s, or the **6-side** calibration following the on-screen steps.",
       ],
     },
     videos: [
+      { t: "Emparejar SMOL con la antena en PC (USAGIVR Discord)", u: DC.smolEmparejarPC },
+      { t: "Guía rápida SmolSlime Ice Cubes (USAGIVR Discord)", u: DC.smolGuia },
+      { t: "Emparejar SMOL en Android (USAGIVR Discord)", u: DC.smolAndroid },
       { t: "SmolSlimeConfigurator (download)", u: "https://github.com/ICantMakeThings/SmolSlimeConfigurator/releases" },
       { t: "Video tutorial", u: "https://www.youtube.com/watch?v=ENINHh4L8tk" },
       { t: "Android tutorial", u: "https://youtu.be/2PHelwy7Rcs" },
       { t: "SlimeVR docs: SmolSlimeConfigurator", u: "https://docs.slimevr.dev/smol-slimes/firmware/SmolSlimeConfigurator.html" },
+    ],
+    imagenes: [],
+  },
+  {
+    id: "firmware_wifi",
+    // Nombres de placa: pesan mas que "firmware" a secas (que es del configurador SMOL).
+    fuertes: ["bmi160", "bmi 160", "icm42", "icm 42", "icm42688", "icm45", "icm 45", "icm45686", "bno085", "bno 085", "bno", "ultimate", "ultimates", "wemos", "ice cube wifi", "ice cubes wifi"],
+    claves: [ "d1 mini", "firmware wifi", "wifi firmware", "diy firmware", "firmware tool", "v0.7.2", "0.7.2", "7.2", "que placa", "which board", "imu type", "rotacion del imu", "imu rotation"],
+    titulo: { es: "Actualizar el firmware de los trackers WiFi (BMI160 / ICM42 / ICM45 / BNO085)", en: "Updating WiFi tracker firmware (BMI160 / ICM42 / ICM45 / BNO085)" },
+    pasos: {
+      es: [
+        "Esto es **solo para trackers WiFi**. Los SMOL con antena **no** se actualizan así (ni con el configurador). Asegúrate de qué placa tienes: si eliges otro IMU, el tracker no funciona.",
+        "Ten el **launcher de SlimeVR actualizado**, el tracker **encendido** y conectado por USB con cable de datos (en **BMI160/Ice Cube** el cable va en el **puerto del costado**).",
+        "SlimeVR → **Settings → Utilities → DIY firmware tool** → Board type **Wemos D1 Mini** → fuente **SlimeVR-Tracker-ESP (oficial)** → la versión más nueva (**v0.7.2** hoy).",
+        "**IMU type y rotación** (los dos IMU iguales): **BMI160 → IMU_BMI160, DEG_0** · **ICM42 → ICM42688, DEG_180** · **ICM45 → ICM45686, DEG_180** · **BNO085 → BNO085, DEG_180**. No toques nada más del sensor.",
+        "Batería: en **BMI160** se deja como viene (BAT_EXTERNAL, shield 180, R1 100, R2 220). En **ICM42, ICM45 y BNO085** pon BAT_EXTERNAL, *Battery Shield Resistor* **0**, **R1 10**, **R2 47**, Battery Pin **A0**, LED pin **2** y activa **Led inverted**.",
+        "**Looks good** → espera a que compile → método **USB** → escribe tu red **2.4 GHz** y clave **exactas** → elige el puerto *USB Serial* → **Next** y espera 30-60 s hasta *Update complete*.",
+        "De **uno en uno**: **Flash more trackers** para el siguiente. Al final, en Home, revisa que cada tracker diga la versión nueva y que se mueva.",
+        "En los BMI160 con la versión nueva ya no hace falta calibrar ejes a mano: déjalos **encendidos y quietos ~5 min** y se calibran solos.",
+      ],
+      en: [
+        "This is **only for WiFi trackers**. SMOL trackers with an antenna are **not** updated this way (nor with the configurator). Make sure you know your board: picking the wrong IMU makes the tracker stop working.",
+        "Have the **SlimeVR launcher up to date**, the tracker **turned on** and plugged in with a data cable (on **BMI160/Ice Cubes** the cable goes in the **side port**).",
+        "SlimeVR → **Settings → Utilities → DIY firmware tool** → Board type **Wemos D1 Mini** → source **SlimeVR-Tracker-ESP (official)** → the newest version (**v0.7.2** right now).",
+        "**IMU type and rotation** (both IMUs the same): **BMI160 → IMU_BMI160, DEG_0** · **ICM42 → ICM42688, DEG_180** · **ICM45 → ICM45686, DEG_180** · **BNO085 → BNO085, DEG_180**. Don't change anything else on the sensor.",
+        "Battery: on **BMI160** leave the defaults (BAT_EXTERNAL, shield 180, R1 100, R2 220). On **ICM42, ICM45 and BNO085** set BAT_EXTERNAL, *Battery Shield Resistor* **0**, **R1 10**, **R2 47**, Battery Pin **A0**, LED pin **2** and enable **Led inverted**.",
+        "**Looks good** → wait for the build → **USB** method → type your **2.4 GHz** network and password **exactly** → pick the *USB Serial* port → **Next** and wait 30-60 s for *Update complete*.",
+        "**One at a time**: **Flash more trackers** for the next one. Finally, on Home, check each tracker shows the new version and moves.",
+        "On BMI160 with the new version you no longer need to calibrate axes by hand: leave them **on and still for ~5 min** and they calibrate themselves.",
+      ],
+    },
+    videos: [
+      { t: "Firmware BMI160 / Ice Cubes (USAGIVR Discord)", u: DC.bmi160 },
+      { t: "Firmware ICM42 (USAGIVR Discord)", u: DC.icm42 },
+      { t: "Firmware ICM45 (USAGIVR Discord)", u: DC.icm45 },
+      { t: "Firmware BNO085 Ultimates (USAGIVR Discord)", u: DC.bno085 },
+    ],
+    imagenes: [],
+  },
+  {
+    id: "smol_rojo",
+    claves: ["apagar", "apago", "apagarlo", "apagarlos", "turn off", "switch off", "power off", "en rojo", "queda rojo", "queda en rojo", "siempre rojo", "stays red", "stuck red", "stuck on red", "solid red", "always red", "riel", "rail", "virtual desktop", "duplicados", "duplicate", "duplicated", "emulate steamvr"],
+    titulo: { es: "SMOL: apagar, se queda en rojo y trackers duplicados", en: "SMOL: turning off, stuck on red and duplicated trackers" },
+    pasos: {
+      es: [
+        "**Apagar un SMOL**: mantén pulsado el botón del frente hasta que el LED rojo se apague.",
+        "**Si se queda siempre en rojo**: sácalo del riel de la correa, haz un **reset rápido** con el botón y vuelve a meterlo.",
+        "Antes de jugar: cárgalos, enciéndelos, déjalos **planos y quietos 1-2 min** → **Full Reset** → póntelos → **Automatic Mounting** → en VRChat calibra FBT de pie y quieto.",
+        "Si usas **Virtual Desktop**: apaga **Emulate SteamVR Vive Trackers**, o te salen los trackers **duplicados**.",
+        "Cuerpo girado → **Yaw Reset**; todo raro → **Full Reset**.",
+      ],
+      en: [
+        "**Turning a SMOL off**: hold the front button until the red LED goes off.",
+        "**If it stays red all the time**: take it out of the strap rail, do a **quick reset** with the button and slide it back in.",
+        "Before playing: charge, turn on, leave them **flat and still for 1-2 min** → **Full Reset** → put them on → **Automatic Mounting** → in VRChat calibrate FBT standing still.",
+        "If you use **Virtual Desktop**: turn off **Emulate SteamVR Vive Trackers**, otherwise trackers show up **duplicated**.",
+        "Body rotated → **Yaw Reset**; everything off → **Full Reset**.",
+      ],
+    },
+    videos: [
+      { t: "Apagar un SMOL / Turn a SMOL off (USAGIVR Discord)", u: DC.smolApagar },
+      { t: "SMOL en rojo: reset rápido / Stuck on red: quick reset (USAGIVR Discord)", u: DC.smolRojo },
+      { t: "Guía rápida SmolSlime Ice Cubes (USAGIVR Discord)", u: DC.smolGuia },
+      { t: "Apagar un Smol (short)", u: yt("RR7D159j7zQ") },
     ],
     imagenes: [],
   },
@@ -310,7 +414,7 @@ const TEMAS = [
         "If they don't show in SteamVR: SteamVR → Startup/Shutdown → **Manage Add-ons** → turn SlimeVR on.",
       ],
     },
-    videos: [{ t: "SlimeVR docs: Quick Setup", u: "https://docs.slimevr.dev/quick-setup" }],
+    videos: [{ t: "SlimeVR docs: Quick Setup", u: "https://docs.slimevr.dev/quick-setup" }, { t: "Configuración de los trackers, español (USAGIVR Discord)", u: DC.configES }],
     imagenes: ["uso-diario.png"],
   },
   {
@@ -396,6 +500,8 @@ const TEMAS = [
     videos: [
       { t: "Quest standalone FBT (ZRock35)", u: yt("NSsoi9bfH0I") },
       { t: "Pair Smol trackers on Android (Usagi VR)", u: yt("Odnf4u6ZgsY") },
+      { t: "Standalone tutorial (USAGIVR Discord)", u: DC.standalone },
+      { t: "Emparejar SMOL en Android (USAGIVR Discord)", u: DC.smolAndroid },
     ],
     imagenes: [],
   },
@@ -456,10 +562,9 @@ function buscarTemas(texto, max = 2) {
   const puntos = [];
   for (const tema of TEMAS) {
     let p = 0;
-    for (const c of tema.claves) {
-      const re = new RegExp(`(^|[^a-z0-9])${c.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}([^a-z0-9]|$)`);
-      if (re.test(t)) p += c.includes(" ") ? 2 : 1;
-    }
+    const pesa = (c) => new RegExp(`(^|[^a-z0-9])${c.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}([^a-z0-9]|$)`).test(t);
+    for (const c of tema.claves) if (pesa(c)) p += c.includes(" ") ? 2 : 1;
+    for (const c of tema.fuertes || []) if (pesa(c)) p += 2;
     if (p > 0) puntos.push({ tema, p });
   }
   puntos.sort((a, b) => b.p - a.p);

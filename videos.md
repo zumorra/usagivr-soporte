@@ -27,3 +27,26 @@ Los dos videos que enlaza el manual (XrO8tsAp0CY, 7-T8woEs-hY) ya no existen; re
 | Reparación física | OxOgkBMEzME | — | Extensión de pie: apagar y meter a fondo; batería → humano |
 
 Enlace: https://youtu.be/<id>
+
+## Videos del propio Discord (categoría «Trackers info and Know Errors» y canales de videos)
+
+Revisados cuadro a cuadro y transcritos el 2026-11-18. Se enlazan por mensaje
+(`https://discord.com/channels/1318716973072252970/<canal>/<mensaje>`) porque los enlaces del CDN caducan.
+Están en `src/kb.js` (constante `DC`).
+
+| Tema | Mensaje | Qué enseña |
+|---|---|---|
+| Errores WiFi | canal 1476745565252489266 | red 2.4 GHz aparte, nombre/clave exactos, cable al costado en BMI160, «Unable to connect» con el tracker ya conectado no es error, router AT&T bloquea puertos → GL.iNet Opal, ICM/BNO con router cerca, misma red PC/visor, launcher actualizado, Driver Booster si el USB sale con error |
+| Firmware BMI160 / Ice Cube WiFi | 1476753589782446202/1476754459693551730 | DIY firmware tool, Wemos D1 Mini, v0.7.2, IMU_BMI160 DEG_0, batería por defecto; ya se autocalibra (5 min quieto) |
+| Firmware ICM42 | 1476745675998756913/1476786318141821100 | ICM42688 DEG_180, batería R0/R1 10/R2 47/A0, LED 2 invertido |
+| Firmware ICM45 | 1476745648903684127/1476784634023903345 | ICM45686 DEG_180, misma batería que ICM42 |
+| Firmware BNO085 Ultimates | 1476746273389547741/1477073561775505481 | BNO085 DEG_180, misma batería que ICM42 |
+| SMOL: apagar | 1476745722467586118/1494066206586699988 | mantener el botón del frente |
+| SMOL en rojo | 1476745722467586118/1494066454243315753 | sacar del riel, reset rápido, volver a meter |
+| SMOL: emparejar en PC | 1476745722467586118/1504551743122571444 | Configurator: receptor → Receiver → Pairing Mode; cada tracker → Tracker → Pairing Mode |
+| SMOL: guía rápida (imagen) | 1476745722467586118/1507555973341122661 | rutina antes de jugar, Virtual Desktop sin «Emulate Vive Trackers», NO tocar Firmware/DFU/Remove/Clear Data |
+| SMOL: emparejar en Android | 1476745722467586118/1508547817868886209 | app SlimeVR + SmolSlimeConfigurator Android, receptor por OTG, aceptar el permiso USB, pair |
+| Calibración 6 ejes (EN) | 1318779480952668180/1343065395971489825 | — |
+| Standalone (EN) | 1318779480952668180/1343065401134809108 | — |
+| Proporciones (EN) | 1318779480952668180/1343065666701365393 | — |
+| Medidas (ES) | 1318778311421202492/1343065809378873474 | — |
