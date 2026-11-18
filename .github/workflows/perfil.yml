@@ -1,0 +1,27 @@
+name: Cambiar nombre y foto del bot
+
+on:
+  workflow_dispatch:
+    inputs:
+      nombre:
+        description: "Nuevo nombre (vacio = no cambiar)"
+        default: ""
+      foto:
+        description: "Ruta de la foto en el repo (vacio = no cambiar)"
+        default: "assets/avatar-bot.png"
+
+jobs:
+  perfil:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Cambiar
+        env:
+          DISCORD_TOKEN: ${{ secrets.DISCORD_TOKEN }}
+          NOMBRE: ${{ inputs.nombre }}
+          FOTO: ${{ inputs.foto }}
+        run: node herramientas/perfil.js
