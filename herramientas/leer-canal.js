@@ -45,7 +45,7 @@ function aTexto(m) {
   const md = [];
   for (const g of await api("/users/@me/guilds")) {
     const todos = await api(`/guilds/${g.id}/channels`);
-    console.log(`== ${g.name} (${g.id}): ${todos.map((c) => `${c.name}[${c.type}]`).join(" | ")}`);
+    console.log(`== ${g.name} (${g.id}): ${todos.map((c) => `${c.name}[${c.type}${c.parent_id ? "<" + c.parent_id.slice(-4) : ""}]#${c.id.slice(-4)}`).join(" | ")}`);
     const coincide = (c) => patron.test(c.name.normalize("NFKC"));
     // Si coincide una categoría, entran también todos los canales que tiene dentro.
     const cats = new Set(todos.filter((c) => c.type === 4 && coincide(c)).map((c) => c.id));
