@@ -173,7 +173,7 @@ const TEMAS = [
   },
   {
     id: "wifi",
-    claves: ["wifi", "wi-fi", "router", "red", "network", "ssid", "contrasena", "password", "3 parpadeos", "three blinks", "3 blinks", "5ghz", "2.4", "ping", "lag", "se desconecta", "disconnect", "disconnects", "modem", "internet", "at&t", "att", "opal", "gl.inet", "glinet", "network band", "2.4ghz", "2.4 ghz", "unable to connect to wi-fi", "unable to connect to wifi"],
+    claves: ["wifi", "wi-fi", "router", "la red", "mi red", "de red", "network", "ssid", "contrasena", "password", "3 parpadeos", "three blinks", "3 blinks", "5ghz", "2.4", "ping", "lag", "se desconecta", "disconnect", "disconnects", "modem", "internet", "at&t", "att", "opal", "gl.inet", "glinet", "network band", "2.4ghz", "2.4 ghz", "unable to connect to wi-fi", "unable to connect to wifi"],
     titulo: { es: "Problemas de WiFi y red", en: "WiFi and network problems" },
     pasos: {
       es: [
