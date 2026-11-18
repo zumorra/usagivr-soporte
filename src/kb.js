@@ -386,6 +386,27 @@ const TEMAS = [
     imagenes: [],
   },
   {
+    id: "encendido",
+    claves: ["are on", "is on", "are they on", "is it on", "turned on", "know if the trackers", "know if my trackers", "know if they", "estan encendidos", "están encendidos", "esta encendido", "está encendido", "estan prendidos", "están prendidos", "esta prendido", "está prendido", "si prende", "blink red", "blinking red", "blinks red", "parpadea rojo", "parpadea en rojo", "parpadeando"],
+    titulo: { es: "¿Cómo sé si mis trackers están encendidos?", en: "How do I know my trackers are on?" },
+    pasos: {
+      es: [
+        "**Si el LED está prendido o parpadeando, el tracker está encendido.** Apagado no tiene ninguna luz.",
+        "Para apagarlo: mantén pulsado el botón del frente hasta que el LED rojo se apague.",
+        "Para saber si además **está conectado**: con la antena en el USB y **SlimeVR abierto**, el tracker encendido **aparece en SlimeVR**. Si aparece, todo está bien.",
+        "Si está encendido pero no aparece en SlimeVR: revisa la antena y, si sigue sin salir, emparéjalo con el video. Si aun así no aparece, avísanos y te pasamos con el **servicio técnico**.",
+      ],
+      en: [
+        "**If the LED is on or blinking, the tracker is on.** When it's off there's no light at all.",
+        "To turn it off: hold the front button until the red LED goes off.",
+        "To know if it's also **connected**: with the antenna in USB and **SlimeVR open**, a tracker that's on **shows up in SlimeVR**. If it shows up, you're good.",
+        "If it's on but doesn't show up in SlimeVR: check the antenna and, if it still doesn't appear, pair it using the video. If it still won't show up, tell us and we'll get our **tech team** on it.",
+      ],
+    },
+    videos: [{ t: "How to sync new Smol trackers (Usagi VR)", u: yt("HaldUGryrf4") }],
+    imagenes: [],
+  },
+  {
     id: "smol_rojo",
     claves: ["apagar", "apago", "apagarlo", "apagarlos", "turn off", "switch off", "power off", "en rojo", "queda rojo", "queda en rojo", "siempre rojo", "stays red", "stuck red", "stuck on red", "solid red", "always red", "riel", "rail", "virtual desktop", "duplicados", "duplicate", "duplicated", "emulate steamvr"],
     titulo: { es: "SMOL: apagar, se queda en rojo y trackers duplicados", en: "SMOL: turning off, stuck on red and duplicated trackers" },
