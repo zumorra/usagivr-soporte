@@ -243,7 +243,7 @@ const TEMAS = [
   },
   {
     id: "calibracion",
-    claves: ["calibra", "calibrate", "calibration", "reset", "piernas cruzadas", "crossed legs", "legs cross", "pierna girada", "leg twisted", "sentado", "sitting", "acostado", "lying", "vrchat", "fbt", "altura", "height", "proporciones", "proportions"],
+    claves: ["calibra", "calibro", "calibrar", "calibrate", "calibration", "reset", "piernas cruzadas", "crossed legs", "legs cross", "pierna girada", "leg twisted", "sentado", "sitting", "acostado", "lying", "vrchat", "fbt", "altura", "height", "proporciones", "proportions"],
     titulo: { es: "Calibración en cada sesión", en: "Calibrating every session" },
     pasos: {
       es: [
@@ -487,6 +487,34 @@ const TEMAS = [
     },
     videos: [],
     imagenes: [],
+  },
+  {
+    id: "ajustes_vrchat",
+    claves: ["configuracion de vrchat", "configuración de vrchat", "ajustes de vrchat", "settings de vrchat", "vrchat settings", "vrchat config", "configurar vrchat", "configuracion dentro de vr", "configuracion de vr", "ajustes de vr", "fbt settings", "que tengo que tocar en vrchat", "tracking & ik", "tracking and ik", "legacy ik", "shoulder tracking", "calibration range", "user real height", "fbt spine mode", "avatar measurement", "lock hip", "configuration warnings", "triangulo amarillo"],
+    fuertes: ["configuracion de vrchat", "ajustes de vrchat", "settings de vrchat", "vrchat settings", "vrchat config", "dentro de vr", "configuracion de vr", "configuration warnings", "fbt settings"],
+    titulo: { es: "Ajustes recomendados de VRChat para SlimeVR", en: "Recommended VRChat settings for SlimeVR" },
+    pasos: {
+      es: [
+        "Dentro de VRChat abre el **menú grande de Settings** → **Tracking & IK**.",
+        "**User Real Height**: pon **tu altura real** (la misma que pusiste en SlimeVR).",
+        "**Use Legacy IK Solving**: **apagado (Off)**.",
+        "**Disable Shoulder Tracking**: **encendido (On)**. **Shoulder Width Compensation**: **On**.",
+        "**Display Calibration Visuals**: **On** (recomendado). **Calibration Range**: **0.20 m** (sobre todo si usas avatar pequeño). **FBT Tracker Model**: **Axis** (opcional).",
+        "Ahora el **menú chico (el del reloj/muñeca)** → **Tracking & IK**: **Avatar Measurement** en **Height** y **FBT Spine Mode** en **Lock Hip** (o **Lock Head**).",
+        "Si SlimeVR te muestra la página **VRChat configuration warnings**, corrige todo lo que tenga **triángulo amarillo** hasta que quede en verde. Después calibra como siempre (Calibrate FBT y Full Reset).",
+      ],
+      en: [
+        "Inside VRChat open the **big Settings menu** → **Tracking & IK**.",
+        "**User Real Height**: set **your real height** (same as in SlimeVR).",
+        "**Use Legacy IK Solving**: **Off**.",
+        "**Disable Shoulder Tracking**: **On**. **Shoulder Width Compensation**: **On**.",
+        "**Display Calibration Visuals**: **On** (recommended). **Calibration Range**: **0.20 m** (especially for small avatars). **FBT Tracker Model**: **Axis** (optional).",
+        "Now the **small menu (wrist menu)** → **Tracking & IK**: **Avatar Measurement** to **Height** and **FBT Spine Mode** to **Lock Hip** (or **Lock Head**).",
+        "If SlimeVR shows the **VRChat configuration warnings** page, fix everything with a **yellow triangle** until it's green. Then calibrate as usual (Calibrate FBT and Full Reset).",
+      ],
+    },
+    videos: [],
+    imagenes: ["vrchat-config.png", "vrchat-config-alertas.png"],
   },
   {
     id: "kits",
