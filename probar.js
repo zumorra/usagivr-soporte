@@ -29,6 +29,7 @@ const casos = [
   ["formatee la pc, en que orden instalo todo", "configurar_slimevr"],
   ["como uso el smol configurator", "smol_configurator"],
   ["como instalo slimevr por primera vez", "configurar_slimevr"],
+  ["que opciones tengo que tocar en settings, smoothing y gesture control", "ajustes_slimevr"],
   ["como actualizo el firmware de mis bmi160", "sin_firmware"],
   ["puedo actualizar mis ice cube?", "sin_firmware"],
   ["how do I update the firmware on my icecubes", "sin_firmware"],

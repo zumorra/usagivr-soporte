@@ -94,13 +94,13 @@ const TEMAS = [
     titulo: { es: "El tracker no enciende", en: "The tracker won't turn on" },
     pasos: {
       es: [
-        "**Botón de reinicio**: atrás el tracker tiene un botoncito de reset; apriétalo (con la punta de un clip si hace falta). Casi siempre con eso revive.",
+        "**Botón de reinicio**: atrás el tracker tiene un botoncito de reset; es pequeñito: apriétalo con el dedo o ayúdate con la punta de algo (un clip, por ejemplo). Casi siempre con eso revive.",
         "Ponlo a cargar **20 minutos o más** con un cable USB-C que funcione (prueba otro cable y otro cargador/puerto).",
         "Con el cable conectado, ¿enciende y **aparece en SlimeVR**? Si sí, el tracker está bien y lo que falla es la **batería**.",
         "Si no prende ni conectado al cable, avísame y lo vemos con el equipo.",
       ],
       en: [
-        "**Reset button**: there is a small reset button on the back of the tracker; press it (use the tip of a paperclip if needed). That usually brings it back.",
+        "**Reset button**: there is a small reset button on the back of the tracker; it's small: press it with your finger or use the tip of something (like a paperclip). That usually brings it back.",
         "Charge it for **20 minutes or more** with a working USB-C cable (try another cable and another charger/port).",
         "With the cable plugged in, does it turn on and **show up in SlimeVR**? If yes, the tracker is fine and the problem is the **battery**.",
         "If it doesn't turn on even plugged in, tell me and we'll check it with the team.",
@@ -460,6 +460,33 @@ const TEMAS = [
     },
     videos: [{ t: "SlimeVR docs: Quick Setup", u: "https://docs.slimevr.dev/quick-setup" }, { t: "Configuración de los trackers, español (USAGIVR Discord)", u: DC.configES }],
     imagenes: ["uso-diario.png"],
+  },
+  {
+    id: "ajustes_slimevr",
+    claves: ["ajustes de slimevr", "settings de slimevr", "slimevr settings", "configurar el programa", "que tengo que tocar", "que debo tocar", "que opciones", "what settings", "which settings", "best settings", "mejor configuracion", "suavizado", "smoothing", "filtering", "tracker mechanics", "mecanicas", "gesture control", "control de gestos", "stay aligned", "body proportions", "proporciones", "que se vea mejor", "ande mejor", "track better"],
+    titulo: { es: "Ajustes recomendados de SlimeVR (Settings)", en: "Recommended SlimeVR settings" },
+    pasos: {
+      es: [
+        "Antes: ten **todos los trackers puestos** y el **visor a la mano**. En SlimeVR abre **Settings** (engrane abajo a la izquierda) y ve bajando por el menú de la derecha.",
+        "**Tracker mechanics** → *Filtering type*: elige **Smoothing** (suavizado). En **Amount** pon **20%**.",
+        "Más abajo, **Yaw reset smooth time**: pícale al **+ una sola vez**, para que quede en **0.05s**.",
+        "**Tracking settings**: deja el valor en **20%**.",
+        "**Gesture control**: **desactívalo**. Excepción: si juegas **solo con Quest standalone** (sin PC), déjalo activado, porque ahí lo usas para el reset.",
+        "**Body Proportions** (menú de la izquierda): pon tu **altura**; si no la sabes, elige **automática** y sigue las indicaciones.",
+        "Por último, con los **trackers y el visor puestos**, vuelve a **Settings → Stay Aligned** y pícale al **botón morado grande (Setup)**. Sigue los pasos y listo, SlimeVR queda configurado.",
+      ],
+      en: [
+        "Before you start: have **all trackers on** and your **headset at hand**. In SlimeVR open **Settings** (gear, bottom left) and go down the right-hand menu.",
+        "**Tracker mechanics** → *Filtering type*: pick **Smoothing**. Set **Amount** to **20%**.",
+        "Below, **Yaw reset smooth time**: press **+ only once**, so it ends up at **0.05s**.",
+        "**Tracking settings**: leave the value at **20%**.",
+        "**Gesture control**: **turn it off**. Exception: if you play **Quest standalone only** (no PC), leave it on, since you use it for the reset there.",
+        "**Body Proportions** (left menu): enter your **height**; if you don't know it, choose **automatic** and follow the steps.",
+        "Finally, with the **trackers and headset on**, go back to **Settings → Stay Aligned** and press the **big purple button (Setup)**. Follow the steps and SlimeVR is set up.",
+      ],
+    },
+    videos: [],
+    imagenes: [],
   },
   {
     id: "kits",

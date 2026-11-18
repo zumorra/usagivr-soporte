@@ -892,11 +892,14 @@ async function atender(canal, d, member, texto, fotos = [], idiomaElegido = fals
     return escalarTicket(canal, dm, "El cliente pidió hablar con el equipo técnico");
   }
   if (pideDevolucion(texto)) return casoDevolucion(canal, dm, texto);
-  // Cliente molesto o que ya lleva muchos mensajes sin resolver: mejor que lo vea una persona pronto.
-  if (d.estado !== "escalado") {
-    const enojo = estaEnojado(texto);
-    const insiste = !enojo && (await mensajesDelCliente(canal, d.uid)) >= ((CFG.seguimiento || {}).insisteMensajes || 12);
-    if (enojo || insiste) return escalarTicket(canal, dm, enojo ? "Cliente molesto" : "Muchos mensajes sin resolver", enojo ? T[lang].enojo : undefined);
+  // Cliente molesto: mejor que lo vea una persona pronto. (Muchos mensajes NO escala: puede ir resolviendo dudas
+  // distintas, y cada respuesta ya le ofrece «No, necesito ayuda». Visto en la prueba del 18-11.)
+  if (d.estado !== "escalado" && estaEnojado(texto)) return escalarTicket(canal, dm, "Cliente molesto", T[lang].enojo);
+  // Con muchos mensajes solo se OFRECE el pase (una vez); no se escala solo.
+  if (d.estado !== "escalado" && !d.ofrecioPase && (await mensajesDelCliente(canal, d.uid)) >= ((CFG.seguimiento || {}).insisteMensajes || 12)) {
+    d.ofrecioPase = true;
+    await guardarTicket(canal, d);
+    await canal.send(T[lang].ofrecePase);
   }
   if (pideCompra(texto)) {
     if (d.estado === "escalado") return void (await canal.send(T[lang].compraYa()));
@@ -915,13 +918,14 @@ function estaEnojado(texto) {
   const letras = t.replace(/[^a-zA-ZÁÉÍÓÚÑáéíóúñ]/g, "");
   return letras.length >= 20 && letras.replace(/[^A-ZÁÉÍÓÚÑ]/g, "").length / letras.length > 0.7;
 }
+
+// Fotos o videos del cliente: se copian al hilo del cliente en el historial (las ve el equipo aunque se borre el ticket).
+const esImagen = (a) => /^(image|video)\//.test(a.contentType || "") || /\.(png|jpe?g|webp|gif|heic|mp4|mov)$/i.test(a.name || "");
 async function mensajesDelCliente(canal, uid) {
   const ms = await canal.messages.fetch({ limit: 100 }).catch(() => null);
   return ms ? ms.filter((m) => m.author.id === uid).size : 0;
 }
 
-// Fotos o videos del cliente: se copian al hilo del cliente en el historial (las ve el equipo aunque se borre el ticket).
-const esImagen = (a) => /^(image|video)\//.test(a.contentType || "") || /\.(png|jpe?g|webp|gif|heic|mp4|mov)$/i.test(a.name || "");
 async function guardarFotos(canal, d, fotos) {
   try {
     const hilo = await hiloDeUsuario(canal.guild, d.uid, d.usuario || d.uid);
