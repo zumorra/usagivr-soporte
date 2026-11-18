@@ -387,17 +387,19 @@ const TEMAS = [
   },
   {
     id: "encendido",
-    claves: ["are on", "is on", "are they on", "is it on", "turned on", "know if the trackers", "know if my trackers", "know if they", "estan encendidos", "están encendidos", "esta encendido", "está encendido", "estan prendidos", "están prendidos", "esta prendido", "está prendido", "si prende", "blink red", "blinking red", "blinks red", "parpadea rojo", "parpadea en rojo", "parpadeando"],
-    titulo: { es: "¿Cómo sé si mis trackers están encendidos?", en: "How do I know my trackers are on?" },
+    claves: ["are on", "is on", "are they on", "is it on", "turned on", "know if the trackers", "know if my trackers", "know if they", "estan encendidos", "están encendidos", "esta encendido", "está encendido", "estan prendidos", "están prendidos", "esta prendido", "está prendido", "si prende", "blink red", "blinking red", "blinks red", "parpadea rojo", "parpadea en rojo", "parpadeando", "luz azul", "blue light", "blue and red", "azul y rojo", "how long should i let them charge", "how long to charge", "how long do they charge", "cuanto tiempo cargar", "cuánto tiempo cargar", "cuanto tarda en cargar", "cuánto tarda en cargar", "fully charged", "carga completa", "cargados", "charging", "cargando"],
+    titulo: { es: "Luces: encendido y carga", en: "Lights: on and charging" },
     pasos: {
       es: [
         "**Si el LED está prendido o parpadeando, el tracker está encendido.** Apagado no tiene ninguna luz.",
+        "**Luz azul = cargando.** Mientras está conectado al USB verás la luz azul; **cuando se apaga la azul, ya está cargado al 100 %**. Para la primera calibración y configuración no hace falta carga completa: con un poco más de carga basta.",
         "Para apagarlo: mantén pulsado el botón del frente hasta que el LED rojo se apague.",
         "Para saber si además **está conectado**: con la antena en el USB y **SlimeVR abierto**, el tracker encendido **aparece en SlimeVR**. Si aparece, todo está bien.",
         "Si está encendido pero no aparece en SlimeVR: revisa la antena y, si sigue sin salir, emparéjalo con el video. Si aun así no aparece, avísanos y te pasamos con el **servicio técnico**.",
       ],
       en: [
         "**If the LED is on or blinking, the tracker is on.** When it's off there's no light at all.",
+        "**Blue light = charging.** While it's plugged into USB you'll see the blue light; **once the blue light goes off, it's fully charged**. For the first calibration and setup you don't need a full charge: a bit more charge is enough.",
         "To turn it off: hold the front button until the red LED goes off.",
         "To know if it's also **connected**: with the antenna in USB and **SlimeVR open**, a tracker that's on **shows up in SlimeVR**. If it shows up, you're good.",
         "If it's on but doesn't show up in SlimeVR: check the antenna and, if it still doesn't appear, pair it using the video. If it still won't show up, tell us and we'll get our **tech team** on it.",
