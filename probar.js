@@ -5,6 +5,12 @@ const { buscarTemas } = require("./src/kb");
 const { idiomaDe, pideHumano, pideDevolucion, pideCompra } = require("./src/index");
 
 const casos = [
+  ["el smol no muestra el magnetometro", "magnetometro"], ["my smol magnetometer doesn't show", "magnetometro"],
+  ["estoy en la red de la escuela y no conectan", "wifi"], ["tengo mal ping y cortes en el wifi", "wifi"],
+  ["que significa la luz roja rapido", "encendido"], ["the blue light blinks fast", "encendido"],
+  ["para que es la correa grande", "correas"], ["puedo usar los de pie como codos", "asignar_trackers"],
+  ["estoy flotando en vrchat", "calibracion"], ["mi avatar se ve mas alto", "calibracion"],
+  ["no aparecen las gafas en slimevr quest", "quest"], ["la antena esta floja", "antena"],
   ["mi tracker no enciende", "no_enciende"],
   ["My tracker won't turn on after charging", "no_enciende"],
   ["mis trackers nuevos no se conectan", "no_conecta"],

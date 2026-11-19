@@ -36,7 +36,7 @@ const DC = {
 const TEMAS = [
   {
     id: "correas",
-    claves: ["correa", "riel", "rail", "correas", "strap", "straps", "cinta", "cintas", "hebilla", "buckle", "velcro", "ponerme", "poner las", "put on", "wear", "arnes", "harness", "se resbala", "slips", "se cae", "falls off", "se enrolla", "rolls"],
+    claves: ["correa", "riel", "rail", "correas", "strap", "straps", "cinta", "cintas", "hebilla", "buckle", "velcro", "ponerme", "poner las", "put on", "wear", "arnes", "harness", "se resbala", "slips", "se cae", "falls off", "se enrolla", "rolls", "correa grande", "big strap", "correa de la cadera", "hip strap"],
     titulo: { es: "Cómo ponerse las correas", en: "How to put on the straps" },
     pasos: {
       es: [
@@ -46,6 +46,7 @@ const TEMAS = [
         "Muslos (correas gruesas antideslizantes): **justo encima de la rodilla**, al frente del muslo. Si se enrolla, bájala un poco más.",
         "Tobillos: la correa va **justo encima del hueso del tobillo, por el costado de la pierna** (no delante ni en el pie).",
         "Aprieta hasta que al mover la pierna el tracker no gire sobre la piel. Si una correa se queda corta, usa una de las largas.",
+        "La **correa grande** es para la **cadera**; cadera y cintura pueden ir **en la misma correa**.",
       ],
       en: [
         "The kit includes: **2 thick anti-slip straps** (thighs), **2 or 3 long straps** (waist, chest and hip, depending on the kit) and regular straps for the rest.",
@@ -54,6 +55,7 @@ const TEMAS = [
         "Thighs (thick anti-slip straps): **just above the knee**, on the front of the thigh. If it rolls, move it a little lower.",
         "Ankles: the strap goes **just above the ankle bone, on the side of the leg** (not in front and not on the foot).",
         "Tighten until the tracker does not rotate on your skin when you move. If a strap is too short, use one of the long ones.",
+        "The **big strap** is for the **hip**; hip and waist can go **on the same strap**.",
       ],
     },
     videos: [
@@ -122,6 +124,8 @@ const TEMAS = [
         "Solo si tus trackers son de **WiFi**: conéctalos por USB con un cable **de datos** y mete el WiFi en SlimeVR (red **2.4 GHz**, solo **WPA2**, canal 1-11). SlimeVR te guía, pero aquí tienes el video también. En los **BMI160/Ice Cube WiFi** el cable va en el **puerto del costado**. Si sale «USB Tracker – Unable to connect to Wi-Fi» pero el tracker ya aparece conectado, **no es error**: sigue con el siguiente.",
         "Si la PC no reconoce el tracker por USB y el Administrador de dispositivos muestra un USB con error: actualiza los drivers USB (primero Windows Update; si no basta, el equipo usa **Driver Booster**) y reinicia.",
         "Si salen en SlimeVR pero no en SteamVR: SteamVR → Startup/Shutdown → activa SlimeVR → reinicia SteamVR.",
+        "Revisa que todo esté en la **misma red**: los trackers WiFi y la PC o el visor tienen que estar conectados al **mismo router**.",
+        "Abre siempre **SteamVR primero**, espera unos segundos y **luego VRChat**; así SteamVR no pierde los trackers ni los botones.",
       ],
       en: [
         "Plug the **receiver antenna** (the small one or the big pentagon-shaped one) into a **USB port on your PC** and open SlimeVR Server.",
@@ -131,6 +135,8 @@ const TEMAS = [
         "Only if your trackers are **WiFi** ones: plug them in via USB with a **data** cable and enter your WiFi in SlimeVR (**2.4 GHz**, **WPA2 only**, channel 1-11). SlimeVR guides you, but the video is here too. On **BMI160/Ice Cube WiFi** trackers the cable goes in the **side port**. If you see \"USB Tracker – Unable to connect to Wi-Fi\" but the tracker already shows as connected, **that's not an error**: move on to the next one.",
         "If the PC doesn't recognise the tracker over USB and Device Manager shows a USB device with an error: update the USB drivers (Windows Update first; if that is not enough, the team uses **Driver Booster**) and restart.",
         "If they show in SlimeVR but not in SteamVR: SteamVR → Startup/Shutdown → enable SlimeVR → restart SteamVR.",
+        "Check everything is on the **same network**: WiFi trackers and the PC or headset must be on the **same router**.",
+        "Always open **SteamVR first**, wait a few seconds and **then VRChat**; that way SteamVR doesn't lose the trackers or the buttons.",
       ],
     },
     videos: [
@@ -144,7 +150,7 @@ const TEMAS = [
   },
   {
     id: "antena",
-    claves: ["la antena", "the antenna", "the dongle", "el dongle", "antena", "antenna", "dongle", "receptor", "receiver", "pentagono", "pentágono", "pentagon", "se cortan", "se corta", "cutting out", "señal", "senal", "signal", "picking up", "detecta", "detect", "puerto com", "com port", "alcance", "range"],
+    claves: ["la antena", "the antenna", "the dongle", "el dongle", "antena", "antenna", "dongle", "receptor", "receiver", "pentagono", "pentágono", "pentagon", "se cortan", "se corta", "cutting out", "señal", "senal", "signal", "picking up", "detecta", "detect", "puerto com", "com port", "alcance", "range", "enroscar", "screw", "floja", "loose", "windows no la detecta", "windows doesn't detect", "solo carga", "only charges"],
     titulo: { es: "La antena receptora", en: "The receiver antenna" },
     pasos: {
       es: [
@@ -156,6 +162,9 @@ const TEMAS = [
         "Ponla **mirando hacia la zona donde juegas**, mejor en alto. Un **alargue USB** para acercarla ayuda mucho si se cortan los trackers.",
         "Mejor en un USB directo de la placa (atrás del PC) o con el alargue, lejos de otros receptores inalámbricos y de metal.",
         "Si el tracker no sale, toca emparejarlo: mira el video de abajo. Si aun así no aparece, avísanos y te pasamos con el **servicio técnico**.",
+        "No la pongas detrás de la PC ni de monitores u otros aparatos: mejor **encima o al frente de la mesa**, a la vista.",
+        "Si la antena se ve floja o la señal es mala: **empújala hacia adelante mientras la enroscas**, con un poco de fuerza, hasta que quede firme.",
+        "Si la antena prende pero **Windows no la detecta**: ese cable o hub **solo carga, no pasa datos**. Usa otro cable **de datos** conectado **directo a la PC**.",
       ],
       en: [
         "Every kit (5 to 11 trackers) comes with a **receiver antenna**: a small one or a bigger **pentagon-shaped** one. It goes into a **USB port on your PC**.",
@@ -166,6 +175,9 @@ const TEMAS = [
         "Point it **toward the area where you play**, ideally up high. A **USB extension** to bring it closer helps a lot if trackers cut out.",
         "Prefer a USB port straight on the motherboard (back of the PC) or the extension, away from other wireless receivers and metal.",
         "If the tracker doesn't show up, it needs pairing: check the video below. If it still won't appear, tell us and we'll get our **tech team** on it.",
+        "Don't put it behind the PC, monitors or other devices: better **on top of or in front of the desk**, in plain sight.",
+        "If the antenna feels loose or the signal is bad: **push it forward while you screw it in**, with a bit of force, until it's firm.",
+        "If the antenna lights up but **Windows doesn't detect it**: that cable or hub **only charges, it doesn't carry data**. Use another **data** cable plugged **straight into the PC**.",
       ],
     },
     videos: [{ t: "How to sync new Smol trackers (Usagi VR)", u: yt("HaldUGryrf4") }],
@@ -173,7 +185,7 @@ const TEMAS = [
   },
   {
     id: "wifi",
-    claves: ["wifi", "wi-fi", "router", "la red", "mi red", "de red", "network", "ssid", "contrasena", "password", "3 parpadeos", "three blinks", "3 blinks", "5ghz", "2.4", "ping", "lag", "se desconecta", "disconnect", "disconnects", "modem", "internet", "at&t", "att", "opal", "gl.inet", "glinet", "network band", "2.4ghz", "2.4 ghz", "unable to connect to wi-fi", "unable to connect to wifi"],
+    claves: ["wifi", "wi-fi", "router", "la red", "mi red", "de red", "network", "ssid", "contrasena", "password", "3 parpadeos", "three blinks", "3 blinks", "5ghz", "2.4", "ping", "lag", "se desconecta", "disconnect", "disconnects", "modem", "internet", "at&t", "att", "opal", "gl.inet", "glinet", "network band", "2.4ghz", "2.4 ghz", "unable to connect to wi-fi", "unable to connect to wifi", "canal", "channel", "red publica", "public network", "hotel", "escuela", "school", "simbolos", "symbols", "cortes", "dropouts", "mal ping", "bad ping"],
     titulo: { es: "Problemas de WiFi y red", en: "WiFi and network problems" },
     pasos: {
       es: [
@@ -188,6 +200,10 @@ const TEMAS = [
         "La **PC o el visor deben estar en la misma red/router** que los trackers; si no, no aparecen.",
         "El router principal de **AT&T** bloquea los puertos de SlimeVR: usa un router aparte (el equipo recomienda el **GL.iNet Opal GL-SFT1200**).",
         "Los **ICM y BNO** captan peor la señal: pon el router **en la zona donde juegas**.",
+        "**Mal ping o cortes:** entra al panel de tu router (desde el navegador, con la IP del router) y cambia el **canal WiFi** a uno menos lleno. Pruébalos **uno por uno** hasta que el ping quede estable; no lo dejes en *Auto*.",
+        "Si el nombre o la clave de tu red llevan **símbolos** como `_` o `*`, suele fallar: cámbialos a solo letras y números.",
+        "Las **redes públicas** (escuela, hotel, depa compartido) no dejan conectar los trackers: usa el **hotspot de tu celular** o un router propio.",
+        "Si tus trackers son de **antena (dongle)**, no usan WiFi: solo necesitan la antena receptora en el USB.",
       ],
       en: [
         "Restart the router and the trackers.",
@@ -201,6 +217,10 @@ const TEMAS = [
         "Your **PC or headset must be on the same network/router** as the trackers, otherwise they won't show up.",
         "The main **AT&T** router blocks SlimeVR's ports: use a separate router (the team recommends the **GL.iNet Opal GL-SFT1200**).",
         "**ICM and BNO** trackers have weaker reception: keep the router **in your play area**.",
+        "**Bad ping or dropouts:** open your router's panel (in the browser, using the router's IP) and change the **WiFi channel** to a less crowded one. Try them **one by one** until the ping is stable; don't leave it on *Auto*.",
+        "If your network name or password has **symbols** like `_` or `*`, it often fails: change them to letters and numbers only.",
+        "**Public networks** (school, hotel, shared apartment) don't let the trackers connect: use your **phone's hotspot** or your own router.",
+        "If your trackers use an **antenna (dongle)**, they don't use WiFi: they only need the receiver plugged into USB.",
       ],
     },
     videos: [
@@ -223,6 +243,7 @@ const TEMAS = [
         "Para saber si es un tracker concreto, cámbialo de sitio con otro: si el drift lo sigue, es ese tracker.",
         "Lejos de colchones con muelles o metal.",
         "Si sigue: activa el modo desarrollador, mira que X/Y/Z se queden en 0 en reposo; si no, toca la calibración de 6 caras (video).",
+        "**Prueba de drift:** deja el tracker en plano → **Full Reset** → espera **5 min** sin tocarlo → en la **vista de tabla** de SlimeVR la rotación debe quedar en **0**. Si se mueve, mándanos el resultado.",
       ],
       en: [
         "Before playing leave the trackers **still on the floor for 2 minutes**, then do a **Full Reset**.",
@@ -231,6 +252,7 @@ const TEMAS = [
         "To find out if it's one tracker, swap it with another: if the drift follows it, it's that tracker.",
         "Keep away from spring mattresses or metal.",
         "If it continues: enable developer mode and check X/Y/Z stay at 0 at rest; if not, do the 6-side calibration (video).",
+        "**Drift test:** lay the tracker flat → **Full Reset** → wait **5 min** without touching it → in SlimeVR's **table view** the rotation should stay at **0**. If it moves, send us the result.",
       ],
     },
     videos: [
@@ -244,7 +266,7 @@ const TEMAS = [
   {
     id: "calibracion",
     fuertes: ["montura", "mounting", "codos de costado", "codo de costado", "pose t", "t pose"],
-    claves: ["montura", "mounting", "codos", "codo", "elbow", "elbows", "de costado", "codos de costado", "codo de costado", "elbow on the side", "pose t", "t pose", "t-pose", "se mueve raro", "se ve raro", "calibra", "calibro", "calibrar", "calibrate", "calibration", "reset", "piernas cruzadas", "crossed legs", "legs cross", "pierna girada", "leg twisted", "sentado", "sitting", "acostado", "lying", "vrchat", "fbt", "altura", "height", "proporciones", "proportions"],
+    claves: ["montura", "mounting", "codos", "codo", "elbow", "elbows", "de costado", "codos de costado", "codo de costado", "elbow on the side", "pose t", "t pose", "t-pose", "se mueve raro", "se ve raro", "calibra", "calibro", "calibrar", "calibrate", "calibration", "reset", "piernas cruzadas", "crossed legs", "legs cross", "pierna girada", "leg twisted", "sentado", "sitting", "acostado", "lying", "vrchat", "fbt", "altura", "height", "proporciones", "proportions", "flotando", "floating", "flotar", "hundido", "mal posicionado", "suelo del visor", "floor level", "mas alto", "mas bajo", "taller", "shorter", "se resetea solo", "resets by itself", "enable tap"],
     titulo: { es: "Calibración en cada sesión", en: "Calibrating every session" },
     pasos: {
       es: [
@@ -259,6 +281,9 @@ const TEMAS = [
         "Tu altura igual en SlimeVR y en VRChat.",
         "Al sentarte o tumbarte haz un **Yaw Reset**.",
         "Si las piernas se cruzan: tobillos al costado, muslos justo encima de la rodilla, y revisa Manual Mounting.",
+        "Si flotas, quedas hundido o mal posicionado y **no usas OVR Advanced Settings** u otro sistema parecido: **calibra el suelo en el visor** (en Quest: Límite / Boundary → calibración del nivel del suelo) y vuelve a calibrar.",
+        "Si tu avatar se ve **más alto o más bajo** de lo que eres: pon **la misma altura en VRChat y en SlimeVR** y recalibra.",
+        "Si el **reset se dispara solo** al moverte: en SlimeVR → **Gesture control**, desactiva las opciones **Enable tap to…** y usa mejor un **botón del control** (guía «Botones de reset»).",
       ],
       en: [
         "**First of all**: if you haven't assigned your trackers to each body part in SlimeVR yet, do that first (\"Assign trackers\" guide).",
@@ -272,6 +297,9 @@ const TEMAS = [
         "Same height in SlimeVR and VRChat.",
         "When you sit or lie down do a **Yaw Reset**.",
         "If legs cross: ankles on the side, thighs just above the knee, and check Manual Mounting.",
+        "If you float, sink or are badly positioned and you **don't use OVR Advanced Settings** or a similar system: **calibrate the floor in your headset** (on Quest: Boundary → floor level calibration) and calibrate again.",
+        "If your avatar looks **taller or shorter** than you: set **the same height in VRChat and SlimeVR** and recalibrate.",
+        "If the **reset triggers by itself** when you move: in SlimeVR → **Gesture control**, turn off the **Enable tap to…** options and use a **controller button** instead (\"Reset buttons\" guide).",
       ],
     },
     videos: [
@@ -401,7 +429,7 @@ const TEMAS = [
   },
   {
     id: "encendido",
-    claves: ["are on", "is on", "are they on", "is it on", "turned on", "know if the trackers", "know if my trackers", "know if they", "estan encendidos", "están encendidos", "esta encendido", "está encendido", "estan prendidos", "están prendidos", "esta prendido", "está prendido", "si prende", "blink red", "blinking red", "blinks red", "parpadea rojo", "parpadea en rojo", "parpadeando", "luz azul", "blue light", "blue and red", "azul y rojo", "how long should i let them charge", "how long to charge", "how long do they charge", "cuanto tiempo cargar", "cuánto tiempo cargar", "cuanto tarda en cargar", "cuánto tarda en cargar", "fully charged", "carga completa", "cargados", "charging", "cargando"],
+    claves: ["are on", "is on", "are they on", "is it on", "turned on", "know if the trackers", "know if my trackers", "know if they", "estan encendidos", "están encendidos", "esta encendido", "está encendido", "estan prendidos", "están prendidos", "esta prendido", "está prendido", "si prende", "blink red", "blinking red", "blinks red", "parpadea rojo", "parpadea en rojo", "parpadeando", "luz azul", "blue light", "blue and red", "azul y rojo", "how long should i let them charge", "how long to charge", "how long do they charge", "cuanto tiempo cargar", "cuánto tiempo cargar", "cuanto tarda en cargar", "cuánto tarda en cargar", "fully charged", "carga completa", "cargados", "charging", "cargando", "que significa la luz", "what does the light mean", "luces", "lights", "rojo rapido", "fast red", "azul rapido", "fast blue"],
     titulo: { es: "Luces: encendido y carga", en: "Lights: on and charging" },
     pasos: {
       es: [
@@ -410,6 +438,9 @@ const TEMAS = [
         "Para apagarlo: mantén pulsado el botón del frente hasta que el LED rojo se apague.",
         "Para saber si además **está conectado**: con la antena en el USB y **SlimeVR abierto**, el tracker encendido **aparece en SlimeVR**. Si aparece, todo está bien.",
         "Si está encendido pero no aparece en SlimeVR: revisa la antena y, si sigue sin salir, emparéjalo con el video. Si aun así no aparece, avísanos y te pasamos con el **servicio técnico**.",
+        "Qué significa cada luz: **rojo parpadeando lento** = encendido. **Rojo rápido** = sin emparejar o colgado (pulsa **una vez** el botón de atrás). **Azul en el cargador** = cargando. Si el **azul parpadea rápido**, avísanos y lo revisa un **técnico**.",
+        "Para apagarlo: mantén el botón **unos 3 segundos**.",
+        "No te fíes del **%** de la app mientras está enchufado: con el cargador puesto marca de más. La señal de carga completa es que **se apaga la luz azul**.",
       ],
       en: [
         "**If the LED is on or blinking, the tracker is on.** When it's off there's no light at all.",
@@ -417,6 +448,9 @@ const TEMAS = [
         "To turn it off: hold the front button until the red LED goes off.",
         "To know if it's also **connected**: with the antenna in USB and **SlimeVR open**, a tracker that's on **shows up in SlimeVR**. If it shows up, you're good.",
         "If it's on but doesn't show up in SlimeVR: check the antenna and, if it still doesn't appear, pair it using the video. If it still won't show up, tell us and we'll get our **tech team** on it.",
+        "What each light means: **slow blinking red** = on. **Fast red** = not paired or frozen (press the back button **once**). **Blue on the charger** = charging. If the **blue blinks fast**, tell us and a **technician** will check it.",
+        "To turn it off: hold the button **about 3 seconds**.",
+        "Don't trust the app's **%** while it's plugged in: it reads high while charging. It's fully charged when **the blue light turns off**.",
       ],
     },
     videos: [{ t: "How to sync new Smol trackers (Usagi VR)", u: yt("HaldUGryrf4") }],
@@ -433,6 +467,7 @@ const TEMAS = [
         "Antes de jugar: cárgalos, enciéndelos, déjalos **planos y quietos 1-2 min** → **Full Reset** → póntelos → **Automatic Mounting** → en VRChat calibra FBT de pie y quieto.",
         "Si usas **Virtual Desktop**: apaga **Emulate SteamVR Vive Trackers**, o te salen los trackers **duplicados**.",
         "Cuerpo girado → **Yaw Reset**; todo raro → **Full Reset**.",
+        "Se apaga manteniendo el botón **unos 3 segundos**.",
       ],
       en: [
         "**Turning a SMOL off**: hold the front button until the red LED goes off.",
@@ -440,6 +475,7 @@ const TEMAS = [
         "Before playing: charge, turn on, leave them **flat and still for 1-2 min** → **Full Reset** → put them on → **Automatic Mounting** → in VRChat calibrate FBT standing still.",
         "If you use **Virtual Desktop**: turn off **Emulate SteamVR Vive Trackers**, otherwise trackers show up **duplicated**.",
         "Body rotated → **Yaw Reset**; everything off → **Full Reset**.",
+        "It turns off by holding the button **about 3 seconds**.",
       ],
     },
     videos: [
@@ -462,6 +498,7 @@ const TEMAS = [
         "Mounting: si eres nuevo, el **manual** es el más seguro; elige la orientación de cada tracker.",
         "Proporciones y resets: sigue las pantallas de SlimeVR tal cual te las muestra.",
         "Si no salen en SteamVR: SteamVR → Startup/Shutdown → **Manage Add-ons** → activa SlimeVR.",
+        "Al jugar: abre **SteamVR primero**, espera unos segundos y luego **VRChat**.",
       ],
       en: [
         "Order (also after a format): first **SteamVR** (from Steam) and **open it once**; then install **SlimeVR**, so its plugins and driver get applied.",
@@ -470,6 +507,7 @@ const TEMAS = [
         "Mounting: if you're new, **manual** is the safest; pick each tracker's orientation.",
         "Proportions and resets: follow SlimeVR's screens as they show them.",
         "If they don't show in SteamVR: SteamVR → Startup/Shutdown → **Manage Add-ons** → turn SlimeVR on.",
+        "When playing: open **SteamVR first**, wait a few seconds, then **VRChat**.",
       ],
     },
     videos: [{ t: "SlimeVR docs: Quick Setup", u: "https://docs.slimevr.dev/quick-setup" }, { t: "Configuración de los trackers, español (USAGIVR Discord)", u: DC.configES }],
@@ -477,7 +515,7 @@ const TEMAS = [
   },
   {
     id: "asignar_trackers",
-    claves: ["asignar", "asigna", "asigno", "asignados", "assign", "assigned", "assign trackers", "asignar trackers", "parte del cuerpo", "body part", "unassigned", "sin asignar", "izquierda o derecha", "left or right", "pierna equivocada", "wrong leg", "lados invertidos", "piernas al reves", "legs swapped", "marco morado", "marco purpura", "cuantos trackers asigno", "numero de trackers", "tengo 11 trackers", "i assigned all the trackers"],
+    claves: ["asignar", "asigna", "asigno", "asignados", "assign", "assigned", "assign trackers", "asignar trackers", "parte del cuerpo", "body part", "unassigned", "sin asignar", "izquierda o derecha", "left or right", "pierna equivocada", "wrong leg", "lados invertidos", "piernas al reves", "legs swapped", "marco morado", "marco purpura", "cuantos trackers asigno", "numero de trackers", "tengo 11 trackers", "i assigned all the trackers", "codos sin", "elbows without", "pies como codos", "feet as elbows", "codos", "elbows", "de pie como codos"],
     fuertes: ["asignar trackers", "assign trackers", "sin asignar", "unassigned", "piernas al reves", "legs swapped"],
     titulo: { es: "Asignar cada tracker a su parte del cuerpo (va antes de todo)", en: "Assign each tracker to its body part (do this first)" },
     pasos: {
@@ -489,6 +527,7 @@ const TEMAS = [
         "A veces se asigna solo al agitarlo; si no, **haz clic en el que tiene el marco morado**. Si ninguno se marca al moverlo, revisa que el tracker esté encendido y conectado en SlimeVR.",
         "Repite con cada tracker y al final pícale a **I Assigned all the trackers**.",
         "**Ojo con las piernas**: el dibujo está **espejado** (como si te vieras de frente), así que fíjate en el **nombre** que dice SlimeVR: **Left** = izquierda, **Right** = derecha, de **tu** cuerpo.",
+        "¿Quieres **codos** y no tienes trackers extra? En **Tracker assignment** puedes usar los de **pie** como codos.",
       ],
       en: [
         "Do this **before anything else**: before calibrating, Stay Aligned or configuring VRChat. If they're all assigned already, skip this guide.",
@@ -498,6 +537,7 @@ const TEMAS = [
         "Sometimes it assigns itself when shaken; if not, **click the one with the purple frame**. If none lights up when you move it, check the tracker is on and connected in SlimeVR.",
         "Repeat for each tracker and finish with **I Assigned all the trackers**.",
         "**Watch the legs**: the figure is **mirrored** (as if facing you), so check the **name** SlimeVR shows: **Left** / **Right** refer to **your** body.",
+        "Want **elbows** without extra trackers? In **Tracker assignment** you can use the **foot** trackers as elbows.",
       ],
     },
     videos: [],
@@ -577,6 +617,10 @@ const TEMAS = [
         "Ya con todo listo, en VR te sale **Calibrar**: mantén **Y** (reset completo) y ponte en **pose T** (guía «Calibración»).",
         "En el Quest también se puede, pero **no se recomienda** (es inestable); mejor celular o PC.",
         "iPhone/iOS: está en beta; las instrucciones están en el foro «iOS Beta Server» del Discord de SlimeVR.",
+        "En SlimeVR, pestaña **VRChat OSC Trackers**: **activa los trackers que tienes**, según **cuántos** son y **dónde** los pusiste (por ejemplo cadera, pecho, muslos y tobillos).",
+        "Si en SlimeVR **no aparecen las gafas ni los controles**: **reinicia OSC** desde el menú redondo de VRChat (o reinicia el visor) y activa el permiso para **compartir los datos de cabeza y muñecas**.",
+        "El visor puede ir por **5 GHz** siempre que sea **el mismo router** donde están los trackers en 2.4 GHz.",
+        "Si conectas la antena al **celular**: usa un **adaptador USB** y pon el USB del celular en **modo datos** (no solo carga).",
       ],
       en: [
         "Useful if you can't run SlimeVR on your PC or your wifi has restrictions: the SlimeVR server runs on your **phone**.",
@@ -587,6 +631,10 @@ const TEMAS = [
         "Once everything is ready, in VR you'll get **Calibrate**: hold **Y** (full reset) and stand in a **T-pose** (\"Calibration\" guide).",
         "It also works on Quest, but it's **not recommended** (buggy); a phone or PC is much better.",
         "iPhone/iOS: in beta; instructions are in the \"iOS Beta Server\" forum post on the SlimeVR Discord.",
+        "In SlimeVR, **VRChat OSC Trackers** tab: **turn on the trackers you have**, based on **how many** and **where** you placed them (for example hip, chest, thighs and ankles).",
+        "If the **headset and controllers don't show up** in SlimeVR: **restart OSC** from VRChat's radial menu (or restart the headset) and allow **sharing head and wrist data**.",
+        "The headset can be on **5 GHz** as long as it's **the same router** the trackers use on 2.4 GHz.",
+        "If you plug the antenna into a **phone**: use a **USB adapter** and set the phone's USB to **data mode** (not charge only).",
       ],
     },
     videos: [{ t: "SlimeVR docs: mobile setup", u: "https://docs.slimevr.dev/tools/mobile-installation.html" }],
@@ -619,6 +667,23 @@ const TEMAS = [
     videos: [{ t: "SlimeVR docs: putting on trackers", u: "https://docs.slimevr.dev/server/putting-on-trackers.html" }],
     // 7, 9 y 11: los dibujos del manual con el tracker de cintura agregado (herramientas/diagramas-cintura.py).
     imagenes: ["colocacion-5.png", "colocacion-5mas1.png", "colocacion-7.png", "colocacion-5mas3.png", "colocacion-9.png", "colocacion-7mas3.png", "colocacion-11.png"],
+  },
+  {
+    id: "magnetometro",
+    claves: ["magnetometro", "magnetómetro", "magnetometer", "mag", "qmc6309", "brujula", "compass"],
+    titulo: { es: "Magnetómetro en los Smol", en: "Magnetometer on Smol trackers" },
+    pasos: {
+      es: [
+        "Los Smol traen el **magnetómetro integrado**.",
+        "SlimeVR **todavía no lo muestra** con este firmware: es normal, **no es una falla**.",
+      ],
+      en: [
+        "Smol trackers have a **built-in magnetometer**.",
+        "SlimeVR **doesn't show it yet** with this firmware: that's normal, **it's not a fault**.",
+      ],
+    },
+    videos: [],
+    imagenes: [],
   },
   {
     id: "dispositivos",
@@ -654,7 +719,7 @@ const TEMAS = [
   },
   {
     id: "quest",
-    claves: ["quest", "standalone", "sin pc", "without pc", "osc", "android", "movil", "celular", "phone"],
+    claves: ["quest", "standalone", "sin pc", "without pc", "osc", "android", "movil", "celular", "phone", "osc trackers", "vrchat osc", "no aparecen las gafas", "headset doesn't show", "modo datos", "data mode", "otg"],
     titulo: { es: "Quest standalone (sin PC)", en: "Quest standalone (no PC)" },
     pasos: {
       es: [
@@ -664,6 +729,10 @@ const TEMAS = [
         "En SlimeVR pon la **IP del Quest** en los ajustes de VRChat OSC Trackers.",
         "En la app deberías ver las **gafas y los controles**; si no, reinicia, y si sigue igual usa el **hotspot / punto de acceso** del celular.",
         "Calibra en VR: **Calibrar** → mantén **Y** (reset completo) en **pose T**.",
+        "En SlimeVR, pestaña **VRChat OSC Trackers**: **activa los trackers que tienes**, según **cuántos** son y **dónde** los pusiste (por ejemplo cadera, pecho, muslos y tobillos).",
+        "Si en SlimeVR **no aparecen las gafas ni los controles**: **reinicia OSC** desde el menú redondo de VRChat (o reinicia el visor) y activa el permiso para **compartir los datos de cabeza y muñecas**.",
+        "El visor puede ir por **5 GHz** siempre que sea **el mismo router** donde están los trackers en 2.4 GHz.",
+        "Si conectas la antena al **celular**: usa un **adaptador USB** y pon el USB del celular en **modo datos** (no solo carga).",
       ],
       en: [
         "Run SlimeVR on an **Android phone** (official app on Google Play or the APK from SlimeVR's GitHub) with the receiver plugged in via **OTG**, or on any PC, even a basic one. Running it inside the Quest itself isn't recommended: SlimeVR says it's buggy there, last resort only.",
@@ -672,6 +741,10 @@ const TEMAS = [
         "In SlimeVR enter the **Quest's IP address** in the VRChat OSC Trackers settings.",
         "In the app you should see the **headset and controllers**; if not, restart, and if it persists use the phone's **hotspot**.",
         "Calibrate in VR: **Calibrate** → hold **Y** (full reset) in a **T-pose**.",
+        "In SlimeVR, **VRChat OSC Trackers** tab: **turn on the trackers you have**, based on **how many** and **where** you placed them (for example hip, chest, thighs and ankles).",
+        "If the **headset and controllers don't show up** in SlimeVR: **restart OSC** from VRChat's radial menu (or restart the headset) and allow **sharing head and wrist data**.",
+        "The headset can be on **5 GHz** as long as it's **the same router** the trackers use on 2.4 GHz.",
+        "If you plug the antenna into a **phone**: use a **USB adapter** and set the phone's USB to **data mode** (not charge only).",
       ],
     },
     videos: [
@@ -711,12 +784,14 @@ const TEMAS = [
         "Si enciende y sale en SlimeVR solo con el cable conectado, es la batería.",
         "Si se descarga rápido o dura poco, es difícil saberlo solo con la descripción: necesitamos ver qué tan rápido. Mándanos un **video o prueba** (por ejemplo, el % de batería en SlimeVR al empezar y después de un rato).",
         "Con eso el equipo lo revisa; casi siempre es algo que se arregla sin mayor drama.",
+        "No te fíes del **%** mientras está enchufado: con el cargador puesto marca de más. Cárgalo hasta que **se apague la luz azul**.",
       ],
       en: [
         "\"It says it's charging but it isn't\": this is normal right after unplugging, it fixes itself in about 10 minutes.",
         "If it only turns on and shows in SlimeVR while plugged in, it's the battery.",
         "If it drains fast or doesn't last long, it's hard to tell from a description alone: we need to see how fast. Send us a **video or proof** (e.g. the battery % in SlimeVR when you start and after a while).",
         "With that the team can check it; it's almost always fixable without a big hassle.",
+        "Don't trust the **%** while it's plugged in: it reads high on the charger. Charge it until **the blue light turns off**.",
       ],
     },
     videos: [],
