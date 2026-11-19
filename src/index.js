@@ -114,6 +114,11 @@ const temaCanal = (d) => {
   while (p && base.length + 10 + encodeURIComponent(p).length > 1024) p = p.slice(0, -20);
   return p ? `${base} problema=${encodeURIComponent(p)}` : base;
 };
+// El idioma vive en el tema del canal: si solo estuviera en memoria, un reinicio (cada deploy) lo devolveria al inicial.
+async function fijarIdiomaTema(canal, lang) {
+  const t = leerTicket(canal);
+  if (t && t.lang !== lang) await guardarTicket(canal, { ...t, lang });
+}
 async function guardarTicket(canal, d) {
   await canal.setTopic(temaCanal(d)).catch((e) => console.warn("topic:", e.message));
 }
@@ -392,12 +397,12 @@ function promptSistema(lang) {
   const idioma = lang === "es" ? "Spanish" : "English";
   return [
     `You are the support assistant of ${CFG.nombreTienda}, a shop that sells SlimeVR-compatible full-body trackers (IceCube, LSM6DSV/LSM6DSR and ICM-45686 models).`,
-    "Product facts: kits have 5 to 11 trackers. Receiver kits include a receiver antenna/dongle (a small one or a bigger pentagon-shaped one) that plugs into a USB port on the PC; WiFi kits have no antenna. Trackers normally come already paired to their antenna; if one isn't, give the Smol pairing guide (no_conecta); for WiFi trackers give the WiFi setup steps even though SlimeVR also guides it. If they use the antenna, remind them it must be uncovered and facing the area where they play. " +
+    "Product facts: kits have 5 to 11 trackers. Receiver kits include a receiver antenna/dongle (a small one or a bigger pentagon-shaped one) that plugs into a USB port on the PC; WiFi kits have no antenna. Trackers normally come already paired to their antenna and show up by themselves. Pairing steps (SmolSlimeConfigurator, Pairing Mode, the pairing video, Clear Data) are ONLY for when the customer says a tracker doesn't connect or doesn't show up: then give the Smol pairing guide (no_conecta). Never put them in general setup or 'I got my trackers, what do I do' answers; for WiFi trackers give the WiFi setup steps even though SlimeVR also guides it. If they use the antenna, remind them it must be uncovered and facing the area where they play. " +
     "Kit contents: instruction manual, a bundle of USB to USB-C cables, and straps: 2 thick anti-slip straps for the thighs, 2 or 3 long straps (depending on the kit) for waist, chest and hip, and regular straps for the rest. " +
     "Every tracker has our character's face printed on it: that face must always face forward. For calibration, always tell them to follow the calibration guides SlimeVR shows inside the program. " +
     "Devices: not available for iPhone or Mac yet; we recommend an Android phone with the SlimeVR app from the official website; on PC, SlimeVR is downloaded from Steam. Install order (also after formatting the PC): SteamVR first and open it once, then SlimeVR so its plugins/driver apply. " +
     "If the little button came off: usually not needed, don't worry, only matters if it causes problems. If WiFi trackers still won't connect after every step: internet providers often block some connections on their routers, which affects WiFi trackers only; a cheap extra router just for the trackers fixes it. " +
-    "Ice Cube and BMI160 trackers (WiFi ones too) can NOT have their firmware updated: if asked, just say it can't be done (no versions, no steps). Clear Data in the configurator is allowed, but it erases the pairing and they have to pair again.",
+    "Ice Cube and BMI160 trackers (WiFi ones too) can NOT have their firmware updated: if asked, just say it can't be done (no versions, no steps). Only if they ask about Clear Data: it's allowed, but it erases the pairing and they have to pair again (don't mention Clear Data otherwise).",
     "Less is more: answer exactly what the customer asked, nothing extra. Don't add side notes, other products or details they didn't ask about; extra info confuses them.",
     `Always answer in ${idioma}. Talk like a chill, friendly person from the team, not a robot: relaxed and warm, tuteo, short messages, no headings, no corporate phrases.`,
     lang === "es" && "Spanish variant: neutral Latin American leaning Mexican, NEVER Spain Spanish. Use \"¿ya intentaste…?\" (not \"¿has probado a…?\"), \"dale clic / presiona\" (not \"pulsa/pincha\"), \"llenar\" (not \"rellenar\"), \"computadora o PC\" (not \"ordenador\"), \"celular\" (not \"móvil\"), \"ustedes\" (never \"vosotros\", \"os\", \"vale\", \"coger\"), \"mantenlo\" without accent. Prefer simple past (\"ya lo cargaste\") over \"has cargado\". No modern internet slang or anglicisms (\"random\", \"literal\", \"crack\", \"bro\").",
@@ -428,7 +433,7 @@ function saberAuditor(charla, borrador, lang) {
   const ids = new Set([...borrador.matchAll(/\[GUIA:\s*([a-z_]+)\]/gi)].map((m) => m[1].toLowerCase()));
   const temas = [...(ult ? buscarTemas(ult.content, 3) : []), ...TEMAS.filter((t) => ids.has(t.id))];
   const unicos = [...new Map(temas.map((t) => [t.id, t])).values()];
-  const fijo = "Fixed facts: Ice Cube and BMI160 trackers (WiFi ones too) can never have their firmware updated; the reply must just say it can't be done. Clear Data in the configurator is allowed but erases the pairing, so they must pair again. The bot never talks about refunds, replacements, warranty or prices.";
+  const fijo = "Fixed facts: Ice Cube and BMI160 trackers (WiFi ones too) can never have their firmware updated; the reply must just say it can't be done. Only if the customer asks about Clear Data: it's allowed but erases the pairing, so they must pair again (never add it otherwise). Pairing steps only go in replies when the customer says a tracker doesn't connect or show up; don't add them to general setup answers. The bot never talks about refunds, replacements, warranty or prices.";
   return [fijo, ...unicos.map((t) => `## ${t.titulo[lang]}\n- ${t.pasos[lang].join("\n- ")}`)].join("\n\n");
 }
 
@@ -801,6 +806,7 @@ client.on("interactionCreate", async (inter) => {
       idiomaTicket.set(inter.channel.id, lang);
       const ei = estadoIdioma.get(inter.channel.id) || {};
       estadoIdioma.set(inter.channel.id, { ...FIJO, pendiente: null }); // lo eligio el cliente: queda fijo
+      fijarIdiomaTema(inter.channel, lang).catch(() => {});
       await inter.update({ content: lang === "es" ? "Va, seguimos en español." : "Got it, we'll continue in English.", components: [] });
       // Contesta el mensaje que dejo pendiente, ya en el idioma elegido.
       if (ei.pendiente && d.estado !== "cerrado") {
@@ -867,6 +873,8 @@ async function atender(canal, d, member, texto, fotos = [], idiomaElegido = fals
   const dec = idiomaElegido || (fotos.length && !texto.trim()) ? { accion: "seguir", lang: actual, vistos: ei.vistos } : decidirIdioma(texto, { lang: actual, ...ei });
   const lang = dec.lang;
   idiomaTicket.set(canal.id, lang);
+  d.lang = lang;
+  fijarIdiomaTema(canal, lang).catch(() => {}); // sin await: si Discord limita el tema, no frena la respuesta
   estadoIdioma.set(canal.id, { ...ei, vistos: dec.vistos, pendiente: null });
   if (dec.accion === "cambiar") console.log(`idioma de ${canal.name}: ${actual} -> ${lang}`);
   if (dec.accion === "preguntar") {

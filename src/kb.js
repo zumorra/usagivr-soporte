@@ -113,7 +113,7 @@ const TEMAS = [
   },
   {
     id: "no_conecta",
-    claves: ["no conecta", "no se conecta", "no conectan", "no se conectan", "nuevo", "nuevos", "new tracker", "new trackers", "won't connect", "wont connect", "doesn't connect", "doesnt connect", "not connecting", "cant connect", "can't connect", "no aparece", "no aparecen", "not showing", "don't show", "dont show", "not detected", "no detecta", "no los detecta", "slimevr no", "pairing", "emparejar", "emparentar", "vincular", "sync", "first time", "primera vez"],
+    claves: ["no conecta", "no se conecta", "no conectan", "no se conectan", "won't connect", "wont connect", "doesn't connect", "doesnt connect", "not connecting", "cant connect", "can't connect", "no aparece", "no aparecen", "not showing", "don't show", "dont show", "not detected", "no detecta", "no los detecta", "slimevr no", "pairing", "emparejar", "emparentar", "vincular", "sync"],
     titulo: { es: "Trackers que no conectan / emparejar", en: "Trackers won't connect / pairing" },
     pasos: {
       es: [
@@ -488,7 +488,7 @@ const TEMAS = [
   },
   {
     id: "configurar_slimevr",
-    claves: ["instalar slimevr", "instalo slimevr", "instale slimevr", "install slimevr", "installing slimevr", "configurar slimevr", "setup slimevr", "set up slimevr", "slimevr server", "formatee", "formateado", "formatear", "reinstalar", "reinstall", "orden", "empezar", "primera vez", "first time", "getting started", "asistente", "wizard", "steamvr addon", "add-on", "addon", "no sale en steamvr", "not in steamvr"],
+    claves: ["instalar slimevr", "instalo slimevr", "instale slimevr", "install slimevr", "installing slimevr", "configurar slimevr", "setup slimevr", "set up slimevr", "slimevr server", "formatee", "formateado", "formatear", "reinstalar", "reinstall", "orden", "empezar", "primera vez", "first time", "me llegaron", "me llego", "llegaron mis", "trackers nuevos", "just got", "no se que hacer", "what do i do", "getting started", "asistente", "wizard", "steamvr addon", "add-on", "addon", "no sale en steamvr", "not in steamvr"],
     titulo: { es: "Configurar SlimeVR desde cero", en: "Setting up SlimeVR from scratch" },
     pasos: {
       es: [

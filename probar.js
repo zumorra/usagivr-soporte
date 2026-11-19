@@ -8,7 +8,7 @@ const casos = [
   ["el smol no muestra el magnetometro", "magnetometro"], ["my smol magnetometer doesn't show", "magnetometro"],
   ["estoy en la red de la escuela y no conectan", "wifi"], ["tengo mal ping y cortes en el wifi", "wifi"],
   ["que significa la luz roja rapido", "encendido"], ["the blue light blinks fast", "encendido"],
-  ["para que es la correa grande", "correas"], ["puedo usar los de pie como codos", "asignar_trackers"],
+  ["para que es la correa grande", "correas"], ["puedo usar los de pie como codos", "asignar_trackers"], ["recibí mis trackers y no sé qué hacer", "configurar_slimevr"], ["just got my trackers what do I do", "configurar_slimevr"], ["my new trackers wont connect", "no_conecta"],
   ["estoy flotando en vrchat", "calibracion"], ["mi avatar se ve mas alto", "calibracion"],
   ["no aparecen las gafas en slimevr quest", "quest"], ["la antena esta floja", "antena"],
   ["mi tracker no enciende", "no_enciende"],
@@ -171,3 +171,17 @@ for (const l of ["es", "en"]) { const v = variantes(l); assert.ok(new Set(v).siz
 const { saberAuditor } = require("./src/index");
 assert.ok(/Ice Cube/.test(saberAuditor([{ role: "user", content: "puedo actualizar mis ice cube" }], "No se puede [GUIA:sin_firmware]", "es")));
 console.log(`OK: ${ok} temas + 39 idiomas + ${humano.length} pedir-humano + ${dev.length} devolucion + ${compra.length} compra + frases(40 precio)/cancelar/seguimiento/fotos/enojo/horario/panel/ya-quedo`);
+
+// El idioma se guarda en el tema del canal (sobrevive al reinicio) y el emparejamiento solo va si no conectan.
+{
+  const assert = require("assert");
+  const src = require("fs").readFileSync(__dirname + "/src/index.js", "utf8");
+  assert(/fijarIdiomaTema\(canal, lang\)/.test(src), "atender guarda el idioma en el tema");
+  assert(/fijarIdiomaTema\(inter\.channel, lang\)/.test(src), "el boton guarda el idioma en el tema");
+  const { promptSistema, temaCanal, leerTicket } = require("./src/index.js");
+  const p0 = promptSistema("es"); const p = Array.isArray(p0) ? p0.join("\n") : String(p0);
+  assert(/ONLY for when the customer says a tracker doesn't connect/.test(p) && /Only if they ask about Clear Data/.test(p), "emparejamiento/Clear Data condicionados");
+  const t = leerTicket({ topic: temaCanal({ uid: "1", lang: "es", estado: "abierto", problema: "hola" }) });
+  assert.strictEqual(t.lang, "es");
+  console.log("OK: idioma en tema + emparejamiento solo si no conectan");
+}
