@@ -84,6 +84,12 @@ assert.strictEqual(idiomaDe(m("English"), "en español porfa"), "es");
   const { decidirIdioma: dI, analizarIdioma: aI } = require("./src/idioma");
   const ac = (t, e) => dI(t, e).accion;
   assert.strictEqual(ac("el tracker no prende", { lang: "en" }), "cambiar");
+  // Ticket con formulario sin idioma ("weww"): quedo en ingles por suposicion; "como estas" lo pasa a español.
+  assert.strictEqual(dI("como estas", { lang: "en", dudas: 1, adivinado: true }).lang, "es");
+  assert.strictEqual(dI("como estas", { lang: "en", dudas: 0 }).lang, "es");          // ya es pista segura
+  assert.strictEqual(dI("tracker", { lang: "en", adivinado: true }).adivinado, undefined); // sin pista: sigue la suposicion
+  assert.strictEqual(dI("how are you", { lang: "es", adivinado: true }).lang, "en");
+  assert.strictEqual(dI("si", { lang: "en", adivinado: true }).lang, "en");             // neutro no decide
   assert.strictEqual(ac("the tracker doesnt turn on", { lang: "es" }), "cambiar");
   assert.strictEqual(ac("no funciona", { lang: "es" }), "seguir");
   assert.strictEqual(ac("drift", { lang: "en", dudas: 0 }), "seguir");    // 1a vez sin idioma: sigue

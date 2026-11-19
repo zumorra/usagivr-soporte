@@ -3,8 +3,8 @@
 // analizarIdioma(texto) mira solo el texto; decidirIdioma(...) decide en cada mensaje
 // si se sigue igual, si se cambia o si hay que preguntarle al cliente.
 
-const PISTAS_ES = [" el ", " la ", " no ", " mi ", " mis ", " los ", " las ", " que ", " qué ", " se ", " me ", " y ", " de ", " del ", " como ", " cómo ", " cuanto ", " cuánto ", " por ", " para ", " con ", " es ", " una ", " un ", " tengo ", " quiero ", " pero ", " ya ", " esta ", " está ", " sale ", " deberia", " debería", " gustaria", " gustaría", " correa", " funciona", " conecta", " enciende", " prende", " puedo ", " hago ", " tambien", " también", " ahora ", " cuando ", " donde ", " dónde ", " desconect", " actualiz", " solo ", " sigue ", " hice ", " sirve"];
-const PISTAS_EN = [" the ", " my ", " is ", " it ", " i ", " i'm ", " im ", " how ", " what ", " not ", " don't ", " dont ", " doesn't ", " doesnt ", " won't ", " can't ", " cant ", " can ", " please ", " with ", " and ", " to ", " on ", " of ", " help ", " why ", " does ", " should ", " when ", " where ", " have ", " has ", " this ", " that ", " work", " connect", " turn ", " still ", " disconnect", " update", " keeps ", " did ", " doesnt ", " wont "];
+const PISTAS_ES = [" el ", " la ", " no ", " mi ", " mis ", " los ", " las ", " que ", " qué ", " se ", " me ", " y ", " de ", " del ", " como ", " cómo ", " cuanto ", " cuánto ", " por ", " para ", " con ", " es ", " una ", " un ", " tengo ", " quiero ", " pero ", " ya ", " esta ", " está ", " sale ", " deberia", " debería", " gustaria", " gustaría", " correa", " funciona", " conecta", " enciende", " prende", " puedo ", " hago ", " tambien", " también", " ahora ", " cuando ", " donde ", " dónde ", " desconect", " actualiz", " solo ", " sigue ", " hice ", " sirve", " estas ", " estás ", " bien ", " hay ", " nada ", " algo ", " muy ", " ayudar", " oigan ", " todo "];
+const PISTAS_EN = [" the ", " my ", " is ", " it ", " i ", " i'm ", " im ", " how ", " what ", " not ", " don't ", " dont ", " doesn't ", " doesnt ", " won't ", " can't ", " cant ", " can ", " please ", " with ", " and ", " to ", " on ", " of ", " help ", " why ", " does ", " should ", " when ", " where ", " have ", " has ", " this ", " that ", " work", " connect", " turn ", " still ", " disconnect", " update", " keeps ", " did ", " doesnt ", " wont ", " you ", " are ", " fine ", " there ", " anything "];
 const FUERTES_ES = [" hola ", "gracias", "ñ", "¿", "¡", " ayuda", " oye ", " porfa", " buenas ", " buenos dias", " buenos días", " ahorita", " tampoco "];
 const FUERTES_EN = [" hello ", " thanks", " thank you", " please", " hey ", " doesn't ", " won't ", " can't ", " i'm ", " i have ", " it's "];
 // Otros idiomas que el bot no atiende: portugues, frances, aleman, italiano y alfabetos no latinos.
@@ -60,7 +60,7 @@ function idiomaInicial(texto, rol) {
 }
 
 // Cada mensaje del cliente en su ticket.
-// estado = { lang, dudas, preguntado, inclina } -> { accion: "seguir"|"cambiar"|"preguntar", lang, dudas, inclina }
+// estado = { lang, dudas, preguntado, inclina, adivinado } -> { accion: "seguir"|"cambiar"|"preguntar", lang, dudas, inclina }
 // Se detecta solo, sin preguntar:
 // - Lo pide o escribe claro en el otro idioma: se cambia.
 // - No se sabe: se sigue en el idioma actual y cuenta como duda; se guarda hacia donde apunta.
@@ -68,11 +68,13 @@ function idiomaInicial(texto, rol) {
 //   texto sin idioma) se le pregunta. Una sola vez por ticket.
 const DUDAS_PARA_PREGUNTAR = 3;
 function decidirIdioma(texto, estado) {
-  const { lang, dudas = 0, preguntado = false, inclina = null } = estado;
+  const { lang, dudas = 0, preguntado = false, inclina = null, adivinado = false } = estado;
   const a = analizarIdioma(texto);
-  if (a.pedido) return { accion: a.pedido === lang ? "seguir" : "cambiar", lang: a.pedido, dudas: 0, inclina: null };
+  if (a.pedido) return { accion: a.pedido === lang ? "seguir" : "cambiar", lang: a.pedido, dudas: 0, inclina: null, adivinado: false };
   if (a.neutro) return { accion: "seguir", lang, dudas, inclina };
-  if (a.lang === lang) return { accion: "seguir", lang, dudas: 0, inclina: null };
+  // El idioma del ticket fue una suposicion (formulario sin idioma claro y sin rol): la primera pista lo fija.
+  if (adivinado && a.lang) return { accion: a.lang === lang ? "seguir" : "cambiar", lang: a.lang, dudas: 0, inclina: null, adivinado: false };
+  if (a.lang === lang) return { accion: "seguir", lang, dudas: 0, inclina: null, adivinado: false };
   if (a.lang && a.seguro) return { accion: "cambiar", lang: a.lang, dudas: 0, inclina: null };
   const n = dudas + 1;
   const hacia = a.otro ? null : a.lang || inclina; // si escribe en otro idioma, las pistas viejas no valen

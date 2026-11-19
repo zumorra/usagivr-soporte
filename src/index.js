@@ -706,7 +706,9 @@ async function abrirTicket(inter) {
   { // Si el problema del formulario no deja claro el idioma, ya cuenta como la primera duda.
     const a = analizarIdioma(problema);
     const duda = !a.neutro && !a.pedido && a.lang !== lang && !(a.lang && a.seguro);
-    estadoIdioma.set(canal.id, { dudas: duda ? 1 : 0, inclina: duda ? a.lang : null, preguntado: false, pendiente: null });
+    // Sin pista segura en el formulario ni rol de idioma: el idioma es una suposicion y el primer mensaje lo corrige.
+    const adivinado = !a.pedido && !(a.lang && a.seguro) && !rolIdioma(inter.member);
+    estadoIdioma.set(canal.id, { dudas: duda ? 1 : 0, inclina: duda ? a.lang : null, preguntado: false, pendiente: null, adivinado });
   }
 
   const ficha = new EmbedBuilder()
@@ -863,7 +865,7 @@ async function atender(canal, d, member, texto, fotos = [], idiomaElegido = fals
   const dec = idiomaElegido || (fotos.length && !texto.trim()) ? { accion: "seguir", lang: actual, dudas: ei.dudas, inclina: ei.inclina } : decidirIdioma(texto, { lang: actual, ...ei });
   const lang = dec.lang;
   idiomaTicket.set(canal.id, lang);
-  estadoIdioma.set(canal.id, { ...ei, dudas: dec.dudas, inclina: dec.inclina, pendiente: null });
+  estadoIdioma.set(canal.id, { ...ei, dudas: dec.dudas, inclina: dec.inclina, pendiente: null, adivinado: dec.adivinado ?? ei.adivinado });
   if (dec.accion === "cambiar") console.log(`idioma de ${canal.name}: ${actual} -> ${lang}`);
   if (dec.accion === "preguntar") {
     estadoIdioma.set(canal.id, { dudas: 0, preguntado: true, pendiente: { texto, member, fotos } });
