@@ -61,7 +61,7 @@ const TEMAS = [
       { t: "Rock solid chest & hip mounting", u: yt("AHj_B-HoWmU") },
       { t: "Chest harness + hip (ZRock35)", u: yt("qTvXIpdCwS8") },
     ],
-    imagenes: ["colocacion-5.png"],
+    imagenes: ["wikihow-correas.png", "colocacion-5.png"],
   },
   {
     id: "colocacion",
@@ -140,7 +140,7 @@ const TEMAS = [
       { t: "SlimeVR setup guide (official)", u: yt("SkfdraicN5s") },
       { t: "Configurar trackers SlimeVR (VRMods, español)", u: yt("GjvZ-U0kcME") },
     ],
-    imagenes: [],
+    imagenes: ["wikihow-no_conecta.png"],
   },
   {
     id: "antena",
@@ -169,7 +169,7 @@ const TEMAS = [
       ],
     },
     videos: [{ t: "How to sync new Smol trackers (Usagi VR)", u: yt("HaldUGryrf4") }],
-    imagenes: [],
+    imagenes: ["wikihow-antena.png"],
   },
   {
     id: "wifi",
@@ -420,7 +420,7 @@ const TEMAS = [
       ],
     },
     videos: [{ t: "How to sync new Smol trackers (Usagi VR)", u: yt("HaldUGryrf4") }],
-    imagenes: [],
+    imagenes: ["wikihow-encendido.png"],
   },
   {
     id: "smol_rojo",
@@ -448,7 +448,7 @@ const TEMAS = [
       { t: "Guía rápida SmolSlime Ice Cubes (USAGIVR Discord)", u: DC.smolGuia },
       { t: "Apagar un Smol (short)", u: yt("RR7D159j7zQ") },
     ],
-    imagenes: [],
+    imagenes: ["wikihow-smol_rojo.png"],
   },
   {
     id: "configurar_slimevr",
