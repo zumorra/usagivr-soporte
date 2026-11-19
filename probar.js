@@ -44,6 +44,7 @@ const casos = [
   ["un tracker se mueve raro despues de calibrar", "calibracion"],
   ["cambie de lugar un tracker, tengo que hacer la montura otra vez?", "calibracion"],
   ["no veo las gafas en el celular con osc", "android"],
+  ["no veo los controles en el celular con osc", "android"],
   ["como actualizo el firmware de mis bmi160", "sin_firmware"],
   ["puedo actualizar mis ice cube?", "sin_firmware"],
   ["how do I update the firmware on my icecubes", "sin_firmware"],
