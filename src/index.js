@@ -435,7 +435,8 @@ function saberAuditor(charla, borrador, lang) {
 const ocupados = new Set();
 const pendientes = new Map(); // mensajes que llegaron mientras la IA contestaba otro: se contestan al terminar
 async function respuestaIA(canal, d, extraUsuario) {
-  if (ocupados.has(canal.id)) return;
+  // Ya esta contestando en este canal: se anota y, al terminar, se contesta todo junto (no se pierde el mensaje).
+  if (ocupados.has(canal.id)) return void pendientes.set(canal.id, { d, extraUsuario });
   ocupados.add(canal.id);
   let limpiar = () => {};
   try {
@@ -510,6 +511,7 @@ async function respuestaIA(canal, d, extraUsuario) {
         if (r.veredicto === "aclarar" && yaPedido) break;
         if (r.veredicto === "aclarar") {
           limpiar();
+          if (pendientes.has(canal.id)) return; // escribio algo mas: se rehace con todo
           await canal.send({ content: pedirRepetir(d.lang), components: d.soloConsejos ? [] : [botonesTicket(d.lang)] });
           return;
         }
@@ -520,6 +522,8 @@ async function respuestaIA(canal, d, extraUsuario) {
       }
     }
     limpiar();
+    // El cliente escribio mientras se preparaba esta respuesta: se tira el borrador y se contesta todo junto.
+    if (pendientes.has(canal.id)) return void console.log(`nuevo mensaje en ${canal.name} mientras pensaba: rehago con todo`);
     console.log(`IA (${backend}) en ${canal.name}`);
     // La IA a veces pone [HUMANO] sin que nadie lo pida: solo vale si el cliente insinuo persona/equipo/devolucion.
     const ultimos = mensajes.filter((x) => x.role === "user").slice(-1).map((x) => x.content).join(" ");
@@ -544,7 +548,8 @@ async function respuestaIA(canal, d, extraUsuario) {
     const otra = pendientes.get(canal.id);
     if (otra) {
       pendientes.delete(canal.id);
-      respuestaIA(canal, otra); // el historial ya trae los mensajes nuevos
+      const d2 = leerTicket(canal) || otra.d;
+      if (d2.estado !== "cerrado") respuestaIA(canal, { ...otra.d, estado: d2.estado }, otra.extraUsuario).catch((e) => console.warn("IA pendiente:", e.message)); // el historial ya trae los mensajes nuevos
     }
   }
 }
@@ -1274,4 +1279,4 @@ if (require.main === module) {
   client.login(token);
 }
 
-module.exports = { client, revisarTicket, silencioPorHelper, idiomaReciente, revisarVoz, terminarVoz, canalVoz, botonListo, PREGUNTA_IDIOMA, saberAuditor, pideDevolucion, pideCompra, promptSistema, pideHumano, idiomaDe, leerTicket, temaCanal, esImagen, estaEnojado, mensajePanel, yaQuedo };
+module.exports = { client, respuestaIA, revisarTicket, silencioPorHelper, idiomaReciente, revisarVoz, terminarVoz, canalVoz, botonListo, PREGUNTA_IDIOMA, saberAuditor, pideDevolucion, pideCompra, promptSistema, pideHumano, idiomaDe, leerTicket, temaCanal, esImagen, estaEnojado, mensajePanel, yaQuedo };
