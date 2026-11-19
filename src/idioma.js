@@ -60,29 +60,22 @@ function idiomaInicial(texto, rol) {
 }
 
 // Cada mensaje del cliente en su ticket.
-// estado = { lang, dudas, preguntado, inclina, adivinado } -> { accion: "seguir"|"cambiar"|"preguntar", lang, dudas, inclina }
-// Se detecta solo, sin preguntar:
-// - Lo pide o escribe claro en el otro idioma: se cambia.
-// - No se sabe: se sigue en el idioma actual y cuenta como duda; se guarda hacia donde apunta.
-// - A la 3a duda seguida: si alguna apuntaba a es/en se cambia a ese; si no hay pista (otro idioma,
-//   texto sin idioma) se le pregunta. Una sola vez por ticket.
-const DUDAS_PARA_PREGUNTAR = 3;
+// estado = { lang, vistos, preguntado } -> { accion: "seguir"|"cambiar"|"preguntar", lang, vistos }
+// El idioma solo se corrige al principio (regla de Yuki): el formulario y los MARGEN primeros mensajes.
+// - Dentro del margen: si el mensaje apunta al otro idioma (aunque sea con una sola pista), se cambia.
+//   Si en el ultimo mensaje del margen escribe en un idioma que no atendemos, se le pregunta (una vez).
+// - Pasado el margen el idioma queda fijo; solo cambia si el cliente lo pide ("en español porfa").
+// - "ok", "si", emojis: no dicen nada y no gastan margen.
+const MARGEN = 2;
 function decidirIdioma(texto, estado) {
-  const { lang, dudas = 0, preguntado = false, inclina = null, adivinado = false } = estado;
+  const { lang, vistos = 0, preguntado = false } = estado;
   const a = analizarIdioma(texto);
-  if (a.pedido) return { accion: a.pedido === lang ? "seguir" : "cambiar", lang: a.pedido, dudas: 0, inclina: null, adivinado: false };
-  if (a.neutro) return { accion: "seguir", lang, dudas, inclina };
-  // El idioma del ticket fue una suposicion (formulario sin idioma claro y sin rol): la primera pista lo fija.
-  if (adivinado && a.lang) return { accion: a.lang === lang ? "seguir" : "cambiar", lang: a.lang, dudas: 0, inclina: null, adivinado: false };
-  if (a.lang === lang) return { accion: "seguir", lang, dudas: 0, inclina: null, adivinado: false };
-  if (a.lang && a.seguro) return { accion: "cambiar", lang: a.lang, dudas: 0, inclina: null };
-  const n = dudas + 1;
-  const hacia = a.otro ? null : a.lang || inclina; // si escribe en otro idioma, las pistas viejas no valen
-  if (n >= DUDAS_PARA_PREGUNTAR) {
-    if (hacia) return { accion: hacia === lang ? "seguir" : "cambiar", lang: hacia, dudas: 0, inclina: null };
-    if (!preguntado) return { accion: "preguntar", lang, dudas: 0, inclina: null };
-  }
-  return { accion: "seguir", lang, dudas: n, inclina: hacia };
+  if (a.pedido) return { accion: a.pedido === lang ? "seguir" : "cambiar", lang: a.pedido, vistos: Math.max(vistos, MARGEN) };
+  if (a.neutro || vistos >= MARGEN) return { accion: "seguir", lang, vistos };
+  const v = vistos + 1;
+  if (a.lang) return { accion: a.lang === lang ? "seguir" : "cambiar", lang: a.lang, vistos: v };
+  if (a.otro && v >= MARGEN && !preguntado) return { accion: "preguntar", lang, vistos: v };
+  return { accion: "seguir", lang, vistos: v };
 }
 
-module.exports = { analizarIdioma, idiomaRol, idiomaInicial, decidirIdioma, DUDAS_PARA_PREGUNTAR };
+module.exports = { analizarIdioma, idiomaRol, idiomaInicial, decidirIdioma, MARGEN };

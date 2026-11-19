@@ -84,27 +84,18 @@ assert.strictEqual(idiomaDe(m("English"), "en español porfa"), "es");
   const { decidirIdioma: dI, analizarIdioma: aI } = require("./src/idioma");
   const ac = (t, e) => dI(t, e).accion;
   assert.strictEqual(ac("el tracker no prende", { lang: "en" }), "cambiar");
-  // Ticket con formulario sin idioma ("weww"): quedo en ingles por suposicion; "como estas" lo pasa a español.
-  assert.strictEqual(dI("como estas", { lang: "en", dudas: 1, adivinado: true }).lang, "es");
-  assert.strictEqual(dI("como estas", { lang: "en", dudas: 0 }).lang, "es");          // ya es pista segura
-  assert.strictEqual(dI("tracker", { lang: "en", adivinado: true }).adivinado, undefined); // sin pista: sigue la suposicion
-  assert.strictEqual(dI("how are you", { lang: "es", adivinado: true }).lang, "en");
-  assert.strictEqual(dI("si", { lang: "en", adivinado: true }).lang, "en");             // neutro no decide
-  assert.strictEqual(ac("the tracker doesnt turn on", { lang: "es" }), "cambiar");
-  assert.strictEqual(ac("no funciona", { lang: "es" }), "seguir");
-  assert.strictEqual(ac("drift", { lang: "en", dudas: 0 }), "seguir");    // 1a vez sin idioma: sigue
-  assert.strictEqual(ac("drift", { lang: "en", dudas: 1 }), "seguir");    // 2a vez: aun no pregunta
-  assert.strictEqual(ac("drift", { lang: "en", dudas: 2 }), "preguntar"); // 3a vez seguida sin pista: pregunta
-  assert.strictEqual(ac("ok", { lang: "en", dudas: 2 }), "seguir");       // "ok" no es duda
-  assert.strictEqual(ac("dongle", { lang: "es", dudas: 2, preguntado: true }), "seguir"); // solo pregunta una vez
-  assert.strictEqual(ac("meu tracker não conecta", { lang: "es" }), "seguir");             // otro idioma: 1a duda, no pregunta
-  assert.strictEqual(ac("meu tracker não conecta", { lang: "es", dudas: 2 }), "preguntar"); // 3a: ahora si
-  assert.strictEqual(ac("мой трекер не работает", { lang: "en", dudas: 2 }), "preguntar");
-  // 3 mensajes dudosos que apuntan a un idioma: lo detecta solo, sin preguntar.
-  { let e = { lang: "en", dudas: 0 }, r;
-    for (const t of ["tracker no", "drift", "dongle"]) { r = dI(t, e); e = { ...e, ...r }; }
-    assert.ok(r.accion !== "preguntar", `con pista no pregunta: ${JSON.stringify(r)}`); }
-  assert.strictEqual(ac("meu tracker não conecta", { lang: "en", dudas: 2, inclina: "es" }), "preguntar"); // pista vieja no vale
+  // Margen (regla de Yuki): formulario + 2 mensajes; ahi cambia con cualquier pista, despues queda fijo.
+  assert.strictEqual(dI("como estas", { lang: "en", vistos: 0 }).lang, "es");            // caso real: "weww" -> en, "como estas" -> es
+  assert.strictEqual(dI("necesito ayuda", { lang: "en", vistos: 1 }).lang, "es");        // 2o mensaje: aun cambia
+  assert.strictEqual(dI("como estas", { lang: "en", vistos: 2 }).accion, "seguir");      // pasado el margen: fijo
+  assert.strictEqual(dI("the tracker doesnt turn on", { lang: "es", vistos: 5 }).lang, "es");
+  assert.strictEqual(dI("en ingles porfa", { lang: "es", vistos: 5 }).lang, "en");       // pedirlo siempre vale
+  assert.strictEqual(dI("ok", { lang: "en", vistos: 0 }).vistos, 0);                     // "ok" no gasta margen
+  assert.strictEqual(dI("drift", { lang: "en", vistos: 0 }).vistos, 1);                  // sin pista: gasta margen y sigue
+  assert.strictEqual(ac("drift", { lang: "en", vistos: 1 }), "seguir");                  // sin idioma no se pregunta
+  assert.strictEqual(ac("meu tracker não conecta", { lang: "es", vistos: 0 }), "seguir");
+  assert.strictEqual(ac("meu tracker não conecta", { lang: "es", vistos: 1 }), "preguntar"); // otro idioma al final del margen
+  assert.strictEqual(ac("мой трекер не работает", { lang: "en", vistos: 1, preguntado: true }), "seguir"); // una vez
   assert.strictEqual(ac("can you speak spanish", { lang: "en" }), "cambiar");
   assert.ok(aI("👍").neutro && aI("si").neutro && !aI("firmware").lang);
   const { PREGUNTA_IDIOMA } = require("./src/index");

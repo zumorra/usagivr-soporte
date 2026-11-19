@@ -21,7 +21,7 @@ const {
 } = require("discord.js");
 const { TEMAS, buscarTemas, resumenParaIA } = require("./kb");
 const { responder, verFotos } = require("./ia");
-const { analizarIdioma, idiomaRol, decidirIdioma } = require("./idioma");
+const { analizarIdioma, idiomaRol, decidirIdioma, MARGEN } = require("./idioma");
 const { auditar } = require("./auditor");
 const { pedirRepetir, variantes } = require("./repetir");
 const { enHorario, proximaApertura } = require("./horario");
@@ -73,7 +73,9 @@ function idiomaDe(member, texto = "", previo = null) {
   if (a.lang && (a.seguro || !rol)) return a.lang;
   return rol || a.lang || previo || "en";
 }
-const estadoIdioma = new Map(); // canal -> { dudas, preguntado, pendiente }
+const estadoIdioma = new Map(); // canal -> { vistos, preguntado, pendiente }
+// Sin estado (el bot se reinicio): el ticket ya venia de antes, su idioma queda fijo.
+const FIJO = { vistos: MARGEN, preguntado: true };
 
 function botonesIdioma() {
   return new ActionRowBuilder().addComponents(
@@ -703,13 +705,7 @@ async function abrirTicket(inter) {
   });
   await inter.editReply(T[lang].creado(`<#${canal.id}>`));
   idiomaTicket.set(canal.id, lang);
-  { // Si el problema del formulario no deja claro el idioma, ya cuenta como la primera duda.
-    const a = analizarIdioma(problema);
-    const duda = !a.neutro && !a.pedido && a.lang !== lang && !(a.lang && a.seguro);
-    // Sin pista segura en el formulario ni rol de idioma: el idioma es una suposicion y el primer mensaje lo corrige.
-    const adivinado = !a.pedido && !(a.lang && a.seguro) && !rolIdioma(inter.member);
-    estadoIdioma.set(canal.id, { dudas: duda ? 1 : 0, inclina: duda ? a.lang : null, preguntado: false, pendiente: null, adivinado });
-  }
+  estadoIdioma.set(canal.id, { vistos: 0, preguntado: false, pendiente: null }); // el formulario fija el idioma inicial
 
   const ficha = new EmbedBuilder()
     .setColor(COLOR)
@@ -799,7 +795,7 @@ client.on("interactionCreate", async (inter) => {
       const lang = inter.customId === "lang:es" ? "es" : "en";
       idiomaTicket.set(inter.channel.id, lang);
       const ei = estadoIdioma.get(inter.channel.id) || {};
-      estadoIdioma.set(inter.channel.id, { dudas: 0, preguntado: true, pendiente: null });
+      estadoIdioma.set(inter.channel.id, { ...FIJO, pendiente: null }); // lo eligio el cliente: queda fijo
       await inter.update({ content: lang === "es" ? "Va, seguimos en español." : "Got it, we'll continue in English.", components: [] });
       // Contesta el mensaje que dejo pendiente, ya en el idioma elegido.
       if (ei.pendiente && d.estado !== "cerrado") {
@@ -851,7 +847,8 @@ async function atender(canal, d, member, texto, fotos = [], idiomaElegido = fals
   const callado = await silencioPorHelper(canal, d);
   if (callado) {
     const a = analizarIdioma(texto);
-    const lang = a.pedido || (a.lang && a.seguro ? a.lang : null) || idiomaActual(canal, d);
+    const libre = (estadoIdioma.get(canal.id) || FIJO).vistos < MARGEN;
+    const lang = a.pedido || (libre && a.lang && a.seguro ? a.lang : null) || idiomaActual(canal, d);
     idiomaTicket.set(canal.id, lang);
     const dm = { ...d, lang };
     console.log(`msg en ${canal.name} con compañero atendiendo${callado.retomar ? " (callado hace horas)" : ""}: ${texto.slice(0, 60)}`);
@@ -859,16 +856,16 @@ async function atender(canal, d, member, texto, fotos = [], idiomaElegido = fals
     if (callado.retomar) await retomarHelper(canal, dm, callado.helper, texto);
     return;
   }
-  // Idioma: se detecta solo; se pregunta solo si en 3 mensajes seguidos no se sabe en que idioma escribe.
-  const ei = estadoIdioma.get(canal.id) || { dudas: 0, preguntado: false };
+  // Idioma: se corrige solo en los primeros mensajes (ver decidirIdioma); despues queda fijo.
+  const ei = estadoIdioma.get(canal.id) || FIJO;
   const actual = idiomaTicket.get(canal.id) || d.lang || idiomaDe(member, texto);
-  const dec = idiomaElegido || (fotos.length && !texto.trim()) ? { accion: "seguir", lang: actual, dudas: ei.dudas, inclina: ei.inclina } : decidirIdioma(texto, { lang: actual, ...ei });
+  const dec = idiomaElegido || (fotos.length && !texto.trim()) ? { accion: "seguir", lang: actual, vistos: ei.vistos } : decidirIdioma(texto, { lang: actual, ...ei });
   const lang = dec.lang;
   idiomaTicket.set(canal.id, lang);
-  estadoIdioma.set(canal.id, { ...ei, dudas: dec.dudas, inclina: dec.inclina, pendiente: null, adivinado: dec.adivinado ?? ei.adivinado });
+  estadoIdioma.set(canal.id, { ...ei, vistos: dec.vistos, pendiente: null });
   if (dec.accion === "cambiar") console.log(`idioma de ${canal.name}: ${actual} -> ${lang}`);
   if (dec.accion === "preguntar") {
-    estadoIdioma.set(canal.id, { dudas: 0, preguntado: true, pendiente: { texto, member, fotos } });
+    estadoIdioma.set(canal.id, { vistos: dec.vistos, preguntado: true, pendiente: { texto, member, fotos } });
     console.log(`idioma dudoso en ${canal.name}, pregunto`);
     return void (await canal.send({ content: azar(PREGUNTA_IDIOMA), components: [botonesIdioma()] }));
   }
