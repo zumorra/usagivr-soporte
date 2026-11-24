@@ -185,3 +185,5 @@ console.log(`OK: ${ok} temas + 39 idiomas + ${humano.length} pedir-humano + ${de
   assert.strictEqual(t.lang, "es");
   console.log("OK: idioma en tema + emparejamiento solo si no conectan");
 }
+
+require("./probar-crm")().catch((e) => { console.error(e); process.exit(1); });

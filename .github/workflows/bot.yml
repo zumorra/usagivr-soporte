@@ -38,5 +38,8 @@ jobs:
         env:
           DISCORD_TOKEN: ${{ secrets.DISCORD_TOKEN }}
           GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+          CRM_URL: ${{ secrets.CRM_URL }}
+          CRM_TOKEN: ${{ secrets.CRM_TOKEN }}
+          CRM_HMAC_SECRET: ${{ secrets.CRM_HMAC_SECRET }}
           MINUTOS: ${{ github.event.inputs.minutos || '300' }}
         run: node src/index.js

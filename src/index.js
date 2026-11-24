@@ -28,11 +28,17 @@ const { enHorario, proximaApertura } = require("./horario");
 const { T } = require("./textos");
 const { notasFaq } = require("./faq");
 const { textoReglas, casoEspecial, PROHIBIDO, COMPRA_FUERA, DANIO, LIQUIDO } = require("./reglas");
+const { crearCrm } = require("./crm");
 
 const CFG = JSON.parse(fs.readFileSync(path.join(__dirname, "..", "config.json"), "utf8"));
 const ASSETS = path.join(__dirname, "..", "assets");
 const COLOR = 0xff6fb5;
 const MARCA = "usagivr-ticket";
+// Conexion con el Helpdesk del CRM (Usagi Web Manager). Sin CRM_URL/CRM_TOKEN no hace nada.
+const crm = crearCrm();
+// Mensajes del equipo publicados por el bot (respuestas escritas en el CRM web o con /respuesta): cuentan como
+// "un compañero esta atendiendo" para que la IA no le conteste encima al cliente.
+const DEL_EQUIPO = "🧑‍💼 ";
 
 const client = new Client({
   intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent, GatewayIntentBits.GuildVoiceStates],
@@ -357,6 +363,10 @@ async function transcripcion(canal) {
 }
 
 async function registrar(canal, d, resultado, solucion, quien, resumen) {
+  if (crm.activo()) {
+    if (/^🆘/.test(resultado)) crmTicket(canal, d).then((id) => crm.mensaje(id, { texto: `${resultado}: ${solucion}`, direccion: "note", autor: "Tracker Assist (bot)", auto: true })).catch(() => {});
+    else cierreCrm.set(canal.id, { resultado, solucion, quien });
+  }
   try {
     const hilo = await hiloDeUsuario(canal.guild, d.uid, d.usuario || d.uid);
     const e = new EmbedBuilder()
@@ -714,6 +724,7 @@ async function abrirTicket(inter) {
     permissionOverwrites: permisos,
   });
   await inter.editReply(T[lang].creado(`<#${canal.id}>`));
+  crm.ticketDe(canal.id, { discordId: inter.user.id, pedido, nombre, motivo: problema, lang }).catch(() => {});
   idiomaTicket.set(canal.id, lang);
   estadoIdioma.set(canal.id, { vistos: 0, preguntado: false, pendiente: null }); // el formulario fija el idioma inicial
 
@@ -750,6 +761,15 @@ async function cerrarCanal(canal, d) {
   if (voz) await terminarVoz(voz, canal, d, "ticket cerrado");
   d.estado = "cerrado";
   await guardarTicket(canal, d);
+  if (crm.activo()) {
+    const c = cierreCrm.get(canal.id) || {};
+    cierreCrm.delete(canal.id);
+    crmTicket(canal, d).then((id) => crm.cerrar(id, {
+      estado: /inactividad/i.test(c.resultado || "") ? "closed" : "resolved",
+      solucion: [c.resultado, c.solucion].filter(Boolean).join(" — ").replace(/^[^\p{L}\p{N}]+/u, "") || "Cerrado en Discord",
+      cerradoPor: c.quien || "Tracker Assist (bot)",
+    })).catch(() => {}).finally(() => { crm._olvidar(canal.id); cacheRapidas.delete(canal.id); });
+  }
   await canal.permissionOverwrites.edit(d.uid, { SendMessages: false }).catch(() => {});
   const min = CFG.borrarTicketCerradoTrasMin;
   await canal.send(T[d.lang].cerrado(min));
@@ -767,6 +787,8 @@ client.on("interactionCreate", async (inter) => {
       return inter.showModal(modalTicket(idiomaDe(inter.member)));
     }
     if (inter.isModalSubmit() && inter.customId === "modal:ticket") return abrirTicket(inter);
+    if (inter.isAutocomplete() && inter.commandName === "respuesta") return autocompletarRespuesta(inter);
+    if (inter.isChatInputCommand() && inter.commandName === "respuesta") return usarRespuesta(inter);
 
     const d = leerTicket(inter.channel);
     if (inter.isChatInputCommand() && (inter.commandName === "voz" || inter.commandName === "helper") && (!d || d.estado === "cerrado"))
@@ -993,6 +1015,8 @@ client.once("clientReady", async () => {
     new SlashCommandBuilder().setName("panel-soporte").setDescription("Publica el panel de tickets de soporte en este canal").setDefaultMemberPermissions(PermissionFlagsBits.ManageGuild),
     new SlashCommandBuilder().setName("voz").setDescription("Crea un canal de voz temporal para este ticket / Voice channel for this ticket"),
     new SlashCommandBuilder().setName("helper").setDescription("Llama a un compañero del equipo a este ticket / Call a support teammate"),
+    new SlashCommandBuilder().setName("respuesta").setDescription("Equipo: manda una respuesta rápida del CRM en este ticket")
+      .addStringOption((o) => o.setName("nombre").setDescription("Respuesta rápida (las mismas del Helpdesk)").setRequired(true).setAutocomplete(true)),
   ].map((c) => c.toJSON());
   for (const guild of client.guilds.cache.values()) {
     await guild.commands.set(cmds).catch((e) => console.warn("comandos:", e.message));
@@ -1017,7 +1041,10 @@ client.once("clientReady", async () => {
         }
       }
     }
-  }  revisarTickets().catch((e) => console.warn("seguimiento:", e.message));
+  }
+  console.log(crm.activo() ? "CRM conectado: tickets y mensajes van al Helpdesk; respuestas del CRM se publican aquí" : "CRM sin configurar (faltan CRM_URL/CRM_TOKEN)");
+  if (crm.activo()) setInterval(() => entregarDelCrm().catch((e) => console.warn("crm entrega:", e.message)), (CFG.crmCadaSeg || 15) * 1000);
+  revisarTickets().catch((e) => console.warn("seguimiento:", e.message));
   setInterval(() => revisarTickets().catch((e) => console.warn("seguimiento:", e.message)), (S.revisarCadaMin || 10) * MIN);
 });
 
@@ -1127,7 +1154,8 @@ async function revisarTickets() {
 // ------------------------------------------------------------ compañero atendiendo
 // Ultimo mensaje de una persona del equipo (no el cliente, no un bot, no una correccion en negritas).
 const ultimaAyuda = new Map(); // canal -> hora del ultimo mensaje de alguien que no es el cliente
-const esAyuda = (m, uid) => !m.author.bot && m.author.id !== uid && !esCorreccion(m.content);
+const esAyuda = (m, uid) => (!m.author.bot && m.author.id !== uid && !esCorreccion(m.content))
+  || (client.user && m.author.id === client.user.id && String(m.content || "").startsWith(DEL_EQUIPO));
 async function silencioPorHelper(canal, d) {
   const msgs = await canal.messages.fetch({ limit: 100 }).catch(() => null);
   if (!msgs) return null;
@@ -1268,6 +1296,107 @@ client.on("guildCreate", async (guild) => {
   await asegurarPanel(guild).catch(() => {});
 });
 
+// ------------------------------------------------------------ CRM (Helpdesk web)
+const cierreCrm = new Map(); // canal -> { resultado, solucion, quien } del ultimo registrar() antes de cerrar
+const crmTicket = (canal, d) => crm.ticketDe(canal.id, { discordId: d.uid, pedido: d.pedido, nombre: d.nombre, motivo: d.problema, lang: d.lang });
+
+// Cada mensaje de un ticket (cliente, equipo y bot) queda tambien en la conversacion del Helpdesk.
+function textoParaCrm(msg) {
+  let t = msg.content || "";
+  if (!t && msg.embeds && msg.embeds.length) t = msg.embeds.map((e) => [e.title, e.description].filter(Boolean).join("\n")).filter(Boolean).join("\n\n");
+  const n = msg.attachments ? msg.attachments.size : 0;
+  if (n) t = `${t}\n[${n} archivo(s) adjunto(s) en Discord]`.trim();
+  return t.trim();
+}
+async function espejoCrm(msg) {
+  if (!crm.activo() || !msg.guild) return;
+  const d = leerTicket(msg.channel);
+  if (!d) return;
+  const esBot = client.user && msg.author.id === client.user.id;
+  if (msg.author.bot && !esBot) return;
+  if (esBot && String(msg.content || "").startsWith(DEL_EQUIPO)) return; // ya esta en el CRM (vino de alli o de /respuesta)
+  if (!esBot && esCorreccion(msg.content)) return; // correcciones en negritas: son para ajustar al bot
+  const texto = textoParaCrm(msg);
+  if (!texto) return;
+  const id = await crmTicket(msg.channel, d);
+  const cliente = msg.author.id === d.uid;
+  await crm.mensaje(id, { texto, direccion: cliente ? "in" : "out", autor: esBot ? "Tracker Assist (bot)" : (msg.member && msg.member.displayName) || msg.author.username, auto: Boolean(esBot) });
+}
+client.on("messageCreate", (msg) => { espejoCrm(msg).catch((e) => console.warn("crm espejo:", e.message)); });
+
+function trozos(texto, max = 1900) {
+  const out = [];
+  let r = String(texto);
+  while (r.length > max) { let i = r.lastIndexOf("\n", max); if (i < max / 2) i = max; out.push(r.slice(0, i)); r = r.slice(i).replace(/^\n/, ""); }
+  if (r) out.push(r);
+  return out;
+}
+async function publicarDelEquipo(canal, autor, texto) {
+  let primero = null;
+  for (const [i, parte] of trozos(texto).entries()) {
+    const m = await canal.send({ content: i === 0 ? `${DEL_EQUIPO}**${autor}**:\n${parte}` : `${DEL_EQUIPO}${parte}`, allowedMentions: { parse: [] } });
+    primero = primero || m;
+  }
+  if (primero) ultimaAyuda.set(canal.id, primero.createdTimestamp);
+  return primero;
+}
+// Lo que un helper responde desde el Helpdesk web se publica en el canal del cliente y se confirma al CRM.
+let entregando = false;
+async function entregarDelCrm() {
+  if (entregando) return;
+  entregando = true;
+  try {
+    for (const p of await crm.pendientes()) {
+      const canal = await client.channels.fetch(p.canal_id).catch(() => null);
+      const d = canal && canal.isTextBased() ? leerTicket(canal) : null;
+      if (!d) { await crm.entregado(p.id, { ok: false, error: "El canal del ticket ya no existe en Discord" }); continue; }
+      if (d.estado === "cerrado") { await crm.entregado(p.id, { ok: false, error: "El ticket ya está cerrado en Discord" }); continue; }
+      const m = await publicarDelEquipo(canal, p.autor || "Equipo", p.mensaje).catch((e) => { console.warn("crm publicar:", e.message); return null; });
+      await crm.entregado(p.id, m ? { ok: true, discordMessageId: m.id } : { ok: false, error: "Discord no dejó publicar el mensaje" });
+      if (m) console.log("crm: respuesta del equipo publicada");
+    }
+  } finally {
+    entregando = false;
+  }
+}
+
+// /respuesta: las mismas respuestas rapidas del Helpdesk, rellenadas con los datos de ESTE cliente.
+const cacheRapidas = new Map(); // canal -> { t, items }
+async function rapidasDe(canal, d) {
+  const c = cacheRapidas.get(canal.id);
+  if (c && Date.now() - c.t < 60000) return c.items;
+  const id = await crmTicket(canal, d);
+  const items = await crm.respuestasRapidas(id);
+  cacheRapidas.set(canal.id, { t: Date.now(), items });
+  return items;
+}
+async function autocompletarRespuesta(inter) {
+  const d = leerTicket(inter.channel);
+  if (!d || !esEquipo(inter.member) || !crm.activo()) return inter.respond([]).catch(() => {});
+  const q = String(inter.options.getFocused() || "").toLowerCase();
+  const items = await Promise.race([rapidasDe(inter.channel, d), new Promise((r) => setTimeout(() => r(null), 2500))]).catch(() => null);
+  const lista = (items || []).filter((x) => !q || x.nombre.toLowerCase().includes(q)).slice(0, 25);
+  return inter.respond(lista.map((x) => ({ name: x.nombre.slice(0, 100), value: String(x.id) }))).catch(() => {});
+}
+async function usarRespuesta(inter) {
+  const d = leerTicket(inter.channel);
+  if (!d || d.estado === "cerrado") return inter.reply({ content: T[idiomaDe(inter.member)].soloTicket, ephemeral: true });
+  if (!esEquipo(inter.member)) return inter.reply({ content: T[d.lang || "en"].soloEquipo, ephemeral: true });
+  if (!crm.activo()) return inter.reply({ content: "El CRM no está conectado en esta sesión del bot.", ephemeral: true });
+  await inter.deferReply({ ephemeral: true });
+  cacheRapidas.delete(inter.channel.id); // siempre el texto mas nuevo del CRM
+  const elegido = String(inter.options.getString("nombre") || "");
+  const items = await rapidasDe(inter.channel, d);
+  const r = items.find((x) => String(x.id) === elegido) || items.find((x) => x.nombre.toLowerCase() === elegido.toLowerCase());
+  if (!r) return inter.editReply("No encontré esa respuesta rápida en el CRM.");
+  const faltan = [...new Set(String(r.mensaje).match(/\{[a-z_.]+\}/gi) || [])];
+  if (faltan.length) return inter.editReply(`Le faltan datos (${faltan.join(", ")}): cópiala, complétala y mándala tú.\n\n${String(r.mensaje).slice(0, 1700)}`);
+  const autor = (inter.member && inter.member.displayName) || inter.user.username;
+  const m = await publicarDelEquipo(inter.channel, autor, r.mensaje);
+  crmTicket(inter.channel, d).then((id) => crm.mensaje(id, { texto: r.mensaje, direccion: "out", autor, auto: false })).catch(() => {});
+  return inter.editReply(m ? `Enviada: ${r.nombre}` : "No se pudo publicar.");
+}
+
 process.on("unhandledRejection", (e) => console.error("sin capturar:", e));
 
 const minutos = Number(process.env.MINUTOS || 0);
@@ -1287,4 +1416,4 @@ if (require.main === module) {
   client.login(token);
 }
 
-module.exports = { client, respuestaIA, revisarTicket, silencioPorHelper, idiomaReciente, revisarVoz, terminarVoz, canalVoz, botonListo, PREGUNTA_IDIOMA, saberAuditor, pideDevolucion, pideCompra, promptSistema, pideHumano, idiomaDe, leerTicket, temaCanal, esImagen, estaEnojado, mensajePanel, yaQuedo };
+module.exports = { crm, DEL_EQUIPO, entregarDelCrm, espejoCrm, usarRespuesta, registrar, cerrarCanal, trozos, textoParaCrm, esAyudaCrm: (m, uid) => esAyuda(m, uid), client, respuestaIA, revisarTicket, silencioPorHelper, idiomaReciente, revisarVoz, terminarVoz, canalVoz, botonListo, PREGUNTA_IDIOMA, saberAuditor, pideDevolucion, pideCompra, promptSistema, pideHumano, idiomaDe, leerTicket, temaCanal, esImagen, estaEnojado, mensajePanel, yaQuedo };
