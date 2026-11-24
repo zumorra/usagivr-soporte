@@ -66,6 +66,26 @@ function crearCrm(opts = {}) {
       const r = await pedir("GET", `/v1/soporte/respuestas-rapidas${ticketId ? `?ticket_id=${ticketId}` : ""}`);
       return r.ok && r.data ? r.data.items || [] : [];
     },
+    // Prueba de humo (/soporte-prueba): recorre las rutas reales con un ticket marcado como prueba que el CRM
+    // oculta y borra al cerrarlo. No crea canales ni toca clientes. Devuelve solo pasos y codigos HTTP.
+    async prueba() {
+      const t0 = Date.now();
+      const pasos = [];
+      const r1 = await pedir("POST", "/v1/soporte/tickets", { canal_id: `prueba-${t0}`, motivo: "Prueba de humo", prueba: true, lang: "es" });
+      const id = r1.ok && r1.data ? r1.data.ticket_id || r1.data.id : null;
+      pasos.push(["Crear ticket oculto", Boolean(id), r1.status]);
+      if (!id) return { ok: false, pasos, ms: Date.now() - t0 };
+      const r2 = await pedir("POST", `/v1/soporte/tickets/${id}/mensajes`, { mensaje: "Hola, esto es una prueba", direction: "in", auto: true });
+      pasos.push(["Mensaje del cliente al CRM", r2.ok, r2.status]);
+      const r3 = await pedir("GET", `/v1/soporte/pendientes?limit=50&prueba=${id}`);
+      const eco = r3.ok && r3.data ? (r3.data.items || []).find((x) => Number(x.ticket_id) === Number(id)) : null;
+      pasos.push(["Respuesta del Helpdesk llega al bot", Boolean(eco), r3.status]);
+      const r4 = eco ? await pedir("POST", `/v1/soporte/mensajes/${eco.id}/entregado`, { ok: true }) : { ok: false, status: 0 };
+      pasos.push(["Confirmar entrega", r4.ok, r4.status]);
+      const r5 = await pedir("PATCH", `/v1/soporte/tickets/${id}`, { estado: "closed" });
+      pasos.push(["Cerrar y guardar resultado", Boolean(r5.ok && r5.data && r5.data.prueba), r5.status]);
+      return { ok: pasos.every((p) => p[1]) && Boolean(r5.data && r5.data.prueba_ok), pasos, ms: Date.now() - t0 };
+    },
     _olvidar: (canalId) => tickets.delete(canalId),
   };
 }

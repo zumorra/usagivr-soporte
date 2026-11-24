@@ -789,6 +789,7 @@ client.on("interactionCreate", async (inter) => {
     if (inter.isModalSubmit() && inter.customId === "modal:ticket") return abrirTicket(inter);
     if (inter.isAutocomplete() && inter.commandName === "respuesta") return autocompletarRespuesta(inter);
     if (inter.isChatInputCommand() && inter.commandName === "respuesta") return usarRespuesta(inter);
+    if (inter.isChatInputCommand() && inter.commandName === "soporte-prueba") return pruebaDeHumo(inter);
 
     const d = leerTicket(inter.channel);
     if (inter.isChatInputCommand() && (inter.commandName === "voz" || inter.commandName === "helper") && (!d || d.estado === "cerrado"))
@@ -1017,6 +1018,7 @@ client.once("clientReady", async () => {
     new SlashCommandBuilder().setName("helper").setDescription("Llama a un compañero del equipo a este ticket / Call a support teammate"),
     new SlashCommandBuilder().setName("respuesta").setDescription("Equipo: manda una respuesta rápida del CRM en este ticket")
       .addStringOption((o) => o.setName("nombre").setDescription("Respuesta rápida (las mismas del Helpdesk)").setRequired(true).setAutocomplete(true)),
+    new SlashCommandBuilder().setName("soporte-prueba").setDescription("Equipo: prueba que el bot y el CRM se hablan (ticket oculto, no avisa a nadie)"),
   ].map((c) => c.toJSON());
   for (const guild of client.guilds.cache.values()) {
     await guild.commands.set(cmds).catch((e) => console.warn("comandos:", e.message));
@@ -1298,6 +1300,17 @@ client.on("guildCreate", async (guild) => {
 
 // ------------------------------------------------------------ CRM (Helpdesk web)
 const cierreCrm = new Map(); // canal -> { resultado, solucion, quien } del ultimo registrar() antes de cerrar
+// /soporte-prueba: solo equipo; respuesta privada con cada paso. El CRM guarda el resultado en «Estado de servicios».
+async function pruebaDeHumo(inter) {
+  if (!esEquipo(inter.member)) return inter.reply({ content: "Solo el equipo de soporte puede usar este comando.", ephemeral: true });
+  if (!crm.activo()) return inter.reply({ content: "El CRM no está conectado en esta sesión del bot (faltan CRM_URL/CRM_TOKEN).", ephemeral: true });
+  await inter.deferReply({ ephemeral: true });
+  const r = await crm.prueba();
+  const lineas = r.pasos.map(([n, ok, st]) => `${ok ? "✅" : "❌"} ${n}${ok ? "" : ` (HTTP ${st || "sin respuesta"})`}`);
+  console.log(`prueba de humo: ${r.ok ? "ok" : "fallo"} en ${r.ms} ms`);
+  return inter.editReply(`${r.ok ? "✅ **Todo funciona**" : "❌ **Algo falló**"} (${r.ms} ms)\n${lineas.join("\n")}`);
+}
+
 const crmTicket = (canal, d) => crm.ticketDe(canal.id, { discordId: d.uid, pedido: d.pedido, nombre: d.nombre, motivo: d.problema, lang: d.lang });
 
 // Cada mensaje de un ticket (cliente, equipo y bot) queda tambien en la conversacion del Helpdesk.
