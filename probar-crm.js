@@ -49,5 +49,25 @@ module.exports = async function probarCrm() {
   const t = trozos("a".repeat(4000));
   assert.ok(t.length === 3 && t.every((x) => x.length <= 1900) && t.join("") === "a".repeat(4000));
   assert.ok(typeof DEL_EQUIPO === "string" && esAyudaCrm);
-  console.log("OK: conexion con el CRM (no-op sin secretos, idempotencia, firma, entregas, respuestas rapidas)");
+  // Caída entre publicar y confirmar: al volver, la respuesta ya está en el canal y solo se confirma.
+  const bot = require("./src/index.js");
+  const { Collection } = require("discord.js");
+  const enviados = [];
+  const canal = { id: "C1", topic: bot.temaCanal({ uid: "U1", usuario: "zoe", lang: "en", estado: "abierto" }), isTextBased: () => true,
+    send: async (o) => { const m = { id: "M" + (enviados.length + 1), content: o.content, createdTimestamp: Date.now(), author: { id: "BOT" } }; enviados.push(m); return m; },
+    messages: { fetch: async () => new Collection(enviados.slice().reverse().map((m) => [m.id, m])) } };
+  const antes = { u: bot.client.user, f: bot.client.channels.fetch, act: bot.crm.activo, p: bot.crm.pendientes, e: bot.crm.entregado };
+  bot.client.user = { id: "BOT" };
+  bot.client.channels.fetch = async (id) => (id === "C1" ? canal : null);
+  const pend = [{ id: 9, canal_id: "C1", autor: "Vivi", mensaje: "Hola Zoe", creado_en: new Date(Date.now() - 1000).toISOString() }];
+  const acks = [];
+  let cae = true;
+  bot.crm.pendientes = async () => pend.slice();
+  bot.crm.entregado = async (id, r) => { if (cae) { cae = false; throw new Error("caida"); } acks.push([id, r]); pend.length = 0; };
+  await bot.entregarDelCrm().catch(() => {});
+  await bot.entregarDelCrm();
+  assert.strictEqual(enviados.length, 1, "no se repite tras la caída");
+  assert.deepStrictEqual(acks, [[9, { ok: true, discordMessageId: "M1" }]]);
+  Object.assign(bot.crm, { pendientes: antes.p, entregado: antes.e }); bot.client.user = antes.u; bot.client.channels.fetch = antes.f;
+  console.log("OK: conexion con el CRM (no-op sin secretos, idempotencia, firma, entregas sin repetir, respuestas rapidas)");
 };

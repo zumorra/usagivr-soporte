@@ -1331,14 +1331,28 @@ function trozos(texto, max = 1900) {
   if (r) out.push(r);
   return out;
 }
-async function publicarDelEquipo(canal, autor, texto) {
+function cabeceraEquipo(autor, texto) {
+  return `${DEL_EQUIPO}**${autor}**:\n${trozos(texto)[0] || ""}`;
+}
+async function publicarDelEquipo(canal, autor, texto, nonce) {
   let primero = null;
   for (const [i, parte] of trozos(texto).entries()) {
-    const m = await canal.send({ content: i === 0 ? `${DEL_EQUIPO}**${autor}**:\n${parte}` : `${DEL_EQUIPO}${parte}`, allowedMentions: { parse: [] } });
+    const extra = i === 0 && nonce ? { nonce, enforceNonce: true } : {};
+    const m = await canal.send({ content: i === 0 ? `${DEL_EQUIPO}**${autor}**:\n${parte}` : `${DEL_EQUIPO}${parte}`, allowedMentions: { parse: [] }, ...extra });
     primero = primero || m;
   }
   if (primero) ultimaAyuda.set(canal.id, primero.createdTimestamp);
   return primero;
+}
+// Busca en los últimos mensajes del canal la misma respuesta publicada por el bot DESPUÉS de que el helper la escribió.
+// (Un texto idéntico enviado otra vez más tarde tiene una fecha nueva en el CRM, así que no se confunde.)
+async function yaPublicada(canal, p) {
+  const desde = Date.parse(p.creado_en || "");
+  if (!Number.isFinite(desde)) return null;
+  const msgs = await canal.messages.fetch({ limit: 30 }).catch(() => null);
+  if (!msgs) return null;
+  const cab = cabeceraEquipo(p.autor || "Equipo", p.mensaje).trim();
+  return [...msgs.values()].find((m) => m.author?.id === client.user?.id && m.createdTimestamp >= desde - 5000 && String(m.content || "").trim() === cab) || null;
 }
 // Lo que un helper responde desde el Helpdesk web se publica en el canal del cliente y se confirma al CRM.
 let entregando = false;
@@ -1351,7 +1365,10 @@ async function entregarDelCrm() {
       const d = canal && canal.isTextBased() ? leerTicket(canal) : null;
       if (!d) { await crm.entregado(p.id, { ok: false, error: "El canal del ticket ya no existe en Discord" }); continue; }
       if (d.estado === "cerrado") { await crm.entregado(p.id, { ok: false, error: "El ticket ya está cerrado en Discord" }); continue; }
-      const m = await publicarDelEquipo(canal, p.autor || "Equipo", p.mensaje).catch((e) => { console.warn("crm publicar:", e.message); return null; });
+      // Si el bot se cayó entre publicar y confirmar, la respuesta ya está en el canal: solo se confirma, no se repite.
+      const previa = await yaPublicada(canal, p);
+      if (previa) { await crm.entregado(p.id, { ok: true, discordMessageId: previa.id }); console.log("crm: respuesta ya publicada, solo se confirma"); continue; }
+      const m = await publicarDelEquipo(canal, p.autor || "Equipo", p.mensaje, `crm${p.id}`.slice(0, 25)).catch((e) => { console.warn("crm publicar:", e.message); return null; });
       await crm.entregado(p.id, m ? { ok: true, discordMessageId: m.id } : { ok: false, error: "Discord no dejó publicar el mensaje" });
       if (m) console.log("crm: respuesta del equipo publicada");
     }
