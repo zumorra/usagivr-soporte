@@ -1,0 +1,66 @@
+name: Prueba del relevo (temporal)
+
+# Prueba de que una sesion puede lanzar ella misma a la siguiente con el GITHUB_TOKEN.
+# Copia la logica de relevo de bot.yml pero con sesiones de 4 min y un "bot" que solo
+# duerme. Grupo de concurrency PROPIO: no toca al bot de soporte. Se borra tras la prueba.
+
+on:
+  workflow_dispatch:
+    inputs:
+      minutos:
+        description: "Minutos de esta sesion de prueba"
+        default: "4"
+      vuelta:
+        description: "Generacion de la cadena (para y no sigue en la 2)"
+        default: "1"
+
+permissions:
+  actions: write
+  contents: read
+
+concurrency:
+  group: usagivr-relevo-prueba
+  cancel-in-progress: false
+
+jobs:
+  prueba:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci --omit=dev
+      - name: Probar el codigo
+        run: node probar.js
+      - name: Correr y relevar
+        env:
+          GH_TOKEN: ${{ github.token }}
+          MINUTOS: ${{ github.event.inputs.minutos || '4' }}
+          VUELTA: ${{ github.event.inputs.vuelta || '1' }}
+          MARGEN: "3"
+        run: |
+          echo "=== generacion ${VUELTA}, run ${GITHUB_RUN_ID}, arranca $(date -u +%H:%M:%SZ) ==="
+          relevar() {
+            if [ "$VUELTA" -ge 2 ]; then
+              echo "relevo: generacion ${VUELTA}, fin de la cadena de prueba (no relevo)"
+              return 0
+            fi
+            if gh workflow run relevo-prueba.yml -R "$GITHUB_REPOSITORY" \
+                 -f minutos="$MINUTOS" -f vuelta="$(( VUELTA + 1 ))"; then
+              echo "relevo: siguiente sesion encolada ($(date -u +%H:%M:%SZ))"
+            else
+              echo "relevo: FALLO gh workflow run"
+            fi
+          }
+          espera=$(( (MINUTOS - MARGEN) * 60 ))
+          [ "$espera" -lt 60 ] && espera=60
+          echo "relevo programado en ${espera}s"
+          ( sleep "$espera"; relevar ) &
+          relevo=$!
+          sleep $(( MINUTOS * 60 ))   # aqui, en bot.yml, corre node src/index.js
+          echo "=== el 'bot' de prueba termina $(date -u +%H:%M:%SZ) ==="
+          kill "$relevo" 2>/dev/null || true
+          wait "$relevo" 2>/dev/null || true

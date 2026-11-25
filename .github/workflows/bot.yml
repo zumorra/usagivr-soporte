@@ -1,8 +1,17 @@
 name: Soporte USAGIVR (bot online)
 
 # Corre dentro de GitHub Actions: gratis e ilimitado en repos publicos.
-# Cada sesion dura 5 h y la siguiente espera en cola (concurrency) a que
-# termine la anterior, asi nunca hay dos bots contestando a la vez.
+#
+# RELEVO (lo que mantiene el bot online):
+# unos minutos antes de que esta sesion acabe, ELLA MISMA encola la siguiente con
+# `gh workflow run` (necesita permissions.actions: write). No depende del horario de
+# GitHub, que retrasa y descarta crons: el `schedule` y el "Vigia del bot" quedan solo
+# como respaldo por si una sesion muere sin poder relevar.
+#
+# `cancel-in-progress: false` es lo que hace limpio el traspaso: la sesion que entra
+# ESPERA en cola a que la de dentro termine, asi nunca hay dos bots contestando a la
+# vez, y GitHub deja como maximo UNA en espera (dispatches repetidos del relevo, del
+# cron o del vigia se juntan en una sola, no se apilan).
 
 on:
   schedule:
@@ -15,14 +24,19 @@ on:
         description: "Minutos que debe correr esta sesion"
         default: "300"
 
+permissions:
+  actions: write
+  contents: read
+
 concurrency:
   group: usagivr-bot
-  cancel-in-progress: true
+  cancel-in-progress: false
 
 jobs:
   bot:
     runs-on: ubuntu-latest
-    timeout-minutes: 330
+    # Un poco mas que MINUTOS, no mucho: un job colgado bloquea a la sesion que espera en cola.
+    timeout-minutes: 310
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -34,12 +48,54 @@ jobs:
         run: node probar.js
       - name: Cliente de OpenCode (IA gratis de respaldo)
         run: npm install -g opencode-ai@1 --no-fund --no-audit || true
-      - name: Arrancar el bot
+      - name: Arrancar el bot y relevar a la siguiente sesion
         env:
+          GH_TOKEN: ${{ github.token }}
           DISCORD_TOKEN: ${{ secrets.DISCORD_TOKEN }}
           GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
           CRM_URL: ${{ secrets.CRM_URL }}
           CRM_TOKEN: ${{ secrets.CRM_TOKEN }}
           CRM_HMAC_SECRET: ${{ secrets.CRM_HMAC_SECRET }}
           MINUTOS: ${{ github.event.inputs.minutos || '300' }}
-        run: node src/index.js
+          # Minutos de adelanto del relevo: lo justo para que GitHub ya tenga pedido el
+          # runner cuando esta sesion muera (la que entra arranca en cuanto esta acabe).
+          MARGEN: "3"
+          # La siguiente siempre dura lo normal, aunque esta sea una sesion corta de prueba.
+          MINUTOS_SIGUIENTE: "300"
+        run: |
+          relevar() {
+            if gh workflow run bot.yml -R "$GITHUB_REPOSITORY" -f minutos="$MINUTOS_SIGUIENTE"; then
+              echo "relevo: siguiente sesion encolada ($(date -u +%H:%M:%SZ))"
+            else
+              echo "relevo: FALLO gh workflow run; queda el vigia como respaldo"
+            fi
+          }
+
+          espera=$(( (MINUTOS - MARGEN) * 60 ))
+          [ "$espera" -lt 60 ] && espera=60
+          echo "relevo programado en ${espera}s (sesion de ${MINUTOS} min, margen ${MARGEN} min)"
+          ( sleep "$espera"; relevar ) &
+          relevo=$!
+
+          inicio=$(date +%s)
+          set +e
+          node src/index.js
+          code=$?
+          set -e
+          duro=$(( $(date +%s) - inicio ))
+          echo "el bot corrio ${duro}s y salio con codigo ${code}"
+
+          if kill "$relevo" 2>/dev/null; then
+            # El bot murio antes de la hora: el relevo programado no llego a dispararse.
+            # Freno antibucle: solo relevamos si aguanto un rato. Si se cae al arrancar
+            # (token malo, fallo de Discord) NO relanzamos en bucle: lo coge el vigia cada
+            # 15 min, que ademas avisa en #avisos-bot.
+            if [ "$duro" -ge 600 ]; then
+              echo "el bot termino antes de tiempo: relevo ahora"
+              relevar
+            else
+              echo "el bot duro menos de 10 min: NO relanzo (freno antibucle); lo coge el vigia"
+            fi
+          fi
+          wait "$relevo" 2>/dev/null || true
+          exit "$code"
