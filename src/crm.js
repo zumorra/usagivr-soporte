@@ -62,6 +62,14 @@ function crearCrm(opts = {}) {
     entregado(mensajeId, { ok = true, discordMessageId, error } = {}) {
       return pedir("POST", `/v1/soporte/mensajes/${mensajeId}/entregado`, { ok, discord_message_id: discordMessageId, error });
     },
+    // Avisos de paquetes por MD (CRM v32): el CRM decide que y cuando (dias habiles, hora); el bot solo manda y confirma.
+    async avisosMd() {
+      const r = await pedir("GET", "/v1/soporte/avisos-md?limit=20");
+      return r.ok && r.data ? r.data.items || [] : [];
+    },
+    avisoEntregado(avisoId, { discordUserId, ok = true, discordMessageId, error } = {}) {
+      return pedir("POST", `/v1/soporte/avisos-md/${avisoId}/entregado`, { discord_user_id: discordUserId, ok, discord_message_id: discordMessageId, error });
+    },
     async respuestasRapidas(ticketId) {
       const r = await pedir("GET", `/v1/soporte/respuestas-rapidas${ticketId ? `?ticket_id=${ticketId}` : ""}`);
       return r.ok && r.data ? r.data.items || [] : [];

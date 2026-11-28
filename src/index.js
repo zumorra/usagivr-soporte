@@ -1045,7 +1045,10 @@ client.once("clientReady", async () => {
     }
   }
   console.log(crm.activo() ? "CRM conectado: tickets y mensajes van al Helpdesk; respuestas del CRM se publican aquí" : "CRM sin configurar (faltan CRM_URL/CRM_TOKEN)");
-  if (crm.activo()) setInterval(() => entregarDelCrm().catch((e) => console.warn("crm entrega:", e.message)), (CFG.crmCadaSeg || 15) * 1000);
+  if (crm.activo()) setInterval(() => {
+    entregarDelCrm().catch((e) => console.warn("crm entrega:", e.message));
+    entregarAvisosMd().catch((e) => console.warn("avisos md:", e.message));
+  }, (CFG.crmCadaSeg || 15) * 1000);
   revisarTickets().catch((e) => console.warn("seguimiento:", e.message));
   setInterval(() => revisarTickets().catch((e) => console.warn("seguimiento:", e.message)), (S.revisarCadaMin || 10) * MIN);
 });
@@ -1390,6 +1393,44 @@ async function entregarDelCrm() {
   }
 }
 
+// Avisos de paquetes al helper por MD (CRM v32). El mensaje viene armado y termina en "ref: <clave>":
+// si el bot se cayo entre el send y /entregado, al volver encuentra esa linea en el MD y solo confirma.
+let avisando = false;
+async function entregarAvisosMd() {
+  if (avisando) return;
+  avisando = true;
+  try {
+    for (const a of await crm.avisosMd()) {
+      const uid = String(a.discord_user_id || "").trim();
+      const fin = (r) => crm.avisoEntregado(a.id, { discordUserId: uid || undefined, ...r });
+      if (!uid) { await fin({ ok: false, error: "sin discord_user_id" }); continue; }
+      if (!a.mensaje || !a.clave) { await fin({ ok: false, error: "aviso sin mensaje o clave" }); continue; }
+      let user;
+      try { user = await client.users.fetch(uid); } catch (e) { if (!pasajero(e)) await fin({ ok: false, error: errDiscord(e) }); continue; }
+      const ref = `ref: ${a.clave}`;
+      const dm = await user.createDM().catch(() => null);
+      const msgs = dm ? await dm.messages.fetch({ limit: 30 }).catch(() => null) : null;
+      const previa = msgs ? [...msgs.values()].find((m) => m.author?.id === client.user?.id && String(m.content || "").split("\n").some((l) => l.trim() === ref)) : null;
+      if (previa) { await fin({ ok: true, discordMessageId: previa.id }); console.log("aviso md: ya enviado, solo se confirma"); continue; }
+      let m;
+      try { m = await user.send(String(a.mensaje)); } catch (e) {
+        if (pasajero(e)) { console.warn("aviso md: fallo pasajero, se reintenta"); continue; } // red/5xx: el "ref:" evita duplicar si si llego
+        await fin({ ok: false, error: errDiscord(e) });
+        console.warn("aviso md: fallo", e && e.code);
+        continue;
+      }
+      // Si esta confirmacion falla, el aviso sigue pendiente en el CRM y la siguiente vuelta lo encuentra por "ref:".
+      await fin({ ok: true, discordMessageId: m.id });
+      console.log("aviso md: enviado");
+    }
+  } finally {
+    avisando = false;
+  }
+}
+// Definitivo = Discord contesto con codigo (50007 MD cerrados, 10013 no existe...). Red caida o 5xx = pasajero.
+const pasajero = (e) => !(e && typeof e.code === "number" && e.code > 0 && !(e.status >= 500));
+const errDiscord = (e) => `${e && e.code ? e.code + " " : ""}${(e && e.message) || "error de Discord"}`.slice(0, 300);
+
 // /respuesta: las mismas respuestas rapidas del Helpdesk, rellenadas con los datos de ESTE cliente.
 const cacheRapidas = new Map(); // canal -> { t, items }
 async function rapidasDe(canal, d) {
@@ -1446,4 +1487,4 @@ if (require.main === module) {
   client.login(token);
 }
 
-module.exports = { crm, DEL_EQUIPO, entregarDelCrm, espejoCrm, usarRespuesta, registrar, cerrarCanal, trozos, textoParaCrm, esAyudaCrm: (m, uid) => esAyuda(m, uid), client, respuestaIA, revisarTicket, silencioPorHelper, idiomaReciente, revisarVoz, terminarVoz, canalVoz, botonListo, PREGUNTA_IDIOMA, saberAuditor, pideDevolucion, pideCompra, promptSistema, pideHumano, idiomaDe, leerTicket, temaCanal, esImagen, estaEnojado, mensajePanel, yaQuedo };
+module.exports = { crm, DEL_EQUIPO, entregarDelCrm, entregarAvisosMd, espejoCrm, usarRespuesta, registrar, cerrarCanal, trozos, textoParaCrm, esAyudaCrm: (m, uid) => esAyuda(m, uid), client, respuestaIA, revisarTicket, silencioPorHelper, idiomaReciente, revisarVoz, terminarVoz, canalVoz, botonListo, PREGUNTA_IDIOMA, saberAuditor, pideDevolucion, pideCompra, promptSistema, pideHumano, idiomaDe, leerTicket, temaCanal, esImagen, estaEnojado, mensajePanel, yaQuedo };
